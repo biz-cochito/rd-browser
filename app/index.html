@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>RD-Browser</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-default.min.css"
+        />
+        <style>
+            .torrent-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                margin-top: 1rem;
+            }
+            .torrent-row {
+                display: flex;
+                align-items: center;
+                padding: 0.75rem;
+                background: #f8f9fa;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+            .torrent-header {
+                font-weight: bold;
+                background: #e9ecef;
+            }
+            .col-name {
+                flex: 3;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding-right: 1rem;
+            }
+            .col-status {
+                flex: 1;
+                min-width: 100px;
+            }
+            .col-progress {
+                flex: 1;
+                text-align: right;
+                min-width: 80px;
+            }
+            #loading {
+                display: none;
+                margin-left: 1rem;
+                font-style: italic;
+                color: #666;
+            }
+        </style>
+        <script src="main.js" type="module"></script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="container">
+                <div class="row" style="align-items: center; justify-content: space-between;">
+                    <div class="logo"><h2>RD-Browser</h2></div>
+                    <div>
+                        <button class="primary" id="btn-load">Load Torrents</button>
+                        <span id="loading">Loading...</span>
+                    </div>
+                </div>
+                
+                <div id="torrent-list" class="torrent-grid">
+                    <!-- Dynamic content will be injected here -->
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
