@@ -45,11 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const row = document.createElement("div");
             row.className = "torrent-row";
 
-            try {
-                const videoLink = (torrent.links) => {
-
-                }
-            }
             const name = torrent.filename || "Unknown";
             const status = torrent.status || "unknown";
             const progress = torrent.progress ? `${torrent.progress}%` : "0%";
