@@ -34,30 +34,34 @@ function createWindow() {
     win.loadFile(path.join(__dirname, 'app/index.html'));
 }
 
+function validateClient() {
+    if (!client) throw new Error("Real-Debrid API token is missing.");
+    return
+
 app.whenReady().then(() => {
     // Register IPC Handlers
     ipcMain.handle('get-torrents', async (event, limit) => {
-        if (!client) throw new Error("Real-Debrid API token is missing.");
+        validateClient();
         return await client.listTorrents(1, limit);
     });
 
     ipcMain.handle('get-torrent-details', async (event, torrentId) => {
-        if (!client) throw new Error("Real-Debrid API token is missing.");
+        validateClient();
         return await client.getTorrentInfo(torrentId);
     });
 
     ipcMain.handle('unrestrict-link', async (event, link) => {
-        if (!client) throw new Error("Real-Debrid API token is missing.");
+        validateClient();
         return await client.unrestrictLink(link);
     });
 
     ipcMain.handle('add-magnet', async (event, magnet) => {
-        if (!client) throw new Error("Real-Debrid API token is missing.");
+        validateClient();
         return await handleMagnetLink(client, magnet);
     });
 
     ipcMain.handle('add-torrent-file', async (event, filePath) => {
-        if (!client) throw new Error("Real-Debrid API token is missing.");
+        validateClient();
         const fileBuffer = fs.readFileSync(filePath);
         const fileName = path.basename(filePath);
         return await handleTorrentFile(client, fileBuffer, fileName);
