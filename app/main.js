@@ -35,16 +35,19 @@ document.addEventListener("DOMContentLoaded", () => {
         torrentList.innerHTML = ""; // Clear existing
 
         try {
-            const result = await window.rdApi.getTorrents(currentPage, itemsPerPage);
+            const result = await window.rdApi.getTorrents(
+                currentPage,
+                itemsPerPage,
+            );
             const { torrents, totalCount } = result;
             const totalPages = Math.ceil(totalCount / itemsPerPage) || 1;
 
             pageNumDisplay.innerText = `Page ${currentPage} of ${totalPages}`;
             renderTorrents(torrents);
-            
+
             // Enable/Disable buttons based on current state
-            btnPrev.disabled = (currentPage === 1);
-            btnNext.disabled = (currentPage >= totalPages);
+            btnPrev.disabled = currentPage === 1;
+            btnNext.disabled = currentPage >= totalPages;
         } catch (error) {
             console.error("Failed to load torrents:", error);
             torrentList.innerHTML = `<div class="torrent-row" style="color: red;">Error loading torrents: ${error.message}</div>`;
@@ -68,6 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="col-name">Name</div>
             <div class="col-status">Status</div>
             <div class="col-progress">Progress</div>
+            <div class="col-actions">Actions</div>
         `;
         torrentList.appendChild(headerRow);
 
@@ -84,6 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="col-name" title="${name}">${name}</div>
                 <div class="col-status">${status}</div>
                 <div class="col-progress">${progress}</div>
+                <div class="col-actions"><button class="material-symbols">play_arrow</button></div>
             `;
 
             torrentList.appendChild(row);

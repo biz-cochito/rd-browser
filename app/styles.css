@@ -1,3 +1,5 @@
+@import "../node_modules/material-symbols/index.css";
+
 /* 1. Use a more-intuitive box-sizing model */
 *,
 *::before,
@@ -78,21 +80,21 @@ body {
     display: block;
 }
 
-.wrapper {
-    border: 2px solid black;
+/*.wrapper {
+    border: 4px solid black;
     height: 100%;
     width: 100%;
     display: block;
-}
+}*/
 
-nav {
-    display: inline-flex;
+.app-header {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-top: 12px;
     & button {
         display: inline;
     }
     & div.logo {
-        background-color: red;
     }
 }

@@ -8,6 +8,11 @@
             rel="stylesheet"
             href="https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-default.min.css"
         />
+        <link
+            rel="stylesheet"
+            href="../node_modules/material-symbols/index.css"
+        />
+        <link rel="stylesheet" href="./styles.css" />
         <style>
             .torrent-grid {
                 display: flex;
@@ -29,7 +34,7 @@
             }
             .col-name {
                 flex: 3;
-                white-space: nowrap;
+                white-space: pre-wrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 padding-right: 1rem;
@@ -38,10 +43,18 @@
                 flex: 1;
                 min-width: 100px;
             }
-            .col-progress {
+            .col-progress,
+            .col-actions {
                 flex: 1;
                 text-align: right;
                 min-width: 80px;
+            }
+            .col-actions {
+                flex: 1;
+            }
+            .col-actions button {
+                font-family: "Material Symbols Outlined";
+                padding: 0 4px;
             }
             #loading {
                 display: none;
@@ -55,17 +68,24 @@
     <body>
         <div class="wrapper">
             <div class="container">
-                <div class="row" style="align-items: center; justify-content: space-between;">
+                <div
+                    class="row app-header"
+                    style="align-items: center; justify-content: space-between"
+                >
                     <div class="logo"><h2>RD-Browser</h2></div>
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div
+                        style="display: flex; align-items: center; gap: 0.5rem"
+                    >
                         <button id="btn-prev" disabled>Previous</button>
                         <span id="page-num">Page 1</span>
                         <button id="btn-next">Next</button>
-                        <button class="primary" id="btn-load">Load Torrents</button>
+                        <button class="primary" id="btn-load">
+                            Load Torrents
+                        </button>
                         <span id="loading">Loading...</span>
                     </div>
                 </div>
-                
+
                 <div id="torrent-list" class="torrent-grid">
                     <!-- Dynamic content will be injected here -->
                 </div>
