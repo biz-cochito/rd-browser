@@ -76,12 +76,14 @@ document.addEventListener("DOMContentLoaded", () => {
         torrentList.appendChild(headerRow);
 
         // Create Data Rows
-        torrents.forEach((torrent) => {
+        torrents.forEach(async (torrent) => {
             const row = document.createElement("div");
 
             const name = torrent.filename || "Unknown";
             const status = torrent.status || "unknown";
-            console.log(status);
+            const torrentDetails = await window.rdApi.getTorrentDetails(
+                torrent.id,
+            );
             let icon;
             if (status === "error") {
                 icon = "error";
@@ -90,18 +92,83 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             const progress = torrent.progress ? `${torrent.progress}%` : "0%";
             const fileId = torrent.id;
+            const download = torrentDetails?.download || "unknown";
             row.className = "torrent-row";
             row.setAttribute("data-file-id", fileId);
             row.innerHTML = `
-                <div class="col-name" title="${name}" "data-file-id="${fileId}">${name}</div>
+                <div class="col-name" title="${name}" data-file-id="${fileId}">${name}</div>
                 <div class="col-status material-symbols ${status}">${icon}</div>
                 <div class="col-progress">${progress}</div>
                 <div class="col-actions input-group">
-                  <button class="material-symbols tertiary">play_arrow</button>
-                  <button class="material-symbols inverse">download</button>
+                  <button class="material-symbols tertiary" id="btn-play">play_arrow</button>
+                  <button class="material-symbols inverse" id="btn-download">download</button>
                   <button class="material-symbols">more_vert</button>
                 </div>
             `;
+            
+            // Play Button Handler
+            row.querySelector("#btn-play").addEventListener(
+                "click",
+                async () => {
+                    try {
+                        loadingIndicator.style.display = "inline";
+
+                        // 1. Get Torrent Details to find the internal links
+                        const torrentDetails = await window.rdApi.getTorrentDetails(fileId);
+                        if (!torrentDetails || !torrentDetails.links || torrentDetails.links.length === 0) {
+                            throw new Error("This torrent has no links to play.");
+                        }
+
+                        // 2. Unrestrict the first link to get the direct download URL
+                        const selectedLink = torrentDetails.links[0];
+                        const unrestricted = await window.rdApi.unrestrictLink(selectedLink);
+                        
+                        if (unrestricted && unrestricted.download) {
+                            console.log("Playing direct link with mpv:", unrestricted.download);
+                            await window.rdApi.playVideo(unrestricted.download);
+                        } else {
+                            throw new Error("Failed to get a direct download link from Real-Debrid.");
+                        }
+                    } catch (error) {
+                        console.error("Error starting playback:", error);
+                        alert("Failed to start playback: " + error.message);
+                    } finally {
+                        loadingIndicator.style.display = "none";
+                    }
+                },
+            );
+
+            // Download Button Handler
+            row.querySelector("#btn-download").addEventListener(
+                "click",
+                async () => {
+                    try {
+                        loadingIndicator.style.display = "inline";
+
+                        // 1. Get Torrent Details
+                        const torrentDetails = await window.rdApi.getTorrentDetails(fileId);
+                        if (!torrentDetails || !torrentDetails.links || torrentDetails.links.length === 0) {
+                            throw new Error("This torrent has no links to download.");
+                        }
+
+                        // 2. Unrestrict the first link
+                        const selectedLink = torrentDetails.links[0];
+                        const unrestricted = await window.rdApi.unrestrictLink(selectedLink);
+                        
+                        if (unrestricted && unrestricted.download) {
+                            console.log("Opening download link:", unrestricted.download);
+                            await window.rdApi.openExternal(unrestricted.download);
+                        } else {
+                            throw new Error("Failed to get a download link from Real-Debrid.");
+                        }
+                    } catch (error) {
+                        console.error("Error starting download:", error);
+                        alert("Failed to start download: " + error.message);
+                    } finally {
+                        loadingIndicator.style.display = "none";
+                    }
+                },
+            );
 
             torrentList.appendChild(row);
         });

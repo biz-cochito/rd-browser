@@ -7,6 +7,7 @@ export class RealDebridClient {
 
     async request(method, path, options = {}) {
         const url = `${BASE_URL}${path}`;
+        console.log(`[RD API] ${method} ${url} | Path Hex: ${Buffer.from(path).toString('hex')}`);
         const headers = {
             Authorization: `Bearer ${this.apiToken}`,
             ...options.headers,
@@ -21,6 +22,7 @@ export class RealDebridClient {
 
         if (!response.ok) {
             const errorText = await response.text();
+            console.error(`[RD API ERROR] ${response.status} ${response.statusText} | Response: ${errorText}`);
             throw new Error(
                 `Real-Debrid API error: ${response.status} ${response.statusText} - ${errorText}`,
             );
@@ -41,6 +43,11 @@ export class RealDebridClient {
         }
     }
 
+    async getMediaInfo(id) {
+        const res = await this.request("GET", `/streaming/mediainfos/${id}`);
+        return res.data;
+    }
+
     async unrestrictLink(link) {
         const params = new URLSearchParams();
         params.append("link", link);
@@ -51,7 +58,13 @@ export class RealDebridClient {
     }
 
     async getStreamLink(id) {
-        const res = await this.request("GET", "/streaming/transcode/${id}");
+        console.log(`RealDebridClient.getStreamLink called with ID: ${id} (type: ${typeof id})`);
+        if (id === "{id}" || id === undefined || id === null || id === "") {
+            console.error("CRITICAL ERROR: getStreamLink called with invalid ID value:", id);
+            throw new Error(`Invalid ID passed to getStreamLink: ${id}`);
+        }
+        const res = await this.request("GET", `/streaming/transcode/${id}`);
+        console.log(`ID: ${id}, res: `);
         return res.data;
     }
 
