@@ -1,19 +1,50 @@
 document.addEventListener("DOMContentLoaded", () => {
     const btnLoad = document.getElementById("btn-load");
+    const btnPrev = document.getElementById("btn-prev");
+    const btnNext = document.getElementById("btn-next");
+    const pageNumDisplay = document.getElementById("page-num");
     const torrentList = document.getElementById("torrent-list");
     const loadingIndicator = document.getElementById("loading");
 
-    btnLoad.addEventListener("click", loadTorrents);
+    let currentPage = 1;
+    const itemsPerPage = 50;
+
+    btnLoad.addEventListener("click", () => {
+        currentPage = 1;
+        loadTorrents();
+    });
+
+    btnPrev.addEventListener("click", () => {
+        if (currentPage > 1) {
+            currentPage--;
+            loadTorrents();
+        }
+    });
+
+    btnNext.addEventListener("click", () => {
+        currentPage++;
+        loadTorrents();
+    });
 
     async function loadTorrents() {
         // UI Loading State
         btnLoad.disabled = true;
+        btnPrev.disabled = true;
+        btnNext.disabled = true;
         loadingIndicator.style.display = "inline";
         torrentList.innerHTML = ""; // Clear existing
 
         try {
-            const torrents = await window.rdApi.getTorrents(200);
+            const result = await window.rdApi.getTorrents(currentPage, itemsPerPage);
+            const { torrents, totalCount } = result;
+            const totalPages = Math.ceil(totalCount / itemsPerPage) || 1;
+
+            pageNumDisplay.innerText = `Page ${currentPage} of ${totalPages}`;
             renderTorrents(torrents);
+            
+            // Enable/Disable buttons based on current state
+            btnPrev.disabled = (currentPage === 1);
+            btnNext.disabled = (currentPage >= totalPages);
         } catch (error) {
             console.error("Failed to load torrents:", error);
             torrentList.innerHTML = `<div class="torrent-row" style="color: red;">Error loading torrents: ${error.message}</div>`;

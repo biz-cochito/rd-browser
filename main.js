@@ -36,13 +36,13 @@ function createWindow() {
 
 function validateClient() {
     if (!client) throw new Error("Real-Debrid API token is missing.");
-    return
+}
 
 app.whenReady().then(() => {
     // Register IPC Handlers
-    ipcMain.handle('get-torrents', async (event, limit) => {
+    ipcMain.handle('get-torrents', async (event, page, limit) => {
         validateClient();
-        return await client.listTorrents(1, limit);
+        return await client.listTorrents(page, limit);
     });
 
     ipcMain.handle('get-torrent-details', async (event, torrentId) => {

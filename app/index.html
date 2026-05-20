@@ -57,7 +57,10 @@
             <div class="container">
                 <div class="row" style="align-items: center; justify-content: space-between;">
                     <div class="logo"><h2>RD-Browser</h2></div>
-                    <div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <button id="btn-prev" disabled>Previous</button>
+                        <span id="page-num">Page 1</span>
+                        <button id="btn-next">Next</button>
                         <button class="primary" id="btn-load">Load Torrents</button>
                         <span id="loading">Loading...</span>
                     </div>
