@@ -1,14 +1,8 @@
-async function getTorrents(limit = 50, page = 1) {
-    try {
-        const response = await fetch(
-            `/api/torrents?limit=${limit}&page=${page}`,
-        );
-        if (!response.ok) throw new Error("Failed to fetch torrents");
+import { shell } from "electron";
 
-        const data = await response.json();
-        console.log("Torrents:", data);
-        return data;
-    } catch (error) {
-        console.error(error);
+export function playVideo(id) {
+    const streamLink = getStreamLink(id);
+    if (streamLink) {
+        shell.openExternal(streamLink);
     }
 }

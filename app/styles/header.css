@@ -1,0 +1,19 @@
+.app-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 12px;
+
+    & button {
+        display: inline;
+    }
+}
+div.logo {
+    display: flex;
+    align-items: center;
+}
+
+div.logo img {
+    height: 32px;
+    width: auto;
+}
