@@ -5,11 +5,7 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 import dotenv from "dotenv";
 import { RealDebridClient } from "./server/client.js";
-import {
-    handleMagnetLink,
-    handleTorrentFile,
-    getStreamLink,
-} from "./server/services.js";
+import { handleMagnetLink, handleTorrentFile } from "./server/services.js";
 import { API_TOKEN_ENV_VAR } from "./server/config.js";
 
 const __filename = fileURLToPath(import.meta.url);

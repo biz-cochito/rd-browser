@@ -23,13 +23,10 @@ export async function waitForStatus(client, torrentId, expectedStatus) {
     );
 }
 
-export async function handleMagnetLink(client, magnetLink) {
-    const result = await client.addMagnet(magnetLink);
-    const torrentId = result.id;
-
+async function resolveTorrentDownloads(client, torrentId, sourceDescription) {
     if (!torrentId) {
         throw new Error(
-            "Real-Debrid did not return a torrent id for the magnet link.",
+            `Real-Debrid did not return a torrent id for ${sourceDescription}.`,
         );
     }
 
@@ -49,40 +46,15 @@ export async function handleMagnetLink(client, magnetLink) {
         links.map((link) => client.unrestrictLink(link)),
     );
 
-    return unrestrictedLinks.map((l) => l.download);
+    return unrestrictedLinks.map((link) => link.download);
 }
 
-export async function getStreamLink(client, id) {
-    const res = await client.request("GET", `/streaming/transcode/${id}`);
-    console.log(`ID: ${id}, res: `);
-    return res;
+export async function handleMagnetLink(client, magnetLink) {
+    const result = await client.addMagnet(magnetLink);
+    return resolveTorrentDownloads(client, result.id, "the magnet link");
 }
 
 export async function handleTorrentFile(client, fileBuffer, fileName) {
     const result = await client.addTorrentFile(fileBuffer, fileName);
-    const torrentId = result.id;
-
-    if (!torrentId) {
-        throw new Error(
-            "Real-Debrid did not return a torrent id for the .torrent file.",
-        );
-    }
-
-    await waitForStatus(client, torrentId, "waiting_files_selection");
-    await client.selectFiles(torrentId, "all");
-
-    const finalInfo = await waitForStatus(client, torrentId, "downloaded");
-    const links = finalInfo.links || [];
-
-    if (links.length === 0) {
-        throw new Error(
-            "Torrent completed but no downloadable links were returned.",
-        );
-    }
-
-    const unrestrictedLinks = await Promise.all(
-        links.map((link) => client.unrestrictLink(link)),
-    );
-
-    return unrestrictedLinks.map((l) => l.download);
+    return resolveTorrentDownloads(client, result.id, "the .torrent file");
 }
