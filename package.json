@@ -3,17 +3,31 @@
   "version": "1.0.0",
   "description": "Real-Debrid Browser Backend",
   "type": "module",
-  "main": "main.js",
+  "main": "debug/main.js",
   "scripts": {
-    "start": "electron .",
-    "dev": "electron . --ozone-platform-hint=auto --disable-vulkan"
+    "start": "npm run start-dev",
+    "dev": "npm run start-dev",
+    "start-dev": "tsx build/build.ts dev",
+    "start-prod": "tsx build/build.ts prod",
+    "build-dev": "tsx build/build.ts dev-only",
+    "build-prod": "tsx build/build.ts prod-only",
+    "generate-api": "tsx build/generator.ts"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
     "material-symbols": "^0.44.8",
+    "mini.css": "^3.0.1",
+    "module-alias": "^2.3.4",
+    "preact": "^10.29.2",
     "sqlite3": "^6.0.1"
   },
   "devDependencies": {
-    "electron": "^42.1.0"
+    "@types/electron": "^1.4.38",
+    "@types/node": "^25.9.1",
+    "electron": "^42.1.0",
+    "esbuild": "^0.28.0",
+    "glob": "^13.0.6",
+    "tsx": "^4.22.3",
+    "typescript": "^6.0.3"
   }
 }

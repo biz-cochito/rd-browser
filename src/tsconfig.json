@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "react-jsx",
+        "jsxImportSource": "preact",
+        "noEmit": true,
+        "baseUrl": ".",
+        "paths": {
+            "preact": ["../node_modules/preact"],
+            "preact/*": ["../node_modules/preact/*"],
+            "@minicss": ["../node_modules/mini.css/dist/*"],
+            "@asset/*": ["./asset/*"],
+            "@src/*": ["./*"],
+        },
+    },
+    "include": ["**/*"],
+}

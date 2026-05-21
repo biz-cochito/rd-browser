@@ -1,4 +1,7 @@
+@import url("./theme.css");
+
 .app-header {
+    background: var(--bg-secondary);
     display: flex;
     flex-direction: row;
     justify-content: space-between;

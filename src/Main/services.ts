@@ -1,6 +1,7 @@
-import { POLL_INTERVAL_MS, POLL_TIMEOUT_MS } from "./config.js";
+import { POLL_INTERVAL_MS, POLL_TIMEOUT_MS } from "./config";
+import { RealDebridClient } from "./RealDebridClient";
 
-export async function waitForStatus(client, torrentId, expectedStatus) {
+export async function waitForStatus(client: RealDebridClient, torrentId: string, expectedStatus: string) {
     const startTime = Date.now();
 
     while (Date.now() - startTime < POLL_TIMEOUT_MS) {
@@ -18,16 +19,12 @@ export async function waitForStatus(client, torrentId, expectedStatus) {
         await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL_MS));
     }
 
-    throw new Error(
-        `Timed out waiting for torrent status '${expectedStatus}'.`,
-    );
+    throw new Error(`Timed out waiting for torrent status '${expectedStatus}'.`);
 }
 
-async function resolveTorrentDownloads(client, torrentId, sourceDescription) {
+async function resolveTorrentDownloads(client: RealDebridClient, torrentId: string, sourceDescription: string) {
     if (!torrentId) {
-        throw new Error(
-            `Real-Debrid did not return a torrent id for ${sourceDescription}.`,
-        );
+        throw new Error(`Real-Debrid did not return a torrent id for ${sourceDescription}.`);
     }
 
     await waitForStatus(client, torrentId, "waiting_files_selection");
@@ -37,9 +34,7 @@ async function resolveTorrentDownloads(client, torrentId, sourceDescription) {
     const links = finalInfo.links || [];
 
     if (links.length === 0) {
-        throw new Error(
-            "Torrent completed but no downloadable links were returned.",
-        );
+        throw new Error("Torrent completed but no downloadable links were returned.");
     }
 
     const unrestrictedLinks = await Promise.all(
@@ -49,12 +44,12 @@ async function resolveTorrentDownloads(client, torrentId, sourceDescription) {
     return unrestrictedLinks.map((link) => link.download);
 }
 
-export async function handleMagnetLink(client, magnetLink) {
+export async function handleMagnetLink(client: RealDebridClient, magnetLink: string) {
     const result = await client.addMagnet(magnetLink);
     return resolveTorrentDownloads(client, result.id, "the magnet link");
 }
 
-export async function handleTorrentFile(client, fileBuffer, fileName) {
+export async function handleTorrentFile(client: RealDebridClient, fileBuffer: Buffer, fileName: string) {
     const result = await client.addTorrentFile(fileBuffer, fileName);
     return resolveTorrentDownloads(client, result.id, "the .torrent file");
 }
