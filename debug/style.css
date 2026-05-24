@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
-@import url("../node_modules/mini.css/dist/mini-dark.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+@import url("../node_modules/mini.css/dist/mini-nord.css");
 
 @font-face {
     font-family: "Bricolage Grotesque";
@@ -10,8 +10,10 @@
 }
 
 :root {
-    --universal-margin: 0.25rem;
-    --universal-padding: 0.25rem;
+    --universal-margin: 0.35rem;
+    --universal-padding: 0.35rem;
+    --padding-double: calc(2 * var(--universal-padding));
+    --universal-border-radius: 4px;
 }
 
 *,
@@ -49,7 +51,8 @@ h6,
 span,
 li,
 ul,
-ol {
+ol,
+#input-links-dialog h4 {
     font-family: "Bricolage Grotesque";
 }
 
@@ -131,7 +134,7 @@ header {
 }
 
 .material-symbols {
-    font-family: "Material Symbols Outlined";
+    font-family: "Material Symbols Rounded";
     font-weight: normal;
     font-style: normal;
     font-size: 24px;
@@ -189,6 +192,12 @@ button:disabled {
     &:last-child {
         margin-bottom: 2em;
     }
+
+    & .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
 }
 .torrent-header {
     font-weight: bold;
@@ -234,14 +243,65 @@ span.material-symbols {
         calc(0.5 * var(--universal-padding));
     max-width: 45px;
 }
-.input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-}
+
 #loading {
     display: none;
     margin-left: 1rem;
     font-style: italic;
     color: #666;
+}
+
+#input-links-dialog {
+    display: flex;
+    flex-direction: column;
+    gap: var(--universal-margin);
+    padding: var(--padding-double);
+    width: 800px;
+    max-width: 95%;
+    height: 520px;
+    max-height: 95%;
+    min-height: fit-content;
+    border-radius: var(--universal-border-radius);
+    margin: auto;
+    border: 1px solid var(--border-color);
+    outline: none;
+}
+
+.modal-footer.input-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: var(--universal-padding);
+    gap: var(--universal-margin);
+    & button {
+        aspect-ratio: 1/1;
+        padding: 0;
+        height: 40px;
+        background: var(--button-back-color);
+        color: var(--button-fore-color);
+        border-radius: var(--universal-border-radius);
+    }
+}
+textarea {
+    display: block;
+    width: 100%;
+    min-height: 200px;
+    flex-grow: 2;
+    &:focus-visible {
+        outline: 1px solid var(--button-back-color);
+    }
+}
+@media screen and (max-width: 640px) {
+    #input-links-dialog {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--modal-overlay-color);
+    }
+    textarea {
+        min-width: 360px;
+        min-height: 180px;
+    }
 }

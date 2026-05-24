@@ -1,18 +1,27 @@
+import InputLinksDialog from "./InputLinksDialog";
+
 interface HeaderButtonsProps {
     loading: boolean;
     onRefresh: () => void;
 }
 
+
 function HeaderButtons({ loading, onRefresh }: HeaderButtonsProps) {
+    function showInputLinksDialog() {
+        const modal = document.getElementById("input-links-dialog") as HTMLDialogElement;
+        modal.showModal();
+    }
+
     return (
         <div
             id="btn-settings"
             class="input-group material-symbols"
             style={{ display: "inline" }}
         >
-            <button id="btn-add" class="button primary" title="Add">
+            <button id="btn-add" onClick={showInputLinksDialog} class="button primary" title="Add">
                 add_box
             </button>
+            <InputLinksDialog />
             <button class="tertiary button" title="Settings">
                 settings
             </button>

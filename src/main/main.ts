@@ -19,7 +19,8 @@ export function startApplication() {
             preload: path.join(__dirname, 'preload.js'), // Note: esbuild will put it here
             contextIsolation: true,
             nodeIntegration: false
-        }
+        },
+        frame: false
     });
 
     win.loadFile(path.join(__dirname, 'index.html'));

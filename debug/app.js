@@ -402,8 +402,37 @@ function u3(e3, t3, n2, o3, i3, u4) {
   return l.vnode && l.vnode(l3), l3;
 }
 
+// src/components/InputLinksDialog.tsx
+function InputLinksDialog() {
+  function hideInputLinksDialog() {
+    const modal = document.getElementById("input-links-dialog");
+    modal.close();
+  }
+  return /* @__PURE__ */ u3("dialog", { id: "input-links-dialog", class: "modal", children: [
+    /* @__PURE__ */ u3("h4", { class: "title", children: "Paste links below:" }),
+    /* @__PURE__ */ u3("textarea", { id: "input-links", class: "input" }),
+    /* @__PURE__ */ u3("div", { class: "modal-footer fluid input-group material-symbols", children: [
+      /* @__PURE__ */ u3(
+        "button",
+        {
+          id: "btn-cancel-input-links",
+          class: "button secondary",
+          onClick: hideInputLinksDialog,
+          children: "cancel"
+        }
+      ),
+      /* @__PURE__ */ u3("button", { "aria-label": "Add links", id: "btn-add-input-links", class: "button tertiary", children: "add_box" })
+    ] })
+  ] });
+}
+var InputLinksDialog_default = InputLinksDialog;
+
 // src/components/HeaderButtons.tsx
 function HeaderButtons({ loading, onRefresh }) {
+  function showInputLinksDialog() {
+    const modal = document.getElementById("input-links-dialog");
+    modal.showModal();
+  }
   return /* @__PURE__ */ u3(
     "div",
     {
@@ -411,7 +440,8 @@ function HeaderButtons({ loading, onRefresh }) {
       class: "input-group material-symbols",
       style: { display: "inline" },
       children: [
-        /* @__PURE__ */ u3("button", { id: "btn-add", class: "button primary", title: "Add", children: "add_box" }),
+        /* @__PURE__ */ u3("button", { id: "btn-add", onClick: showInputLinksDialog, class: "button primary", title: "Add", children: "add_box" }),
+        /* @__PURE__ */ u3(InputLinksDialog_default, {}),
         /* @__PURE__ */ u3("button", { class: "tertiary button", title: "Settings", children: "settings" }),
         /* @__PURE__ */ u3(
           "button",

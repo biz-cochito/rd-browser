@@ -663,7 +663,8 @@ function startApplication() {
       // Note: esbuild will put it here
       contextIsolation: true,
       nodeIntegration: false
-    }
+    },
+    frame: false
   });
   win.loadFile(path2.join(__dirname, "index.html"));
   if (process.env.NODE_ENV !== "production") {
