@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../src/app/preload.ts"],
-  "sourcesContent": ["// Automatically generated file. Do not edit.\nimport { contextBridge, ipcRenderer } from 'electron';\n\ncontextBridge.exposeInMainWorld('preloadAPI', {\n    getTorrents: (page: number, limit: number) => ipcRenderer.invoke('getTorrents', page, limit),\n    getTorrentDetails: (torrentId: string) => ipcRenderer.invoke('getTorrentDetails', torrentId),\n    unrestrictLink: (link: string) => ipcRenderer.invoke('unrestrictLink', link),\n    addMagnet: (magnet: string) => ipcRenderer.invoke('addMagnet', magnet),\n    addTorrentFile: (filePath: string) => ipcRenderer.invoke('addTorrentFile', filePath),\n    getStreamLink: (id: string) => ipcRenderer.invoke('getStreamLink', id),\n    getMediaInfo: (id: string) => ipcRenderer.invoke('getMediaInfo', id),\n    openExternal: (url: string) => ipcRenderer.invoke('openExternal', url),\n    playVideo: (url: string) => ipcRenderer.invoke('playVideo', url),\n\n});\n"],
-  "mappings": ";;;AACA,sBAA2C;AAE3C,8BAAc,kBAAkB,cAAc;AAAA,EAC1C,aAAa,CAAC,MAAc,UAAkB,4BAAY,OAAO,eAAe,MAAM,KAAK;AAAA,EAC3F,mBAAmB,CAAC,cAAsB,4BAAY,OAAO,qBAAqB,SAAS;AAAA,EAC3F,gBAAgB,CAAC,SAAiB,4BAAY,OAAO,kBAAkB,IAAI;AAAA,EAC3E,WAAW,CAAC,WAAmB,4BAAY,OAAO,aAAa,MAAM;AAAA,EACrE,gBAAgB,CAAC,aAAqB,4BAAY,OAAO,kBAAkB,QAAQ;AAAA,EACnF,eAAe,CAAC,OAAe,4BAAY,OAAO,iBAAiB,EAAE;AAAA,EACrE,cAAc,CAAC,OAAe,4BAAY,OAAO,gBAAgB,EAAE;AAAA,EACnE,cAAc,CAAC,QAAgB,4BAAY,OAAO,gBAAgB,GAAG;AAAA,EACrE,WAAW,CAAC,QAAgB,4BAAY,OAAO,aAAa,GAAG;AAEnE,CAAC;",
-  "names": []
-}

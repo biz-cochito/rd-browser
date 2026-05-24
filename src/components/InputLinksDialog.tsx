@@ -1,27 +1,25 @@
-function BtnCloseDialog() {
-  function hideInputLinksDialog() {
-    const modal = document.getElementById(
-      "input-links-dialog",
-    ) as HTMLDialogElement;
-    modal.close();
-  }
-  return (
-    <button
-      id="btn-cancel-input-links"
-      class="button secondary"
-      onClick={hideInputLinksDialog}
-    >
-      cancel
-    </button>
-  );
+import { Ref } from "preact";
+
+interface InputLinksDialogProps {
+  dialogRef: Ref<HTMLDialogElement>;
 }
 
-function InputLinksDialog() {
+function InputLinksDialog({ dialogRef }: InputLinksDialogProps) {
+  function hideInputLinksDialog() {
+    dialogRef.current?.close();
+  }
+
   return (
-    <dialog id="input-links-dialog" class="modal">
+    <dialog ref={dialogRef} id="input-links-dialog" class="modal">
       <div class="modal-header material-symbols">
         <span class="title">Paste links below:</span>
-        <BtnCloseDialog />
+        <button
+          id="btn-cancel-input-links"
+          class="button secondary"
+          onClick={hideInputLinksDialog}
+        >
+          cancel
+        </button>
       </div>
       <textarea id="input-links" class="input"></textarea>
       <div class="modal-footer fluid input-group material-symbols">
@@ -31,8 +29,8 @@ function InputLinksDialog() {
           class="button tertiary"
         >
           <div>
-          <span class="material-symbols">add_box</span>
-          <span class="text"> Add links</span>
+            <span class="material-symbols">add_box</span>
+            <span class="text"> Add links</span>
           </div>
         </button>
       </div>

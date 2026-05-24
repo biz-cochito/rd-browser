@@ -1,3 +1,4 @@
+import { useRef } from "preact/hooks";
 import InputLinksDialog from "./InputLinksDialog";
 
 interface HeaderButtonsProps {
@@ -6,9 +7,10 @@ interface HeaderButtonsProps {
 }
 
 function HeaderButtons({ loading, onRefresh }: HeaderButtonsProps) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
   function showInputLinksDialog() {
-    const modal = document.getElementById("input-links-dialog") as HTMLDialogElement | null;
-    modal?.showModal();
+    dialogRef.current?.showModal();
   }
 
   return (
@@ -25,7 +27,7 @@ function HeaderButtons({ loading, onRefresh }: HeaderButtonsProps) {
       >
         add_box
       </button>
-      <InputLinksDialog />
+      <InputLinksDialog dialogRef={dialogRef} />
       <button class="tertiary button" title="Settings">
         settings
       </button>
