@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
-@import url("../node_modules/mini.css/dist/mini-nord.min.css");
+@import url("../node_modules/mini.css/dist/mini-dark.min.css");
 
 @font-face {
     font-family: "Bricolage Grotesque";
@@ -109,13 +109,16 @@ h6 {
     margin: 0 auto;
 }
 
+.logo img {
+    height: 26px;
+}
+
 .wrapper {
     margin-top: 80px;
     padding: 0 calc(1.75 * var(--universal-padding));
 }
 
-.header {
-    background-color: var(--secondary-back-color);
+header {
     display: flex;
     position: fixed;
     width: 100%;
@@ -150,11 +153,6 @@ h6 {
 }
 
 button {
-    /*background: var(--button-back-color);
-    color: var(--button-fore-color);
-    border: none;
-    padding: 6px 10px;
-    border-radius: 4px;*/
     cursor: pointer;
     font-size: 14px;
 }
@@ -194,16 +192,15 @@ button:disabled {
 }
 .torrent-header {
     font-weight: bold;
-    background: #e9ecef;
     font-size: 0.9rem;
 }
-div.col-name,
-div.col-name #file-title {
+div.col-name
+/* div.col-name #file-title */ { 
     flex: 3;
     white-space: pre-wrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding-right: 1rem;
+    padding: 0 var(--universal-padding);
     font-size: 1rem;
     text-align: start;
 }

@@ -402,33 +402,39 @@ function u3(e3, t3, n2, o3, i3, u4) {
   return l.vnode && l.vnode(l3), l3;
 }
 
+// src/components/HeaderButtons.tsx
+function HeaderButtons({ loading, onRefresh }) {
+  return /* @__PURE__ */ u3(
+    "div",
+    {
+      id: "btn-settings",
+      class: "input-group material-symbols",
+      style: { display: "inline" },
+      children: [
+        /* @__PURE__ */ u3("button", { id: "btn-add", class: "button primary", title: "Add", children: "add_box" }),
+        /* @__PURE__ */ u3("button", { class: "tertiary button", title: "Settings", children: "settings" }),
+        /* @__PURE__ */ u3(
+          "button",
+          {
+            class: "button primary material-symbols",
+            id: "btn-refresh",
+            onClick: onRefresh,
+            disabled: loading,
+            title: "Refresh",
+            children: loading ? "Loading..." : "refresh"
+          }
+        )
+      ]
+    }
+  );
+}
+var HeaderButtons_default = HeaderButtons;
+
 // src/components/Header.tsx
 function Header({ loading, onRefresh }) {
-  return /* @__PURE__ */ u3("div", { class: "header", children: [
-    /* @__PURE__ */ u3("span", { children: /* @__PURE__ */ u3("img", { src: rdb_logo_default, alt: "Real-Debrid", style: "height: 32px;" }) }),
-    /* @__PURE__ */ u3(
-      "div",
-      {
-        id: "btn-settings",
-        class: "input-group material-symbols",
-        style: "display: inline;",
-        children: [
-          /* @__PURE__ */ u3("button", { id: "btn-add", class: "button primary", title: "Add", children: "add_box" }),
-          /* @__PURE__ */ u3("button", { class: "tertiary button", title: "Settings", children: "settings" }),
-          /* @__PURE__ */ u3(
-            "button",
-            {
-              class: "button primary material-symbols",
-              id: "btn-refresh",
-              onClick: onRefresh,
-              disabled: loading,
-              title: "Refresh",
-              children: loading ? "Loading..." : "refresh"
-            }
-          )
-        ]
-      }
-    )
+  return /* @__PURE__ */ u3("header", { class: "header", children: [
+    /* @__PURE__ */ u3("div", { class: "logo", children: /* @__PURE__ */ u3("img", { src: rdb_logo_default, alt: "Real-Debrid" }) }),
+    /* @__PURE__ */ u3(HeaderButtons_default, { loading, onRefresh })
   ] });
 }
 
