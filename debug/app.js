@@ -69,13 +69,13 @@ function H() {
   }
 }
 function L(n2, l3, u4, t3, i3, r3, o3, e3, f4, c3, a3) {
-  var s3, h4, p3, v3, y3, _2, g2, m3 = t3 && t3.__k || w, b2 = l3.length;
-  for (f4 = T(u4, l3, m3, f4, b2), s3 = 0; s3 < b2; s3++) null != (p3 = u4.__k[s3]) && (h4 = -1 != p3.__i && m3[p3.__i] || d, p3.__i = s3, _2 = q(n2, p3, h4, i3, r3, o3, e3, f4, c3, a3), v3 = p3.__e, p3.ref && h4.ref != p3.ref && (h4.ref && J(h4.ref, null, p3), a3.push(p3.ref, p3.__c || v3, p3)), null == y3 && null != v3 && (y3 = v3), (g2 = !!(4 & p3.__u)) || h4.__k === p3.__k ? (f4 = j(p3, f4, n2, g2), g2 && h4.__e && (h4.__e = null)) : "function" == typeof p3.type && void 0 !== _2 ? f4 = _2 : v3 && (f4 = v3.nextSibling), p3.__u &= -7);
+  var s3, h3, p3, v3, y3, _2, g2, m3 = t3 && t3.__k || w, b2 = l3.length;
+  for (f4 = T(u4, l3, m3, f4, b2), s3 = 0; s3 < b2; s3++) null != (p3 = u4.__k[s3]) && (h3 = -1 != p3.__i && m3[p3.__i] || d, p3.__i = s3, _2 = q(n2, p3, h3, i3, r3, o3, e3, f4, c3, a3), v3 = p3.__e, p3.ref && h3.ref != p3.ref && (h3.ref && J(h3.ref, null, p3), a3.push(p3.ref, p3.__c || v3, p3)), null == y3 && null != v3 && (y3 = v3), (g2 = !!(4 & p3.__u)) || h3.__k === p3.__k ? (f4 = j(p3, f4, n2, g2), g2 && h3.__e && (h3.__e = null)) : "function" == typeof p3.type && void 0 !== _2 ? f4 = _2 : v3 && (f4 = v3.nextSibling), p3.__u &= -7);
   return u4.__e = y3, f4;
 }
 function T(n2, l3, u4, t3, i3) {
-  var r3, o3, e3, f4, c3, a3 = u4.length, s3 = a3, h4 = 0;
-  for (n2.__k = new Array(i3), r3 = 0; r3 < i3; r3++) null != (o3 = l3[r3]) && "boolean" != typeof o3 && "function" != typeof o3 ? ("string" == typeof o3 || "number" == typeof o3 || "bigint" == typeof o3 || o3.constructor == String ? o3 = n2.__k[r3] = x(null, o3, null, null, null) : g(o3) ? o3 = n2.__k[r3] = x(S, { children: o3 }, null, null, null) : void 0 === o3.constructor && o3.__b > 0 ? o3 = n2.__k[r3] = x(o3.type, o3.props, o3.key, o3.ref ? o3.ref : null, o3.__v) : n2.__k[r3] = o3, f4 = r3 + h4, o3.__ = n2, o3.__b = n2.__b + 1, e3 = null, -1 != (c3 = o3.__i = O(o3, u4, f4, s3)) && (s3--, (e3 = u4[c3]) && (e3.__u |= 2)), null == e3 || null == e3.__v ? (-1 == c3 && (i3 > a3 ? h4-- : i3 < a3 && h4++), "function" != typeof o3.type && (o3.__u |= 4)) : c3 != f4 && (c3 == f4 - 1 ? h4-- : c3 == f4 + 1 ? h4++ : (c3 > f4 ? h4-- : h4++, o3.__u |= 4))) : n2.__k[r3] = null;
+  var r3, o3, e3, f4, c3, a3 = u4.length, s3 = a3, h3 = 0;
+  for (n2.__k = new Array(i3), r3 = 0; r3 < i3; r3++) null != (o3 = l3[r3]) && "boolean" != typeof o3 && "function" != typeof o3 ? ("string" == typeof o3 || "number" == typeof o3 || "bigint" == typeof o3 || o3.constructor == String ? o3 = n2.__k[r3] = x(null, o3, null, null, null) : g(o3) ? o3 = n2.__k[r3] = x(S, { children: o3 }, null, null, null) : void 0 === o3.constructor && o3.__b > 0 ? o3 = n2.__k[r3] = x(o3.type, o3.props, o3.key, o3.ref ? o3.ref : null, o3.__v) : n2.__k[r3] = o3, f4 = r3 + h3, o3.__ = n2, o3.__b = n2.__b + 1, e3 = null, -1 != (c3 = o3.__i = O(o3, u4, f4, s3)) && (s3--, (e3 = u4[c3]) && (e3.__u |= 2)), null == e3 || null == e3.__v ? (-1 == c3 && (i3 > a3 ? h3-- : i3 < a3 && h3++), "function" != typeof o3.type && (o3.__u |= 4)) : c3 != f4 && (c3 == f4 - 1 ? h3-- : c3 == f4 + 1 ? h3++ : (c3 > f4 ? h3-- : h3++, o3.__u |= 4))) : n2.__k[r3] = null;
   if (s3) for (r3 = 0; r3 < a3; r3++) null != (e3 = u4[r3]) && 0 == (2 & e3.__u) && (e3.__e == t3 && (t3 = $(e3)), K(e3, e3));
   return t3;
 }
@@ -131,27 +131,27 @@ function V(n2) {
   };
 }
 function q(n2, u4, t3, i3, r3, o3, e3, f4, c3, a3) {
-  var s3, h4, p3, v3, y3, d3, _2, k3, x2, M, $2, I2, P2, A2, H2, T2 = u4.type;
+  var s3, h3, p3, v3, y3, d3, _2, k3, x2, M, $2, I2, P2, A2, H2, T2 = u4.type;
   if (void 0 !== u4.constructor) return null;
   128 & t3.__u && (c3 = !!(32 & t3.__u), o3 = [f4 = u4.__e = t3.__e]), (s3 = l.__b) && s3(u4);
   n: if ("function" == typeof T2) try {
-    if (k3 = u4.props, x2 = T2.prototype && T2.prototype.render, M = (s3 = T2.contextType) && i3[s3.__c], $2 = s3 ? M ? M.props.value : s3.__ : i3, t3.__c ? _2 = (h4 = u4.__c = t3.__c).__ = h4.__E : (x2 ? u4.__c = h4 = new T2(k3, $2) : (u4.__c = h4 = new C(k3, $2), h4.constructor = T2, h4.render = Q), M && M.sub(h4), h4.state || (h4.state = {}), h4.__n = i3, p3 = h4.__d = true, h4.__h = [], h4._sb = []), x2 && null == h4.__s && (h4.__s = h4.state), x2 && null != T2.getDerivedStateFromProps && (h4.__s == h4.state && (h4.__s = m({}, h4.__s)), m(h4.__s, T2.getDerivedStateFromProps(k3, h4.__s))), v3 = h4.props, y3 = h4.state, h4.__v = u4, p3) x2 && null == T2.getDerivedStateFromProps && null != h4.componentWillMount && h4.componentWillMount(), x2 && null != h4.componentDidMount && h4.__h.push(h4.componentDidMount);
+    if (k3 = u4.props, x2 = T2.prototype && T2.prototype.render, M = (s3 = T2.contextType) && i3[s3.__c], $2 = s3 ? M ? M.props.value : s3.__ : i3, t3.__c ? _2 = (h3 = u4.__c = t3.__c).__ = h3.__E : (x2 ? u4.__c = h3 = new T2(k3, $2) : (u4.__c = h3 = new C(k3, $2), h3.constructor = T2, h3.render = Q), M && M.sub(h3), h3.state || (h3.state = {}), h3.__n = i3, p3 = h3.__d = true, h3.__h = [], h3._sb = []), x2 && null == h3.__s && (h3.__s = h3.state), x2 && null != T2.getDerivedStateFromProps && (h3.__s == h3.state && (h3.__s = m({}, h3.__s)), m(h3.__s, T2.getDerivedStateFromProps(k3, h3.__s))), v3 = h3.props, y3 = h3.state, h3.__v = u4, p3) x2 && null == T2.getDerivedStateFromProps && null != h3.componentWillMount && h3.componentWillMount(), x2 && null != h3.componentDidMount && h3.__h.push(h3.componentDidMount);
     else {
-      if (x2 && null == T2.getDerivedStateFromProps && k3 !== v3 && null != h4.componentWillReceiveProps && h4.componentWillReceiveProps(k3, $2), u4.__v == t3.__v || !h4.__e && null != h4.shouldComponentUpdate && false === h4.shouldComponentUpdate(k3, h4.__s, $2)) {
-        u4.__v != t3.__v && (h4.props = k3, h4.state = h4.__s, h4.__d = false), u4.__e = t3.__e, u4.__k = t3.__k, u4.__k.some(function(n3) {
+      if (x2 && null == T2.getDerivedStateFromProps && k3 !== v3 && null != h3.componentWillReceiveProps && h3.componentWillReceiveProps(k3, $2), u4.__v == t3.__v || !h3.__e && null != h3.shouldComponentUpdate && false === h3.shouldComponentUpdate(k3, h3.__s, $2)) {
+        u4.__v != t3.__v && (h3.props = k3, h3.state = h3.__s, h3.__d = false), u4.__e = t3.__e, u4.__k = t3.__k, u4.__k.some(function(n3) {
           n3 && (n3.__ = u4);
-        }), w.push.apply(h4.__h, h4._sb), h4._sb = [], h4.__h.length && e3.push(h4);
+        }), w.push.apply(h3.__h, h3._sb), h3._sb = [], h3.__h.length && e3.push(h3);
         break n;
       }
-      null != h4.componentWillUpdate && h4.componentWillUpdate(k3, h4.__s, $2), x2 && null != h4.componentDidUpdate && h4.__h.push(function() {
-        h4.componentDidUpdate(v3, y3, d3);
+      null != h3.componentWillUpdate && h3.componentWillUpdate(k3, h3.__s, $2), x2 && null != h3.componentDidUpdate && h3.__h.push(function() {
+        h3.componentDidUpdate(v3, y3, d3);
       });
     }
-    if (h4.context = $2, h4.props = k3, h4.__P = n2, h4.__e = false, I2 = l.__r, P2 = 0, x2) h4.state = h4.__s, h4.__d = false, I2 && I2(u4), s3 = h4.render(h4.props, h4.state, h4.context), w.push.apply(h4.__h, h4._sb), h4._sb = [];
+    if (h3.context = $2, h3.props = k3, h3.__P = n2, h3.__e = false, I2 = l.__r, P2 = 0, x2) h3.state = h3.__s, h3.__d = false, I2 && I2(u4), s3 = h3.render(h3.props, h3.state, h3.context), w.push.apply(h3.__h, h3._sb), h3._sb = [];
     else do {
-      h4.__d = false, I2 && I2(u4), s3 = h4.render(h4.props, h4.state, h4.context), h4.state = h4.__s;
-    } while (h4.__d && ++P2 < 25);
-    h4.state = h4.__s, null != h4.getChildContext && (i3 = m(m({}, i3), h4.getChildContext())), x2 && !p3 && null != h4.getSnapshotBeforeUpdate && (d3 = h4.getSnapshotBeforeUpdate(v3, y3)), A2 = null != s3 && s3.type === S && null == s3.key ? E(s3.props.children) : s3, f4 = L(n2, g(A2) ? A2 : [A2], u4, t3, i3, r3, o3, e3, f4, c3, a3), h4.base = u4.__e, u4.__u &= -161, h4.__h.length && e3.push(h4), _2 && (h4.__E = h4.__ = null);
+      h3.__d = false, I2 && I2(u4), s3 = h3.render(h3.props, h3.state, h3.context), h3.state = h3.__s;
+    } while (h3.__d && ++P2 < 25);
+    h3.state = h3.__s, null != h3.getChildContext && (i3 = m(m({}, i3), h3.getChildContext())), x2 && !p3 && null != h3.getSnapshotBeforeUpdate && (d3 = h3.getSnapshotBeforeUpdate(v3, y3)), A2 = null != s3 && s3.type === S && null == s3.key ? E(s3.props.children) : s3, f4 = L(n2, g(A2) ? A2 : [A2], u4, t3, i3, r3, o3, e3, f4, c3, a3), h3.base = u4.__e, u4.__u &= -161, h3.__h.length && e3.push(h3), _2 && (h3.__E = h3.__ = null);
   } catch (n3) {
     if (u4.__v = null, c3 || null != o3) if (n3.then) {
       for (u4.__u |= c3 ? 160 : 128; f4 && 8 == f4.nodeType && f4.nextSibling; ) f4 = f4.nextSibling;
@@ -185,7 +185,7 @@ function E(n2) {
   return "object" != typeof n2 || null == n2 || n2.__b > 0 ? n2 : g(n2) ? n2.map(E) : void 0 !== n2.constructor ? null : m({}, n2);
 }
 function G(u4, t3, i3, r3, o3, e3, f4, c3, a3) {
-  var s3, h4, p3, v3, y3, w3, _2, m3 = i3.props || d, k3 = t3.props, x2 = t3.type;
+  var s3, h3, p3, v3, y3, w3, _2, m3 = i3.props || d, k3 = t3.props, x2 = t3.type;
   if ("svg" == x2 ? o3 = "http://www.w3.org/2000/svg" : "math" == x2 ? o3 = "http://www.w3.org/1998/Math/MathML" : o3 || (o3 = "http://www.w3.org/1999/xhtml"), null != e3) {
     for (s3 = 0; s3 < e3.length; s3++) if ((y3 = e3[s3]) && "setAttribute" in y3 == !!x2 && (x2 ? y3.localName == x2 : 3 == y3.nodeType)) {
       u4 = y3, e3[s3] = null;
@@ -200,8 +200,8 @@ function G(u4, t3, i3, r3, o3, e3, f4, c3, a3) {
   else {
     if (e3 = "textarea" == x2 && null != k3.defaultValue ? null : e3 && n.call(u4.childNodes), !c3 && null != e3) for (m3 = {}, s3 = 0; s3 < u4.attributes.length; s3++) m3[(y3 = u4.attributes[s3]).name] = y3.value;
     for (s3 in m3) y3 = m3[s3], "dangerouslySetInnerHTML" == s3 ? p3 = y3 : "children" == s3 || s3 in k3 || "value" == s3 && "defaultValue" in k3 || "checked" == s3 && "defaultChecked" in k3 || N(u4, s3, null, y3, o3);
-    for (s3 in k3) y3 = k3[s3], "children" == s3 ? v3 = y3 : "dangerouslySetInnerHTML" == s3 ? h4 = y3 : "value" == s3 ? w3 = y3 : "checked" == s3 ? _2 = y3 : c3 && "function" != typeof y3 || m3[s3] === y3 || N(u4, s3, y3, m3[s3], o3);
-    if (h4) c3 || p3 && (h4.__html == p3.__html || h4.__html == u4.innerHTML) || (u4.innerHTML = h4.__html), t3.__k = [];
+    for (s3 in k3) y3 = k3[s3], "children" == s3 ? v3 = y3 : "dangerouslySetInnerHTML" == s3 ? h3 = y3 : "value" == s3 ? w3 = y3 : "checked" == s3 ? _2 = y3 : c3 && "function" != typeof y3 || m3[s3] === y3 || N(u4, s3, y3, m3[s3], o3);
+    if (h3) c3 || p3 && (h3.__html == p3.__html || h3.__html == u4.innerHTML) || (u4.innerHTML = h3.__html), t3.__k = [];
     else if (p3 && (u4.innerHTML = ""), L("template" == t3.type ? u4.content : u4, g(v3) ? v3 : [v3], t3, i3, r3, "foreignObject" == x2 ? "http://www.w3.org/1999/xhtml" : o3, e3, f4, e3 ? e3[0] : i3.__k && $(i3, 0), c3, a3), null != e3) for (s3 = e3.length; s3--; ) b(e3[s3]);
     c3 && "textarea" != x2 || (s3 = "value", "progress" == x2 && null == w3 ? u4.removeAttribute("value") : null != w3 && (w3 !== u4[s3] || "progress" == x2 && !w3 || "option" == x2 && w3 != m3[s3]) && N(u4, s3, w3, m3[s3], o3), s3 = "checked", null != _2 && _2 != u4[s3] && N(u4, s3, _2, m3[s3], o3));
   }
@@ -388,10 +388,7 @@ function D2(n2, t3) {
   return "function" == typeof t3 ? t3(n2) : t3;
 }
 
-// src/UI/preloadAPI.ts
-var preloadAPI = window.preloadAPI;
-
-// src/asset/rdb-logo.svg
+// src/assets/rdb-logo.svg
 var rdb_logo_default = "./rdb-logo-GYKJLNVS.svg";
 
 // node_modules/preact/jsx-runtime/dist/jsxRuntime.module.js
@@ -405,19 +402,132 @@ function u3(e3, t3, n2, o3, i3, u4) {
   return l.vnode && l.vnode(l3), l3;
 }
 
-// src/UI/App.tsx
-var App = () => {
+// src/components/Header.tsx
+function Header({ loading, onRefresh }) {
+  return /* @__PURE__ */ u3("div", { class: "header", children: [
+    /* @__PURE__ */ u3("span", { children: /* @__PURE__ */ u3("img", { src: rdb_logo_default, alt: "Real-Debrid", style: "height: 32px;" }) }),
+    /* @__PURE__ */ u3("button", { id: "btn-refresh", onClick: onRefresh, disabled: loading, children: loading ? "Loading..." : "Refresh" })
+  ] });
+}
+
+// src/components/Pagination.tsx
+function Pagination({
+  currentPage,
+  totalPages,
+  loading,
+  onPrevious,
+  onNext
+}) {
+  return /* @__PURE__ */ u3("div", { class: "pagination", children: [
+    /* @__PURE__ */ u3("button", { onClick: onPrevious, disabled: currentPage === 1 || loading, children: "Previous" }),
+    /* @__PURE__ */ u3("span", { children: [
+      currentPage,
+      " of ",
+      totalPages
+    ] }),
+    /* @__PURE__ */ u3(
+      "button",
+      {
+        onClick: onNext,
+        disabled: currentPage === totalPages || loading,
+        children: "Next"
+      }
+    )
+  ] });
+}
+
+// src/components/TorrentRow.tsx
+function getStatusIcon(status) {
+  if (status === "downloaded") return "check";
+  if (status === "error") return "error";
+  return "sync";
+}
+function TorrentRow({ torrent, onPlay, onDownload }) {
+  return /* @__PURE__ */ u3("div", { class: "torrent-row", children: [
+    /* @__PURE__ */ u3(
+      "div",
+      {
+        style: {
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "pre-wrap"
+        },
+        class: "col-name file-title",
+        children: /* @__PURE__ */ u3("span", { id: "file-title", children: torrent.filename })
+      }
+    ),
+    /* @__PURE__ */ u3("div", { class: "input-group", children: /* @__PURE__ */ u3("div", { class: `material-symbols col-status ${torrent.status}`, children: [
+      getStatusIcon(torrent.status),
+      /* @__PURE__ */ u3("div", { class: "col-progress", children: [
+        torrent.progress,
+        "%"
+      ] })
+    ] }) }),
+    /* @__PURE__ */ u3("div", { class: "col-actions input-group", children: [
+      /* @__PURE__ */ u3(
+        "button",
+        {
+          onClick: () => onPlay(torrent.id),
+          class: "material-symbols button play_circle tertiary",
+          children: "play_arrow"
+        }
+      ),
+      /* @__PURE__ */ u3(
+        "button",
+        {
+          onClick: () => onDownload(torrent.id),
+          class: "material-symbols button",
+          children: "download"
+        }
+      ),
+      /* @__PURE__ */ u3("button", { class: "material-symbols button", children: "more_vert" })
+    ] })
+  ] });
+}
+
+// src/components/TorrentList.tsx
+function TorrentList({
+  torrents,
+  onPlay,
+  onDownload
+}) {
+  return /* @__PURE__ */ u3("div", { class: "torrent-list", children: [
+    /* @__PURE__ */ u3("div", { class: "torrent-row torrent-header", children: [
+      /* @__PURE__ */ u3("div", { class: "col-name", children: "Name" }),
+      /* @__PURE__ */ u3("div", { class: "col-status input-group", children: [
+        /* @__PURE__ */ u3("div", { class: "col-status", children: "Status" }),
+        /* @__PURE__ */ u3("div", { class: "col-progress" })
+      ] }),
+      /* @__PURE__ */ u3("div", { class: "col-actions", children: "Actions" })
+    ] }),
+    torrents.map((torrent) => /* @__PURE__ */ u3(
+      TorrentRow,
+      {
+        torrent,
+        onPlay,
+        onDownload
+      },
+      torrent.id
+    ))
+  ] });
+}
+
+// src/services/preloadAPI.ts
+var preloadAPI = window.preloadAPI;
+
+// src/pages/TorrentsPage.tsx
+var ITEMS_PER_PAGE = 30;
+function TorrentsPage() {
   const [torrents, setTorrents] = d2([]);
   const [currentPage, setCurrentPage] = d2(1);
   const [totalPages, setTotalPages] = d2(1);
   const [loading, setLoading] = d2(false);
-  const itemsPerPage = 30;
   const loadTorrents = async (page) => {
     setLoading(true);
     try {
-      const result = await preloadAPI.getTorrents(page, itemsPerPage);
+      const result = await preloadAPI.getTorrents(page, ITEMS_PER_PAGE);
       setTorrents(result.torrents);
-      setTotalPages(Math.ceil(result.totalCount / itemsPerPage) || 1);
+      setTotalPages(Math.ceil(result.totalCount / ITEMS_PER_PAGE) || 1);
     } catch (error) {
       console.error("Failed to load torrents:", error);
     } finally {
@@ -427,131 +537,71 @@ var App = () => {
   y2(() => {
     loadTorrents(currentPage);
   }, [currentPage]);
+  const getFirstDownloadUrl = async (torrentId) => {
+    const details = await preloadAPI.getTorrentDetails(torrentId);
+    if (!details?.links?.length) {
+      throw new Error("This torrent has no downloadable links.");
+    }
+    const unrestricted = await preloadAPI.unrestrictLink(details.links[0]);
+    if (!unrestricted?.download) {
+      throw new Error(
+        "Failed to get a direct download link from Real-Debrid."
+      );
+    }
+    return unrestricted.download;
+  };
   const handlePlay = async (torrentId) => {
     try {
-      const details = await preloadAPI.getTorrentDetails(torrentId);
-      if (details?.links?.length > 0) {
-        const unrestricted = await preloadAPI.unrestrictLink(
-          details.links[0]
-        );
-        if (unrestricted?.download) {
-          await preloadAPI.playVideo(unrestricted.download);
-        }
-      }
+      const downloadUrl = await getFirstDownloadUrl(torrentId);
+      await preloadAPI.playVideo(downloadUrl);
     } catch (error) {
       alert("Failed to start playback: " + error.message);
     }
   };
   const handleDownload = async (torrentId) => {
     try {
-      const details = await preloadAPI.getTorrentDetails(torrentId);
-      if (details?.links?.length > 0) {
-        const unrestricted = await preloadAPI.unrestrictLink(
-          details.links[0]
-        );
-        if (unrestricted?.download) {
-          await preloadAPI.openExternal(unrestricted.download);
-        }
-      }
+      const downloadUrl = await getFirstDownloadUrl(torrentId);
+      await preloadAPI.openExternal(downloadUrl);
     } catch (error) {
       alert("Failed to start download: " + error.message);
     }
   };
   return /* @__PURE__ */ u3("div", { class: "container", children: [
-    /* @__PURE__ */ u3("div", { class: "header", children: [
-      /* @__PURE__ */ u3("span", { children: /* @__PURE__ */ u3("img", { src: rdb_logo_default, alt: "Real-Debrid", style: "height: 32px;" }) }),
+    /* @__PURE__ */ u3(
+      Header,
+      {
+        loading,
+        onRefresh: () => loadTorrents(currentPage)
+      }
+    ),
+    /* @__PURE__ */ u3("div", { class: "wrapper", children: [
       /* @__PURE__ */ u3(
-        "button",
+        Pagination,
         {
-          id: "btn-refresh",
-          onClick: () => loadTorrents(currentPage),
-          disabled: loading,
-          children: loading ? "Loading..." : "Refresh"
+          currentPage,
+          totalPages,
+          loading,
+          onPrevious: () => setCurrentPage((page) => Math.max(1, page - 1)),
+          onNext: () => setCurrentPage((page) => Math.min(totalPages, page + 1))
+        }
+      ),
+      /* @__PURE__ */ u3(
+        TorrentList,
+        {
+          torrents,
+          onPlay: handlePlay,
+          onDownload: handleDownload
         }
       )
-    ] }),
-    /* @__PURE__ */ u3("div", { class: "wrapper", children: [
-      /* @__PURE__ */ u3("div", { class: "pagination", children: [
-        /* @__PURE__ */ u3(
-          "button",
-          {
-            onClick: () => setCurrentPage((p3) => Math.max(1, p3 - 1)),
-            disabled: currentPage === 1 || loading,
-            children: "Previous"
-          }
-        ),
-        /* @__PURE__ */ u3("span", { children: [
-          currentPage,
-          " of ",
-          totalPages
-        ] }),
-        /* @__PURE__ */ u3(
-          "button",
-          {
-            onClick: () => setCurrentPage((p3) => Math.min(totalPages, p3 + 1)),
-            disabled: currentPage === totalPages || loading,
-            children: "Next"
-          }
-        )
-      ] }),
-      /* @__PURE__ */ u3("div", { class: "torrent-list", children: [
-        /* @__PURE__ */ u3("div", { class: "torrent-row torrent-header", children: [
-          /* @__PURE__ */ u3("div", { class: "col-name", children: "Name" }),
-          /* @__PURE__ */ u3("div", { class: "col-status input-group", children: [
-            /* @__PURE__ */ u3("div", { class: "col-status", children: "Status" }),
-            /* @__PURE__ */ u3("div", { class: "col-progress" })
-          ] }),
-          /* @__PURE__ */ u3("div", { class: "col-actions", children: "Actions" })
-        ] }),
-        torrents.map((torrent) => /* @__PURE__ */ u3("div", { class: "torrent-row", children: [
-          /* @__PURE__ */ u3(
-            "div",
-            {
-              style: {
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "pre-wrap"
-              },
-              class: "col-name file-title",
-              children: /* @__PURE__ */ u3("span", { id: "file-title", children: torrent.filename })
-            }
-          ),
-          /* @__PURE__ */ u3("div", { class: "input-group", children: /* @__PURE__ */ u3(
-            "div",
-            {
-              class: `material-symbols col-status ${torrent.status}`,
-              children: [
-                torrent.status === "downloaded" ? "check" : torrent.status === "error" ? "error" : "sync",
-                /* @__PURE__ */ u3("div", { class: "col-progress", children: [
-                  torrent.progress,
-                  "%"
-                ] })
-              ]
-            }
-          ) }),
-          /* @__PURE__ */ u3("div", { class: "col-actions input-group", children: [
-            /* @__PURE__ */ u3(
-              "button",
-              {
-                onClick: () => handlePlay(torrent.id),
-                class: "material-symbols button play_circle tertiary",
-                children: "play_arrow"
-              }
-            ),
-            /* @__PURE__ */ u3(
-              "button",
-              {
-                onClick: () => handleDownload(torrent.id),
-                class: "material-symbols button",
-                children: "download"
-              }
-            ),
-            /* @__PURE__ */ u3("button", { class: "material-symbols button", children: "more_vert" })
-          ] })
-        ] }, torrent.id))
-      ] })
     ] })
   ] });
-};
+}
+
+// src/app/App.tsx
+function App() {
+  return /* @__PURE__ */ u3(TorrentsPage, {});
+}
+
+// src/app/main.tsx
 R(/* @__PURE__ */ u3(App, {}), document.getElementById("app"));
 //# sourceMappingURL=app.js.map

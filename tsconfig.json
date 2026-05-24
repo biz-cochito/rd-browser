@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "ESNext",
         "module": "ESNext",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
@@ -10,6 +10,14 @@
         "jsx": "react-jsx",
         "jsxImportSource": "preact",
         "noEmit": true,
+        "paths": {
+            "@assets/*": ["./src/assets/*"],
+            "@components/*": ["./src/components/*"],
+            "@pages/*": ["./src/pages/*"],
+            "@services/*": ["./src/services/*"],
+            "@models/*": ["./src/types/*"],
+            "@src/*": ["./src/*"],
+        },
     },
     "include": ["src/**/*", "build/**/*"],
 }

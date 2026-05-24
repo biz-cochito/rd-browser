@@ -353,28 +353,28 @@ var require_main = __commonJS({
 // src/dev-main.ts
 import { app as app2 } from "electron";
 
-// src/Main/main.ts
+// src/main/main.ts
 import { BrowserWindow, app } from "electron";
 import path2 from "node:path";
 import { fileURLToPath } from "node:url";
 
-// src/Main/mainHandlers.ts
+// src/main/mainHandlers.ts
 import { ipcMain } from "electron";
 
-// src/Main/mainAPI.ts
+// src/main/mainAPI.ts
 var import_dotenv = __toESM(require_main(), 1);
 import { shell } from "electron";
 import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
-// src/Main/config.ts
+// src/main/config.ts
 var API_TOKEN_ENV_VAR = "RD_API_TOKEN";
 var BASE_URL = "https://api.real-debrid.com/rest/1.0";
 var POLL_INTERVAL_MS = 2e3;
 var POLL_TIMEOUT_MS = 6e4;
 
-// src/Main/RealDebridClient.ts
+// src/main/RealDebridClient.ts
 var RealDebridClient = class {
   apiToken;
   constructor(apiToken) {
@@ -394,7 +394,9 @@ var RealDebridClient = class {
     });
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Real-Debrid API error: ${response.status} ${response.statusText} - ${errorText}`);
+      throw new Error(
+        `Real-Debrid API error: ${response.status} ${response.statusText} - ${errorText}`
+      );
     }
     if (response.status === 204 || response.headers.get("content-length") === "0") {
       return { data: null, headers: response.headers };
@@ -407,7 +409,10 @@ var RealDebridClient = class {
     }
   }
   async getMediaInfo(id) {
-    const res = await this.request("GET", `/streaming/mediainfos/${id}`);
+    const res = await this.request(
+      "GET",
+      `/streaming/mediainfos/${id}`
+    );
     return res.data;
   }
   async unrestrictLink(link) {
@@ -419,7 +424,10 @@ var RealDebridClient = class {
     return res.data;
   }
   async getStreamLink(id) {
-    const res = await this.request("GET", `/streaming/transcode/${id}`);
+    const res = await this.request(
+      "GET",
+      `/streaming/transcode/${id}`
+    );
     return res.data;
   }
   async addMagnet(magnetLink) {
@@ -432,7 +440,9 @@ var RealDebridClient = class {
   }
   async addTorrentFile(fileBuffer, fileName) {
     const formData = new FormData();
-    const blob = new Blob([fileBuffer], { type: "application/x-bittorrent" });
+    const blob = new Blob([new Uint8Array(fileBuffer)], {
+      type: "application/x-bittorrent"
+    });
     formData.append("file", blob, fileName);
     const res = await this.request("PUT", "/torrents/addTorrent", {
       body: formData
@@ -440,22 +450,32 @@ var RealDebridClient = class {
     return res.data;
   }
   async getTorrentInfo(torrentId) {
-    const res = await this.request("GET", `/torrents/info/${torrentId}`);
+    const res = await this.request(
+      "GET",
+      `/torrents/info/${torrentId}`
+    );
     return res.data;
   }
   async selectFiles(torrentId, files = "all") {
     const params = new URLSearchParams();
     params.append("files", files);
-    const res = await this.request("POST", `/torrents/selectFiles/${torrentId}`, {
-      body: params
-    });
+    const res = await this.request(
+      "POST",
+      `/torrents/selectFiles/${torrentId}`,
+      {
+        body: params
+      }
+    );
     return res.data;
   }
   async listTorrents(page = 1, limit, status) {
     const params = new URLSearchParams({ page: page.toString() });
     if (limit) params.append("limit", limit.toString());
     if (status) params.append("status", status);
-    const res = await this.request("GET", `/torrents?${params.toString()}`);
+    const res = await this.request(
+      "GET",
+      `/torrents?${params.toString()}`
+    );
     return {
       torrents: res.data,
       totalCount: parseInt(res.headers.get("X-Total-Count") || "0")
@@ -463,7 +483,7 @@ var RealDebridClient = class {
   }
 };
 
-// src/Main/services.ts
+// src/main/services.ts
 async function waitForStatus(client, torrentId, expectedStatus) {
   const startTime = Date.now();
   while (Date.now() - startTime < POLL_TIMEOUT_MS) {
@@ -477,18 +497,24 @@ async function waitForStatus(client, torrentId, expectedStatus) {
     }
     await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL_MS));
   }
-  throw new Error(`Timed out waiting for torrent status '${expectedStatus}'.`);
+  throw new Error(
+    `Timed out waiting for torrent status '${expectedStatus}'.`
+  );
 }
 async function resolveTorrentDownloads(client, torrentId, sourceDescription) {
   if (!torrentId) {
-    throw new Error(`Real-Debrid did not return a torrent id for ${sourceDescription}.`);
+    throw new Error(
+      `Real-Debrid did not return a torrent id for ${sourceDescription}.`
+    );
   }
   await waitForStatus(client, torrentId, "waiting_files_selection");
   await client.selectFiles(torrentId, "all");
   const finalInfo = await waitForStatus(client, torrentId, "downloaded");
   const links = finalInfo.links || [];
   if (links.length === 0) {
-    throw new Error("Torrent completed but no downloadable links were returned.");
+    throw new Error(
+      "Torrent completed but no downloadable links were returned."
+    );
   }
   const unrestrictedLinks = await Promise.all(
     links.map((link) => client.unrestrictLink(link))
@@ -504,7 +530,7 @@ async function handleTorrentFile(client, fileBuffer, fileName) {
   return resolveTorrentDownloads(client, result.id, "the .torrent file");
 }
 
-// src/Main/mainAPI.ts
+// src/main/mainAPI.ts
 import_dotenv.default.config();
 var MainAPI = class {
   client = null;
@@ -513,7 +539,9 @@ var MainAPI = class {
     if (apiToken) {
       this.client = new RealDebridClient(apiToken);
     } else {
-      console.warn(`WARNING: ${API_TOKEN_ENV_VAR} is not set in .env file!`);
+      console.warn(
+        `WARNING: ${API_TOKEN_ENV_VAR} is not set in .env file!`
+      );
     }
   }
   validateClient() {
@@ -569,7 +597,7 @@ var MainAPI = class {
 };
 var mainAPI = new MainAPI();
 
-// src/Main/mainHandlers.ts
+// src/main/mainHandlers.ts
 function registerHandlers() {
   ipcMain.handle("getTorrents", async (event, page, limit) => {
     return await mainAPI.getTorrents(page, limit);
@@ -600,7 +628,7 @@ function registerHandlers() {
   });
 }
 
-// src/Main/main.ts
+// src/main/main.ts
 var __filename = fileURLToPath(import.meta.url);
 var __dirname = path2.dirname(__filename);
 function startApplication() {

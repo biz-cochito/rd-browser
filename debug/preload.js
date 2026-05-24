@@ -1,6 +1,6 @@
 "use strict";
 
-// src/UI/preload.ts
+// src/app/preload.ts
 var import_electron = require("electron");
 import_electron.contextBridge.exposeInMainWorld("preloadAPI", {
   getTorrents: (page, limit) => import_electron.ipcRenderer.invoke("getTorrents", page, limit),

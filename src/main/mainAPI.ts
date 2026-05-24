@@ -1,11 +1,11 @@
-import { shell } from 'electron';
-import { spawn } from 'node:child_process';
-import fs from 'node:fs';
-import path from 'node:path';
-import dotenv from 'dotenv';
-import { RealDebridClient } from './RealDebridClient';
-import { handleMagnetLink, handleTorrentFile } from './services';
-import { API_TOKEN_ENV_VAR } from './config';
+import { shell } from "electron";
+import { spawn } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
+import dotenv from "dotenv";
+import { RealDebridClient } from "./RealDebridClient";
+import { handleMagnetLink, handleTorrentFile } from "./services";
+import { API_TOKEN_ENV_VAR } from "./config";
 
 dotenv.config();
 
@@ -17,7 +17,9 @@ export class MainAPI {
         if (apiToken) {
             this.client = new RealDebridClient(apiToken);
         } else {
-            console.warn(`WARNING: ${API_TOKEN_ENV_VAR} is not set in .env file!`);
+            console.warn(
+                `WARNING: ${API_TOKEN_ENV_VAR} is not set in .env file!`,
+            );
         }
     }
 
@@ -27,7 +29,10 @@ export class MainAPI {
     }
 
     // Safe API: Get a list of torrents
-    public async getTorrents(page: number, limit: number): Promise<{ torrents: any[], totalCount: number }> {
+    public async getTorrents(
+        page: number,
+        limit: number,
+    ): Promise<{ torrents: any[]; totalCount: number }> {
         const client = this.validateClient();
         return await client.listTorrents(page, limit);
     }

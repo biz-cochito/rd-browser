@@ -1,7 +1,7 @@
 // Automatically generated file. Do not edit.
 export interface PreloadAPI {
     /** Get a list of torrents */
-    getTorrents(page: number, limit: number): Promise<{ torrents: any[], totalCount: number }>;
+    getTorrents(page: number, limit: number): Promise<{ torrents: any[]; totalCount: number }>;
     /** Get details for a specific torrent */
     getTorrentDetails(torrentId: string): Promise<any>;
     /** Unrestrict a Real-Debrid link */

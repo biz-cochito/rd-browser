@@ -1,5 +1,5 @@
-import { app } from 'electron';
-import { startApplication } from './Main/main';
+import { app } from "electron";
+import { startApplication } from "./main/main";
 
 app.whenReady().then(() => {
     startApplication();
