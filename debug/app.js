@@ -389,7 +389,7 @@ function D2(n2, t3) {
 }
 
 // src/assets/rdb-logo.svg
-var rdb_logo_default = "./rdb-logo-GYKJLNVS.svg";
+var rdb_logo_default = "./rdb-logo-L7VSS6LQ.svg";
 
 // node_modules/preact/jsx-runtime/dist/jsxRuntime.module.js
 var f3 = 0;
@@ -406,7 +406,29 @@ function u3(e3, t3, n2, o3, i3, u4) {
 function Header({ loading, onRefresh }) {
   return /* @__PURE__ */ u3("div", { class: "header", children: [
     /* @__PURE__ */ u3("span", { children: /* @__PURE__ */ u3("img", { src: rdb_logo_default, alt: "Real-Debrid", style: "height: 32px;" }) }),
-    /* @__PURE__ */ u3("button", { id: "btn-refresh", onClick: onRefresh, disabled: loading, children: loading ? "Loading..." : "Refresh" })
+    /* @__PURE__ */ u3(
+      "div",
+      {
+        id: "btn-settings",
+        class: "input-group",
+        style: "display: inline;",
+        children: [
+          /* @__PURE__ */ u3("button", { id: "btn-add", class: "button primary", title: "Add", children: /* @__PURE__ */ u3("i", { class: "icon add_box" }) }),
+          /* @__PURE__ */ u3("button", { class: "tertiary button", title: "Settings", children: /* @__PURE__ */ u3("i", { class: "icon settings" }) }),
+          /* @__PURE__ */ u3(
+            "button",
+            {
+              class: "button primary",
+              id: "btn-refresh",
+              onClick: onRefresh,
+              disabled: loading,
+              title: "Refresh",
+              children: loading ? "Loading..." : /* @__PURE__ */ u3("i", { class: "icon refresh" })
+            }
+          )
+        ]
+      }
+    )
   ] });
 }
 
@@ -456,8 +478,8 @@ function TorrentRow({ torrent, onPlay, onDownload }) {
         children: /* @__PURE__ */ u3("span", { id: "file-title", children: torrent.filename })
       }
     ),
-    /* @__PURE__ */ u3("div", { class: "input-group", children: /* @__PURE__ */ u3("div", { class: `material-symbols col-status ${torrent.status}`, children: [
-      getStatusIcon(torrent.status),
+    /* @__PURE__ */ u3("div", { class: "input-group", children: /* @__PURE__ */ u3("div", { class: `col-status ${torrent.status}`, children: [
+      /* @__PURE__ */ u3("i", { class: `icon ${getStatusIcon(torrent.status)}` }),
       /* @__PURE__ */ u3("div", { class: "col-progress", children: [
         torrent.progress,
         "%"
@@ -468,19 +490,21 @@ function TorrentRow({ torrent, onPlay, onDownload }) {
         "button",
         {
           onClick: () => onPlay(torrent.id),
-          class: "material-symbols button play_circle tertiary",
-          children: "play_arrow"
+          class: "button play_circle tertiary",
+          title: "Play",
+          children: /* @__PURE__ */ u3("i", { class: "icon play_arrow" })
         }
       ),
       /* @__PURE__ */ u3(
         "button",
         {
           onClick: () => onDownload(torrent.id),
-          class: "material-symbols button",
-          children: "download"
+          class: "button",
+          title: "Download",
+          children: /* @__PURE__ */ u3("i", { class: "icon download" })
         }
       ),
-      /* @__PURE__ */ u3("button", { class: "material-symbols button", children: "more_vert" })
+      /* @__PURE__ */ u3("button", { class: "button", title: "More", children: /* @__PURE__ */ u3("i", { class: "icon more_vert" }) })
     ] })
   ] });
 }

@@ -1,7 +1,10 @@
 import { BrowserWindow, app } from 'electron';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import dns from 'node:dns';
 import { registerHandlers } from './mainHandlers';
+
+dns.setDefaultResultOrder('ipv4first');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

@@ -357,6 +357,7 @@ import { app as app2 } from "electron";
 import { BrowserWindow, app } from "electron";
 import path2 from "node:path";
 import { fileURLToPath } from "node:url";
+import dns from "node:dns";
 
 // src/main/mainHandlers.ts
 import { ipcMain } from "electron";
@@ -386,12 +387,32 @@ var RealDebridClient = class {
       Authorization: `Bearer ${this.apiToken}`,
       ...options.headers
     };
-    const response = await fetch(url, {
-      method,
-      headers,
-      body: options.body,
-      ...options
-    });
+    let response = null;
+    let lastError = null;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        response = await fetch(url, {
+          method,
+          headers,
+          body: options.body,
+          ...options
+        });
+        break;
+      } catch (error) {
+        lastError = error;
+        if (error.code === "EAI_AGAIN" || error.code === "ENOTFOUND" || error.code === "ECONNRESET" || error.cause?.code === "EAI_AGAIN") {
+          console.warn(`Network error during fetch (attempt ${attempt}/3):`, error.message);
+          if (attempt < 3) {
+            await new Promise((resolve) => setTimeout(resolve, 1e3 * attempt));
+            continue;
+          }
+        }
+        throw error;
+      }
+    }
+    if (!response) {
+      throw lastError || new Error("Failed to fetch");
+    }
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(
@@ -629,6 +650,7 @@ function registerHandlers() {
 }
 
 // src/main/main.ts
+dns.setDefaultResultOrder("ipv4first");
 var __filename = fileURLToPath(import.meta.url);
 var __dirname = path2.dirname(__filename);
 function startApplication() {

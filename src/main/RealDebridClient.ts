@@ -23,12 +23,36 @@ export class RealDebridClient {
             ...options.headers,
         };
 
-        const response = await fetch(url, {
-            method,
-            headers,
-            body: options.body,
-            ...options,
-        });
+        let response: Response | null = null;
+        let lastError: any = null;
+
+        for (let attempt = 1; attempt <= 3; attempt++) {
+            try {
+                response = await fetch(url, {
+                    method,
+                    headers,
+                    body: options.body,
+                    ...options,
+                });
+                break; // If fetch succeeds, exit the retry loop
+            } catch (error: any) {
+                lastError = error;
+                // Only retry on network errors, not HTTP errors
+                if (error.code === 'EAI_AGAIN' || error.code === 'ENOTFOUND' || error.code === 'ECONNRESET' || error.cause?.code === 'EAI_AGAIN') {
+                    console.warn(`Network error during fetch (attempt ${attempt}/3):`, error.message);
+                    if (attempt < 3) {
+                        // Wait a short time before retrying
+                        await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+                        continue;
+                    }
+                }
+                throw error;
+            }
+        }
+
+        if (!response) {
+            throw lastError || new Error("Failed to fetch");
+        }
 
         if (!response.ok) {
             const errorText = await response.text();
