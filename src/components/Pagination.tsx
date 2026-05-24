@@ -15,7 +15,10 @@ export function Pagination({
 }: PaginationProps) {
     return (
         <div class="pagination">
-            <button onClick={onPrevious} disabled={currentPage === 1 || loading}>
+            <button
+                onClick={onPrevious}
+                disabled={currentPage === 1 || loading}
+            >
                 Previous
             </button>
             <span>

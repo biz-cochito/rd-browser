@@ -410,20 +410,20 @@ function Header({ loading, onRefresh }) {
       "div",
       {
         id: "btn-settings",
-        class: "input-group",
+        class: "input-group material-symbols",
         style: "display: inline;",
         children: [
-          /* @__PURE__ */ u3("button", { id: "btn-add", class: "button primary", title: "Add", children: /* @__PURE__ */ u3("i", { class: "icon add_box" }) }),
-          /* @__PURE__ */ u3("button", { class: "tertiary button", title: "Settings", children: /* @__PURE__ */ u3("i", { class: "icon settings" }) }),
+          /* @__PURE__ */ u3("button", { id: "btn-add", class: "button primary", title: "Add", children: "add_box" }),
+          /* @__PURE__ */ u3("button", { class: "tertiary button", title: "Settings", children: "settings" }),
           /* @__PURE__ */ u3(
             "button",
             {
-              class: "button primary",
+              class: "button primary material-symbols",
               id: "btn-refresh",
               onClick: onRefresh,
               disabled: loading,
               title: "Refresh",
-              children: loading ? "Loading..." : /* @__PURE__ */ u3("i", { class: "icon refresh" })
+              children: loading ? "Loading..." : "refresh"
             }
           )
         ]
@@ -441,7 +441,14 @@ function Pagination({
   onNext
 }) {
   return /* @__PURE__ */ u3("div", { class: "pagination", children: [
-    /* @__PURE__ */ u3("button", { onClick: onPrevious, disabled: currentPage === 1 || loading, children: "Previous" }),
+    /* @__PURE__ */ u3(
+      "button",
+      {
+        onClick: onPrevious,
+        disabled: currentPage === 1 || loading,
+        children: "Previous"
+      }
+    ),
     /* @__PURE__ */ u3("span", { children: [
       currentPage,
       " of ",
@@ -459,11 +466,6 @@ function Pagination({
 }
 
 // src/components/TorrentRow.tsx
-function getStatusIcon(status) {
-  if (status === "downloaded") return "check";
-  if (status === "error") return "error";
-  return "sync";
-}
 function TorrentRow({ torrent, onPlay, onDownload }) {
   return /* @__PURE__ */ u3("div", { class: "torrent-row", children: [
     /* @__PURE__ */ u3(
@@ -478,21 +480,21 @@ function TorrentRow({ torrent, onPlay, onDownload }) {
         children: /* @__PURE__ */ u3("span", { id: "file-title", children: torrent.filename })
       }
     ),
-    /* @__PURE__ */ u3("div", { class: "input-group", children: /* @__PURE__ */ u3("div", { class: `col-status ${torrent.status}`, children: [
-      /* @__PURE__ */ u3("i", { class: `icon ${getStatusIcon(torrent.status)}` }),
+    /* @__PURE__ */ u3("div", { class: "input-group material-symbols", children: /* @__PURE__ */ u3("div", { class: `col-status material-symbols ${torrent.status}`, children: [
+      torrent.status ? "check" : "error",
       /* @__PURE__ */ u3("div", { class: "col-progress", children: [
         torrent.progress,
         "%"
       ] })
     ] }) }),
-    /* @__PURE__ */ u3("div", { class: "col-actions input-group", children: [
+    /* @__PURE__ */ u3("div", { class: "col-actions input-group material-symbols", children: [
       /* @__PURE__ */ u3(
         "button",
         {
           onClick: () => onPlay(torrent.id),
           class: "button play_circle tertiary",
           title: "Play",
-          children: /* @__PURE__ */ u3("i", { class: "icon play_arrow" })
+          children: "play_arrow"
         }
       ),
       /* @__PURE__ */ u3(
@@ -501,10 +503,10 @@ function TorrentRow({ torrent, onPlay, onDownload }) {
           onClick: () => onDownload(torrent.id),
           class: "button",
           title: "Download",
-          children: /* @__PURE__ */ u3("i", { class: "icon download" })
+          children: "download"
         }
       ),
-      /* @__PURE__ */ u3("button", { class: "button", title: "More", children: /* @__PURE__ */ u3("i", { class: "icon more_vert" }) })
+      /* @__PURE__ */ u3("button", { class: "button", title: "More", children: "more_vert" })
     ] })
   ] });
 }
@@ -615,6 +617,16 @@ function TorrentsPage() {
           torrents,
           onPlay: handlePlay,
           onDownload: handleDownload
+        }
+      ),
+      /* @__PURE__ */ u3(
+        Pagination,
+        {
+          currentPage,
+          totalPages,
+          loading,
+          onPrevious: () => setCurrentPage((page) => Math.max(1, page - 1)),
+          onNext: () => setCurrentPage((page) => Math.min(totalPages, page + 1))
         }
       )
     ] })

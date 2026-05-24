@@ -25,30 +25,30 @@ export function TorrentRow({ torrent, onPlay, onDownload }: TorrentRowProps) {
             >
                 <span id="file-title">{torrent.filename}</span>
             </div>
-            <div class="input-group">
-                <div class={`col-status ${torrent.status}`}>
-                    <i class={`icon ${getStatusIcon(torrent.status)}`}></i>
+            <div class="input-group material-symbols">
+                <div class={`col-status material-symbols ${torrent.status}`}>
+                    {torrent.status ? "check" : "error"}
                     <div class="col-progress">{torrent.progress}%</div>
                 </div>
             </div>
 
-            <div class="col-actions input-group">
+            <div class="col-actions input-group material-symbols">
                 <button
                     onClick={() => onPlay(torrent.id)}
                     class="button play_circle tertiary"
                     title="Play"
                 >
-                    <i class="icon play_arrow"></i>
+                    play_arrow
                 </button>
                 <button
                     onClick={() => onDownload(torrent.id)}
                     class="button"
                     title="Download"
                 >
-                    <i class="icon download"></i>
+                    download
                 </button>
                 <button class="button" title="More">
-                    <i class="icon more_vert"></i>
+                    more_vert
                 </button>
             </div>
         </div>

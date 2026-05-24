@@ -13,23 +13,23 @@ export function Header({ loading, onRefresh }: HeaderProps) {
             </span>
             <div
                 id="btn-settings"
-                class="input-group"
+                class="input-group material-symbols"
                 style="display: inline;"
             >
                 <button id="btn-add" class="button primary" title="Add">
-                    <i class="icon add_box"></i>
+                    add_box
                 </button>
                 <button class="tertiary button" title="Settings">
-                    <i class="icon settings"></i>
+                    settings
                 </button>
                 <button
-                    class="button primary"
+                    class="button primary material-symbols"
                     id="btn-refresh"
                     onClick={onRefresh}
                     disabled={loading}
                     title="Refresh"
                 >
-                    {loading ? "Loading..." : <i class="icon refresh"></i>}
+                    {loading ? "Loading..." : "refresh"}
                 </button>
             </div>
         </div>

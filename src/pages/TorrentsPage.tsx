@@ -89,6 +89,17 @@ export function TorrentsPage() {
                     onPlay={handlePlay}
                     onDownload={handleDownload}
                 />
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    loading={loading}
+                    onPrevious={() =>
+                        setCurrentPage((page) => Math.max(1, page - 1))
+                    }
+                    onNext={() =>
+                        setCurrentPage((page) => Math.min(totalPages, page + 1))
+                    }
+                />
             </div>
         </div>
     );
