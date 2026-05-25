@@ -14,20 +14,24 @@
     "generate-api": "tsx build/generator.ts"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.0",
     "dotenv": "^17.4.2",
     "material-symbols": "^0.44.9",
     "mini.css": "^3.0.1",
     "module-alias": "^2.3.4",
     "preact": "^10.29.2",
-    "sqlite3": "^6.0.1"
+    "sqlite3": "^6.0.1",
+    "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
+    "@preact/preset-vite": "^2.10.5",
     "@types/electron": "^1.4.38",
     "@types/node": "^25.9.1",
     "electron": "^42.1.0",
     "esbuild": "^0.28.0",
     "glob": "^13.0.6",
     "tsx": "^4.22.3",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vite": "^8.0.14"
   }
 }

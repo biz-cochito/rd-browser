@@ -13,7 +13,7 @@ export function TorrentList({
     onDownload,
 }: TorrentListProps) {
     return (
-        <div class="torrent-list">
+        <div class="torrent-list w-full">
             <div class="torrent-row torrent-header">
                 <div class="col-name">Name</div>
                 <div class="col-status input-group">

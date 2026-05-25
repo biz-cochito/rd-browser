@@ -1,7 +1,7 @@
-import { Ref } from "preact";
+import { RefObject } from "preact";
 
 interface InputLinksDialogProps {
-  dialogRef: Ref<HTMLDialogElement>;
+  dialogRef: RefObject<HTMLDialogElement>;
 }
 
 function InputLinksDialog({ dialogRef }: InputLinksDialogProps) {
@@ -18,7 +18,7 @@ function InputLinksDialog({ dialogRef }: InputLinksDialogProps) {
           class="button secondary"
           onClick={hideInputLinksDialog}
         >
-          cancel
+          close
         </button>
       </div>
       <textarea id="input-links" class="input"></textarea>

@@ -67,7 +67,7 @@ export function TorrentsPage() {
     };
 
     return (
-        <div class="container">
+        <div class="container w-full p-0">
             <Header
                 loading={loading}
                 onRefresh={() => loadTorrents(currentPage)}

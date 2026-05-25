@@ -8,7 +8,7 @@ interface HeaderProps {
 
 export function Header({ loading, onRefresh }: HeaderProps) {
     return (
-        <header class="header">
+        <header class="header w-full left-0">
             <div class="logo">
                 <img src={logo} alt="Real-Debrid" />
             </div>
