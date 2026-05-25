@@ -22,6 +22,7 @@ export function TorrentList({
                 </div>
                 <div class="col-actions">Actions</div>
             </div>
+
             {torrents.map((torrent) => (
                 <TorrentRow
                     key={torrent.id}

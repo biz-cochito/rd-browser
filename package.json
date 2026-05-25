@@ -13,14 +13,23 @@
     "build-prod": "tsx build/build.ts prod-only",
     "generate-api": "tsx build/generator.ts"
   },
+  "imports": {
+    "#components/*": "./src/components/*.tsx",
+    "#lib/*": "./src/lib/*.ts",
+    "#hooks/*": "./src/hooks/*.ts"
+  },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.0",
+    "clsx": "^2.1.1",
     "dotenv": "^17.4.2",
+    "lucide-react": "^1.16.0",
     "material-symbols": "^0.44.9",
     "mini.css": "^3.0.1",
     "module-alias": "^2.3.4",
     "preact": "^10.29.2",
+    "radix-ui": "^1.4.3",
     "sqlite3": "^6.0.1",
+    "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
