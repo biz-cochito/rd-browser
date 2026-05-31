@@ -167,3 +167,11 @@ div.col-name
   }
 }
 
+dialog.video-player-dialog::backdrop {
+  background-color: rgba(9, 9, 11, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+}
+
+

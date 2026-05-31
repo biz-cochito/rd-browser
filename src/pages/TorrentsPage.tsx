@@ -2,6 +2,7 @@ import { useEffect, useState } from "preact/hooks";
 import { Header } from "@components/Header";
 import { Pagination } from "@components/Pagination";
 import { TorrentList } from "@components/TorrentList";
+import { VideoPlayerModal } from "@components/VideoPlayerModal";
 import { preloadAPI } from "@services/preloadAPI";
 import type { Torrent } from "@models/torrent";
 
@@ -12,6 +13,9 @@ export function TorrentsPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [playbackUrl, setPlaybackUrl] = useState<string>("");
+    const [playbackTitle, setPlaybackTitle] = useState<string>("");
+    const [isPlayerOpen, setIsPlayerOpen] = useState(false);
 
     const loadTorrents = async (page: number) => {
         setLoading(true);
@@ -50,8 +54,13 @@ export function TorrentsPage() {
 
     const handlePlay = async (torrentId: string) => {
         try {
+            const torrent = torrents.find((t) => t.id === torrentId);
+            const title = torrent?.filename || "Video Playback";
+            setPlaybackTitle(title);
+
             const downloadUrl = await getFirstDownloadUrl(torrentId);
-            await preloadAPI.playVideo(downloadUrl);
+            setPlaybackUrl(downloadUrl);
+            setIsPlayerOpen(true);
         } catch (error) {
             alert("Failed to start playback: " + (error as Error).message);
         }
@@ -71,6 +80,12 @@ export function TorrentsPage() {
             <Header
                 loading={loading}
                 onRefresh={() => loadTorrents(currentPage)}
+            />
+            <VideoPlayerModal
+                isOpen={isPlayerOpen}
+                videoUrl={playbackUrl}
+                title={playbackTitle}
+                onClose={() => setIsPlayerOpen(false)}
             />
             <div class="wrapper">
                 <Pagination
