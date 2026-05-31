@@ -59,12 +59,10 @@ export function VideoPlayerModal({
                 width: "90%",
                 maxWidth: "1000px",
                 padding: "0",
-                background: "#0f0f11",
-                border: "1px solid #27272a",
-                borderRadius: "4px",
+                background: "transparent",
+                border: "none",
                 color: "#fafafa",
                 overflow: "hidden",
-                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.8)",
                 outline: "none",
             }}
         >
@@ -82,7 +80,7 @@ export function VideoPlayerModal({
                     onClick={onClose}
                     class="button secondary"
                     style={{
-                        padding: "6px 14px",
+                        padding: "6px 10px",
                         margin: 0,
                         height: "auto",
                         minWidth: "auto",

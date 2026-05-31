@@ -1,4 +1,6 @@
-@import "tailwindcss" source("../");
+@import "tailwindcss";
+@source "../**/*.tsx";
+
 
 @font-face {
     font-family: "Bricolage Grotesque";
@@ -13,6 +15,7 @@
     --universal-padding: 0.35rem;
     --padding-double: calc(2 * var(--universal-padding));
     --universal-border-radius: 4px;
+    --media-border-radius: 0.25rem;
 }
 
 *,
