@@ -21,7 +21,8 @@
       "@pages/*": ["./src/pages/*"],
       "@services/*": ["./src/services/*"],
       "@models/*": ["./src/types/*"],
-      "@src/*": ["./src/*"]
+      "@src/*": ["./src/*"],
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src/**/*", "build/**/*"]
