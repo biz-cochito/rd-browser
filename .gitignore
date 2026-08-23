@@ -43,12 +43,12 @@ wheels/
 Thumbs.db
 
 # --- Editor Specific ---
+.antigravitycli/
 .vscode/
 .idea/
 *.swp
 *.swo
+.zed/
 
 # --- Misc/Test ---
 magnets.txt
-rd-vids.db
-.antigravitycli/

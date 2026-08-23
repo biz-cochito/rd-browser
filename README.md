@@ -1,21 +1,51 @@
-# React + TypeScript + Vite + shadcn/ui
+# RD Browser
 
-This is a template for a new Vite project with React, TypeScript, and shadcn/ui.
+RD Browser is a local web app for browsing and managing Real-Debrid torrents.
 
-## Adding components
+## Requirements
 
-To add components to your app, run the following command:
+- Node.js
+- npm
+- A Real-Debrid API token
 
-```bash
-npx shadcn@latest add button
-```
+## Run Locally
 
-This will place the ui components in the `src/components` directory.
+1. Clone the repository:
 
-## Using components
+   ```bash
+   git clone <repository-url>
+   cd rd-browser
+   ```
 
-To use the components in your app, import them as follows:
+2. Install dependencies:
 
-```tsx
-import { Button } from "@/components/ui/button"
-```
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env` file in the project root:
+
+   ```bash
+   RD_API_TOKEN="your_real_debrid_api_token"
+   ```
+
+4. Start the local development server:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Open the local URL printed by Vite in your browser.
+
+## Scripts
+
+- `npm run dev` - start the local development server
+- `npm run build` - build the app for production
+- `npm run preview` - preview the production build locally
+- `npm run lint` - run ESLint
+- `npm run typecheck` - run TypeScript checks
+
+## Notes
+
+- Keep your `.env` file private. It contains your Real-Debrid API token.
+- `.env` is ignored by git in this project.
