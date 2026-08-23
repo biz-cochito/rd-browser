@@ -1,124 +1,116 @@
-import { useEffect, useRef } from "preact/hooks";
-import { createPlayer } from "@videojs/react";
-import { Video, VideoSkin, videoFeatures } from "@videojs/react/video";
-import "@videojs/react/video/skin.css";
-
-const player = createPlayer({
-    features: videoFeatures,
-});
+import { useState, useRef, useEffect } from "react";
+import {
+    CopyIcon,
+    CheckIcon,
+    ArrowSquareOutIcon,
+    PlayIcon,
+} from "@phosphor-icons/react";
+import { Button } from "@/components/ui/button";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 
 interface VideoPlayerModalProps {
-    isOpen: boolean;
+    open: boolean;
     videoUrl: string;
     title: string;
-    onClose: () => void;
+    onOpenChange: (open: boolean) => void;
 }
 
 export function VideoPlayerModal({
-    isOpen,
+    open,
     videoUrl,
     title,
-    onClose,
+    onOpenChange,
 }: VideoPlayerModalProps) {
-    const dialogRef = useRef<HTMLDialogElement>(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const [copied, setCopied] = useState(false);
+    const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
-        const dialog = dialogRef.current;
-        if (!dialog) return;
-
-        if (isOpen) {
-            dialog.showModal();
-        } else {
-            dialog.close();
+        if (open) {
+            Promise.resolve().then(() => setHasError(false));
         }
-    }, [isOpen]);
+    }, [open, videoUrl]);
 
-    // Handle browser back button or escape key canceling
-    useEffect(() => {
-        const dialog = dialogRef.current;
-        if (!dialog) return;
+    const handleCopyUrl = async () => {
+        if (!videoUrl) return;
+        await navigator.clipboard.writeText(videoUrl);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
 
-        const handleCancel = (e: Event) => {
-            e.preventDefault();
-            onClose();
-        };
-
-        dialog.addEventListener("cancel", handleCancel);
-        return () => {
-            dialog.removeEventListener("cancel", handleCancel);
-        };
-    }, [onClose]);
-
-    if (!isOpen) return null;
+    const handleOpenExternal = () => {
+        if (videoUrl) {
+            window.open(videoUrl, "_blank", "noopener,noreferrer");
+        }
+    };
 
     return (
-        <dialog
-            ref={dialogRef}
-            class="video-player-dialog m-auto"
-            style={{
-                width: "90%",
-                maxWidth: "1000px",
-                padding: "0",
-                background: "transparent",
-                border: "none",
-                color: "#fafafa",
-                overflow: "hidden",
-                outline: "none",
-            }}
-        >
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "8px 10px",
-                    borderBottom: "1px solid #27272a",
-                    background: "transparent",
-                }}
-            >
-                <button
-                    onClick={onClose}
-                    class="button secondary"
-                    style={{
-                        padding: "6px 10px",
-                        margin: 0,
-                        height: "auto",
-                        minWidth: "auto",
-                        background: "transparent",
-                        border: "1px solid #3f3f46",
-                        color: "#d4d4d8",
-                        fontSize: "0.875rem",
-                        transition: "all 0.15s ease",
-                    }}
-                >
-                    Close
-                </button>
-            </div>
-            <div
-                style={{
-                    position: "relative",
-                    width: "100%",
-                    aspectRatio: "16/9",
-                    background: "transparent",
-                }}
-            >
-                <player.Provider>
-                    <player.Container style={{ width: "100%", height: "100%" }}>
-                        <VideoSkin>
-                            <Video
-                                src={videoUrl}
-                                autoPlay
-                                playsInline
-                                style={{
-                                    width: "100%",
-                                    height: "100%",
-                                    objectFit: "contain",
-                                }}
-                            />
-                        </VideoSkin>
-                    </player.Container>
-                </player.Provider>
-            </div>
-        </dialog>
+        <Dialog open={open} onOpenChange={onOpenChange}>
+            <DialogContent className="sm:max-w-4xl p-4 gap-3 bg-card border-border">
+                <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
+                    <DialogTitle className="text-sm font-semibold truncate pr-4 flex items-center gap-2">
+                        <PlayIcon size={18} className="text-primary shrink-0" />
+                        <span className="truncate">{title || "Video Playback"}</span>
+                    </DialogTitle>
+                </DialogHeader>
+
+                {/* Video container */}
+                <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl flex items-center justify-center border border-border/50">
+                    {hasError ? (
+                        <div className="p-6 text-center space-y-3 max-w-md">
+                            <p className="text-xs text-muted-foreground">
+                                Your browser cannot play this video format directly (it may use MKV, AC3 audio, or unsupported codecs).
+                            </p>
+                            <div className="flex items-center justify-center gap-2">
+                                <Button variant="secondary" size="sm" onClick={handleOpenExternal}>
+                                    <ArrowSquareOutIcon size={16} className="mr-1.5" />
+                                    Open Direct Link
+                                </Button>
+                                <Button variant="outline" size="sm" onClick={handleCopyUrl}>
+                                    <CopyIcon size={16} className="mr-1.5" />
+                                    Copy Link for VLC / MPV
+                                </Button>
+                            </div>
+                        </div>
+                    ) : (
+                        <video
+                            ref={videoRef}
+                            src={videoUrl}
+                            controls
+                            autoPlay
+                            playsInline
+                            onError={() => setHasError(true)}
+                            className="w-full h-full object-contain"
+                        />
+                    )}
+                </div>
+
+                {/* Footer Toolbar */}
+                <div className="flex items-center justify-between text-xs text-muted-foreground pt-1">
+                    <span className="truncate max-w-[50%] font-mono text-[11px]">
+                        {videoUrl}
+                    </span>
+                    <div className="flex items-center gap-2 shrink-0">
+                        <Button variant="outline" size="xs" onClick={handleCopyUrl}>
+                            {copied ? (
+                                <CheckIcon size={14} className="text-emerald-500 mr-1" />
+                            ) : (
+                                <CopyIcon size={14} className="mr-1" />
+                            )}
+                            {copied ? "Copied!" : "Copy Stream Link"}
+                        </Button>
+                        <Button variant="secondary" size="xs" onClick={handleOpenExternal}>
+                            <ArrowSquareOutIcon size={14} className="mr-1" />
+                            Open External
+                        </Button>
+                    </div>
+                </div>
+            </DialogContent>
+        </Dialog>
     );
 }

@@ -1,6 +1,7 @@
-export interface Torrent {
-    id: string;
-    filename?: string;
-    status?: string;
-    progress?: number;
-}
+export type {
+    RealDebridTorrent as Torrent,
+    TorrentInfo,
+    RealDebridFile,
+    UnrestrictedLink,
+    TorrentListResult,
+} from "./realDebrid";

@@ -1,11 +1,12 @@
 import { POLL_INTERVAL_MS, POLL_TIMEOUT_MS } from "./config";
 import { RealDebridClient } from "./RealDebridClient";
+import type { TorrentInfo } from "../types/realDebrid";
 
 export async function waitForStatus(
     client: RealDebridClient,
     torrentId: string,
     expectedStatus: string,
-) {
+): Promise<TorrentInfo> {
     const startTime = Date.now();
 
     while (Date.now() - startTime < POLL_TIMEOUT_MS) {
@@ -16,7 +17,7 @@ export async function waitForStatus(
             return info;
         }
 
-        if (["error", "virus", "dead"].includes(status)) {
+        if (status && ["error", "virus", "dead"].includes(status)) {
             throw new Error(`Torrent failed with status '${status}'.`);
         }
 
@@ -30,9 +31,9 @@ export async function waitForStatus(
 
 async function resolveTorrentDownloads(
     client: RealDebridClient,
-    torrentId: string,
+    torrentId: string | undefined,
     sourceDescription: string,
-) {
+): Promise<string[]> {
     if (!torrentId) {
         throw new Error(
             `Real-Debrid did not return a torrent id for ${sourceDescription}.`,
@@ -55,13 +56,19 @@ async function resolveTorrentDownloads(
         links.map((link) => client.unrestrictLink(link)),
     );
 
-    return unrestrictedLinks.map((link) => link.download);
+    return unrestrictedLinks.map((link) => {
+        if (!link.download) {
+            throw new Error("Failed to get a direct download link from Real-Debrid.");
+        }
+
+        return link.download;
+    });
 }
 
 export async function handleMagnetLink(
     client: RealDebridClient,
     magnetLink: string,
-) {
+): Promise<string[]> {
     const result = await client.addMagnet(magnetLink);
     return resolveTorrentDownloads(client, result.id, "the magnet link");
 }
@@ -70,7 +77,7 @@ export async function handleTorrentFile(
     client: RealDebridClient,
     fileBuffer: Buffer,
     fileName: string,
-) {
+): Promise<string[]> {
     const result = await client.addTorrentFile(fileBuffer, fileName);
     return resolveTorrentDownloads(client, result.id, "the .torrent file");
 }

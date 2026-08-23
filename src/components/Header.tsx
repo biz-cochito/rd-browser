@@ -1,18 +1,137 @@
-import logo from "@assets/rdb-logo.svg";
-import HeaderButtons from "./HeaderButtons";
+import {
+    PlusIcon,
+    GearIcon,
+    ArrowsClockwiseIcon,
+    HardDrivesIcon,
+    MagnifyingGlassIcon,
+    SunIcon,
+    MoonIcon,
+} from "@phosphor-icons/react";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { useTheme } from "@/components/theme-provider";
 
 interface HeaderProps {
     loading: boolean;
+    searchQuery: string;
+    onSearchChange: (query: string) => void;
     onRefresh: () => void;
+    onOpenAddModal: () => void;
+    onOpenSettingsModal: () => void;
+    hasApiToken: boolean;
 }
 
-export function Header({ loading, onRefresh }: HeaderProps) {
+export function Header({
+    loading,
+    searchQuery,
+    onSearchChange,
+    onRefresh,
+    onOpenAddModal,
+    onOpenSettingsModal,
+    hasApiToken,
+}: HeaderProps) {
+    const { theme, setTheme } = useTheme();
+
+    const toggleTheme = () => {
+        setTheme(theme === "dark" ? "light" : "dark");
+    };
+
     return (
-        <header class="header w-full left-0">
-            <div class="logo">
-                <img src={logo} alt="Real-Debrid" />
+        <header className="sticky top-0 z-30 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4">
+                {/* Brand Logo & Name */}
+                <div className="flex items-center gap-2.5 font-semibold text-lg tracking-tight">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+                        <HardDrivesIcon size={32} weight="bold" />
+                    </div>
+                    <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent font-bold">
+                        RD Browser
+                    </span>
+                </div>
+
+                {/* Search Bar */}
+                <div className="relative flex-1 max-w-md hidden sm:block">
+                    <MagnifyingGlassIcon
+                        size={18}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                    />
+                    <input
+                        type="text"
+                        placeholder="Search torrents..."
+                        value={searchQuery}
+                        onChange={(e) => onSearchChange(e.target.value)}
+                        className="w-full h-9 pl-9 pr-4 rounded-full border border-input bg-muted/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:bg-background transition-all"
+                    />
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-2">
+                    <Button
+                        variant="default"
+                        size="sm"
+                        onClick={onOpenAddModal}
+                        className="gap-1.5 font-medium shadow-sm"
+                    >
+                        <PlusIcon size={18} weight="bold" />
+                        <span className="hidden xs:inline">Add Links</span>
+                    </Button>
+
+                    <ButtonGroup orientation="horizontal">
+                        <Button
+                            variant="outline"
+                            size="icon-sm"
+                            onClick={onRefresh}
+                            disabled={loading}
+                            title="Refresh list"
+                        >
+                            <ArrowsClockwiseIcon
+                                size={18}
+                                className={loading ? "animate-spin text-primary" : ""}
+                            />
+                        </Button>
+
+                        <Button
+                            variant="outline"
+                            size="icon-sm"
+                            onClick={onOpenSettingsModal}
+                            title="Settings"
+                            className={!hasApiToken ? "border-destructive text-destructive animate-pulse" : ""}
+                        >
+                            <GearIcon size={18} />
+                        </Button>
+
+                        <Button
+                            variant="outline"
+                            size="icon-sm"
+                            onClick={toggleTheme}
+                            title="Toggle theme"
+                        >
+                            {theme === "dark" ? (
+                                <SunIcon size={18} className="text-amber-400" />
+                            ) : (
+                                <MoonIcon size={18} className="text-slate-700" />
+                            )}
+                        </Button>
+                    </ButtonGroup>
+                </div>
             </div>
-            <HeaderButtons loading={loading} onRefresh={onRefresh} />
+
+            {/* Mobile Search Bar */}
+            <div className="px-4 pb-3 sm:hidden">
+                <div className="relative w-full">
+                    <MagnifyingGlassIcon
+                        size={18}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                    />
+                    <input
+                        type="text"
+                        placeholder="Search torrents..."
+                        value={searchQuery}
+                        onChange={(e) => onSearchChange(e.target.value)}
+                        className="w-full h-9 pl-9 pr-4 rounded-full border border-input bg-muted/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:bg-background transition-all"
+                    />
+                </div>
+            </div>
         </header>
     );
 }
