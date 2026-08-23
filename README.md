@@ -13,7 +13,7 @@ RD Browser is a local web app for browsing and managing Real-Debrid torrents.
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/biz-cochito/rd-browser.git
    cd rd-browser
    ```
 
