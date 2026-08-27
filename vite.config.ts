@@ -62,6 +62,8 @@ function apiServerPlugin(): Plugin {
                   args = [p.id]
                 } else if (methodName === "setApiToken") {
                   args = [p.token]
+                } else if (methodName === "testApiToken") {
+                  args = [p.token]
                 } else {
                   args = Object.values(p)
                 }

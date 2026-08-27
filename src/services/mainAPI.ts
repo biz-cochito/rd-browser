@@ -120,6 +120,16 @@ export class MainAPI {
         return true;
     }
 
+    // Test an API token without saving it
+    public async testApiToken(token: string): Promise<{ id: number; username: string; email: string; points: number; type: string; expiration: string }> {
+        const cleanToken = token ? token.trim() : "";
+        if (!cleanToken) {
+            throw new Error("API token is empty.");
+        }
+        const tempClient = new RealDebridClient(cleanToken);
+        return await tempClient.getUserInfo();
+    }
+
     // Get server-configured API token
     public getApiToken(): string | null {
         return process.env[API_TOKEN_ENV_VAR] || null;

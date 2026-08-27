@@ -9,7 +9,7 @@ import {
   XCircleIcon,
   CircleNotchIcon,
   ListChecksIcon,
-  CheckIcon,
+  CheckIcon
 } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import type { Torrent } from "@/types/torrent"
@@ -61,14 +61,44 @@ export function TorrentRow({
 
   return (
     <div className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-border/70 bg-card p-4 transition-all hover:border-primary/40 hover:shadow-md">
-      {/* Left: Name & Metadata */}
+      {/* Left: Status Icon & Metadata */}
       <div className="flex min-w-0 flex-1 items-start gap-3.5">
         <div
-          onClick={() => onShowDetails(torrent.id)}
-          className="mt-0.5 shrink-0 cursor-pointer rounded-xl bg-muted/60 p-2 text-muted-foreground transition-all group-hover:bg-primary/10 group-hover:text-primary shadow-xs"
-          title="View torrent details"
+          onClick={() => isDownloaded ? onPlay(torrent.id) : onShowDetails(torrent.id)}
+          className={`mt-0.5 shrink-0 cursor-pointer rounded-xl p-2 transition-all shadow-xs ${
+            isDownloaded
+              ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20"
+              : isDownloading
+              ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20"
+              : isWaiting
+              ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20"
+              : isError
+              ? "bg-destructive/10 text-destructive hover:bg-destructive/20"
+              : "bg-muted/60 text-muted-foreground hover:bg-primary/10 hover:text-primary"
+          }`}
+          title={
+            isDownloaded
+              ? "Ready (Click to Play)"
+              : isDownloading
+              ? `Downloading (${progress}%)`
+              : isWaiting
+              ? "Select Files"
+              : isError
+              ? torrent.status || "Error"
+              : "View torrent details"
+          }
         >
-          <FolderIcon size={28} />
+          {isDownloaded ? (
+            <CheckCircleIcon size={28} weight="fill" />
+          ) : isDownloading ? (
+            <CircleNotchIcon size={28} className="animate-spin" />
+          ) : isWaiting ? (
+            <ListChecksIcon size={28} />
+          ) : isError ? (
+            <XCircleIcon size={28} weight="fill" />
+          ) : (
+            <FolderIcon size={28} />
+          )}
         </div>
 
         <div className="min-w-0 flex-1 space-y-1.5">
@@ -112,40 +142,8 @@ export function TorrentRow({
         </div>
       </div>
 
-      {/* Right: Status & Actions */}
-      <div className="flex flex-wrap sm:flex-nowrap shrink-0 items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-border/40">
-        <div className="flex items-center">
-          {isDownloaded && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
-              <CheckCircleIcon size={16} weight="fill" />
-              Ready
-            </span>
-          )}
-          {isDownloading && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/20 bg-blue-500/10 px-2.5 py-1 text-xs font-medium text-blue-600 dark:text-blue-400">
-              <CircleNotchIcon size={16} className="animate-spin" />
-              {progress}%
-            </span>
-          )}
-          {isWaiting && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/20 bg-amber-500/10 px-2.5 py-1 text-xs font-medium text-amber-600 dark:text-amber-400">
-              <ListChecksIcon size={16} />
-              Select Files
-            </span>
-          )}
-          {isError && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-destructive/20 bg-destructive/10 px-2.5 py-1 text-xs font-medium text-destructive">
-              <XCircleIcon size={16} weight="fill" />
-              {torrent.status || "Error"}
-            </span>
-          )}
-          {!isDownloaded && !isDownloading && !isWaiting && !isError && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground capitalize">
-              {torrent.status || "Processing"}
-            </span>
-          )}
-        </div>
-
+      {/* Right: Actions */}
+      <div className="flex flex-wrap sm:flex-nowrap shrink-0 items-center justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-border/40">
         {/* Actions Group */}
         <div className="flex items-center gap-2">
           {isDownloaded && (

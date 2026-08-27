@@ -51,7 +51,7 @@ export function VideoPlayerModal({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-4xl p-4 gap-3 bg-card border-border">
+            <DialogContent className="inset-4 top-4 left-4 w-auto max-w-none sm:max-w-none h-[calc(100vh-2rem)] max-h-none translate-x-0 translate-y-0 grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden p-4 gap-3 bg-card border-border">
                 <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
                     <DialogTitle className="text-sm font-semibold truncate pr-4 flex items-center gap-2">
                         <PlayIcon size={18} className="text-primary shrink-0" />
@@ -60,7 +60,7 @@ export function VideoPlayerModal({
                 </DialogHeader>
 
                 {/* Video container */}
-                <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl flex items-center justify-center border border-border/50">
+                <div className="relative min-h-0 w-full h-full bg-black rounded-xl overflow-hidden shadow-2xl flex items-center justify-center border border-border/50">
                     {hasError ? (
                         <div className="p-6 text-center space-y-3 max-w-md">
                             <p className="text-xs text-muted-foreground">
@@ -91,7 +91,7 @@ export function VideoPlayerModal({
                 </div>
 
                 {/* Footer Toolbar */}
-                <div className="flex items-center justify-between text-xs text-muted-foreground pt-1">
+                <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground pt-1">
                     <span className="truncate max-w-[50%] font-mono text-[11px]">
                         {videoUrl}
                     </span>

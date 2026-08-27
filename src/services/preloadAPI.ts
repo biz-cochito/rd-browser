@@ -33,6 +33,8 @@ export interface PreloadAPI {
     getApiToken(): string | null;
     /** Set stored API token */
     setApiToken(token: string): void;
+    /** Test stored or input API token */
+    testApiToken(token: string): Promise<{ id: number; username: string; email: string; points: number; type: string; expiration: string }>;
 }
 
 const TOKEN_STORAGE_KEY = "rd_api_token";
@@ -127,4 +129,5 @@ export const preloadAPI: PreloadAPI = {
             body: JSON.stringify({ token: clean }),
         }).catch((err) => console.warn("Failed to sync API token to server:", err));
     },
+    testApiToken: (token: string): Promise<{ id: number; username: string; email: string; points: number; type: string; expiration: string }> => callApi("testApiToken", { token }),
 };

@@ -41,9 +41,9 @@ export function SettingsDialog({
         setTesting(true);
         setError(null);
         setUserInfo(null);
+        setSuccessMessage(null);
         try {
-            preloadAPI.setApiToken(tokenToTest);
-            const info = await preloadAPI.getUserInfo();
+            const info = await preloadAPI.testApiToken(tokenToTest);
             setUserInfo(info);
             setSuccessMessage(`Connected as ${info.username} (${info.type.toUpperCase()})`);
         } catch (err) {
@@ -56,18 +56,45 @@ export function SettingsDialog({
     useEffect(() => {
         if (!open) return;
 
-        const currentToken = preloadAPI.getApiToken() || "";
-        // Use async microtask to avoid react synchronous set-state-in-effect warning
-        Promise.resolve().then(() => {
-            setApiToken(currentToken);
-            setError(null);
-            setSuccessMessage(null);
-            setUserInfo(null);
+        setTesting(true);
+        setError(null);
+        setSuccessMessage(null);
+        setUserInfo(null);
 
-            if (currentToken) {
-                testToken(currentToken);
-            }
-        });
+        // Fetch current token directly from server to pick up any manual .env changes
+        fetch("/api/getApiToken", { method: "POST" })
+            .then((res) => res.json())
+            .then((data) => {
+                const serverToken = (data.result || "").trim();
+                setApiToken(serverToken);
+                if (serverToken) {
+                    localStorage.setItem("rd_api_token", serverToken);
+                    // Test the token without writing it to server config
+                    preloadAPI.testApiToken(serverToken)
+                        .then((info) => {
+                            setUserInfo(info);
+                            setSuccessMessage(`Connected as ${info.username} (${info.type.toUpperCase()})`);
+                        })
+                        .catch((err) => {
+                            setError(err instanceof Error ? err.message : "Failed to verify API token.");
+                        })
+                        .finally(() => {
+                            setTesting(false);
+                        });
+                } else {
+                    setTesting(false);
+                }
+            })
+            .catch(() => {
+                // Fallback to local storage if API request fails
+                const localToken = preloadAPI.getApiToken() || "";
+                setApiToken(localToken);
+                if (localToken) {
+                    testToken(localToken);
+                } else {
+                    setTesting(false);
+                }
+            });
     }, [open, testToken]);
 
     const handleSave = () => {

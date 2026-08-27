@@ -36,18 +36,21 @@ export function TorrentsPage() {
     const [token, setToken] = useState<string | null>(() => preloadAPI.getApiToken());
 
     useEffect(() => {
-        if (!token) {
-            fetch("/api/getApiToken", { method: "POST" })
-                .then((r) => r.json())
-                .then((data) => {
-                    if (data.result) {
-                        preloadAPI.setApiToken(data.result);
-                        setToken(data.result);
-                    }
-                })
-                .catch(() => {});
-        }
-    }, [token]);
+        // Fetch server token on mount/init to sync with any manual .env changes
+        fetch("/api/getApiToken", { method: "POST" })
+            .then((r) => r.json())
+            .then((data) => {
+                const serverToken = (data.result || "").trim();
+                if (serverToken) {
+                    localStorage.setItem("rd_api_token", serverToken);
+                    setToken(serverToken);
+                } else {
+                    localStorage.removeItem("rd_api_token");
+                    setToken(null);
+                }
+            })
+            .catch(() => {});
+    }, []);
 
     const hasApiToken = Boolean(token);
 
@@ -258,7 +261,10 @@ export function TorrentsPage() {
             <SettingsDialog
                 open={isSettingsModalOpen}
                 onOpenChange={setIsSettingsModalOpen}
-                onSettingsSaved={() => loadTorrents(currentPage)}
+                onSettingsSaved={() => {
+                    setToken(preloadAPI.getApiToken());
+                    loadTorrents(currentPage);
+                }}
             />
 
             <VideoPlayerModal
