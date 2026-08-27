@@ -60,38 +60,38 @@ export function TorrentRow({
   const progress = torrent.progress ?? (isDownloaded ? 100 : 0)
 
   return (
-    <div className="group md:flex-column md:items-flex-start flex flex-col justify-between gap-3 rounded-xl border border-border bg-card p-4 transition-all hover:border-primary/30 hover:shadow-md">
+    <div className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-border/70 bg-card p-4 transition-all hover:border-primary/40 hover:shadow-md">
       {/* Left: Name & Metadata */}
-      <div className="flex min-w-0 flex-1 items-start gap-3">
+      <div className="flex min-w-0 flex-1 items-start gap-3.5">
         <div
           onClick={() => onShowDetails(torrent.id)}
-          className="mt-0.5 shrink-0 cursor-pointer rounded-lg bg-muted p-1.5 text-muted-foreground transition-colors group-hover:bg-primary/10 group-hover:text-primary"
+          className="mt-0.5 shrink-0 cursor-pointer rounded-xl bg-muted/60 p-2 text-muted-foreground transition-all group-hover:bg-primary/10 group-hover:text-primary shadow-xs"
           title="View torrent details"
         >
-          <FolderIcon size={32} />
+          <FolderIcon size={28} />
         </div>
 
-        <div className="min-w-0 flex-1 space-y-1">
+        <div className="min-w-0 flex-1 space-y-1.5">
           <h3
             onClick={() =>
               isDownloaded ? onPlay(torrent.id) : onShowDetails(torrent.id)
             }
-            className="cursor-pointer truncate text-sm font-medium text-foreground transition-colors hover:text-primary"
+            className="cursor-pointer line-clamp-3 text-sm font-medium text-foreground transition-colors hover:text-primary leading-relaxed break-words"
             title={torrent.filename || torrent.id}
           >
             {torrent.filename || "Untitled Torrent"}
           </h3>
 
           <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-            {torrent.bytes ? <span>{formatBytes(torrent.bytes)}</span> : null}
-            {torrent.bytes && torrent.added ? <span>•</span> : null}
+            {torrent.bytes ? <span className="font-medium text-foreground/80">{formatBytes(torrent.bytes)}</span> : null}
+            {torrent.bytes && torrent.added ? <span className="text-muted-foreground/60">•</span> : null}
             {torrent.added ? (
               <span>{new Date(torrent.added).toLocaleDateString()}</span>
             ) : null}
             {torrent.speed ? (
               <>
-                <span>•</span>
-                <span className="font-mono text-blue-500">
+                <span className="text-muted-foreground/60">•</span>
+                <span className="font-mono font-medium text-blue-500">
                   {formatBytes(torrent.speed)}/s
                 </span>
               </>
@@ -112,100 +112,103 @@ export function TorrentRow({
         </div>
       </div>
 
-      {/* Middle: Status Badge */}
-      <div className="flex shrink-0 items-center gap-3">
-        {isDownloaded && (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
-            <CheckCircleIcon size={26} weight="fill" />
-            Ready
-          </span>
-        )}
-        {isDownloading && (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/20 bg-blue-500/10 px-2 py-1 text-xs font-medium text-blue-600 dark:text-blue-400">
-            <CircleNotchIcon size={26} className="animate-spin" />
-            {progress}%
-          </span>
-        )}
-        {isWaiting && (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-1 text-xs font-medium text-amber-600 dark:text-amber-400">
-            <ListChecksIcon size={26} />
-            Select Files
-          </span>
-        )}
-        {isError && (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-destructive/20 bg-destructive/10 px-2 py-1 text-xs font-medium text-destructive">
-            <XCircleIcon size={26} weight="fill" />
-            {torrent.status || "Error"}
-          </span>
-        )}
-        {!isDownloaded && !isDownloading && !isWaiting && !isError && (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-2 py-1 text-xs font-medium text-muted-foreground capitalize">
-            {torrent.status || "Processing"}
-          </span>
-        )}
+      {/* Right: Status & Actions */}
+      <div className="flex flex-wrap sm:flex-nowrap shrink-0 items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-border/40">
+        <div className="flex items-center">
+          {isDownloaded && (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+              <CheckCircleIcon size={16} weight="fill" />
+              Ready
+            </span>
+          )}
+          {isDownloading && (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/20 bg-blue-500/10 px-2.5 py-1 text-xs font-medium text-blue-600 dark:text-blue-400">
+              <CircleNotchIcon size={16} className="animate-spin" />
+              {progress}%
+            </span>
+          )}
+          {isWaiting && (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/20 bg-amber-500/10 px-2.5 py-1 text-xs font-medium text-amber-600 dark:text-amber-400">
+              <ListChecksIcon size={16} />
+              Select Files
+            </span>
+          )}
+          {isError && (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-destructive/20 bg-destructive/10 px-2.5 py-1 text-xs font-medium text-destructive">
+              <XCircleIcon size={16} weight="fill" />
+              {torrent.status || "Error"}
+            </span>
+          )}
+          {!isDownloaded && !isDownloading && !isWaiting && !isError && (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground capitalize">
+              {torrent.status || "Processing"}
+            </span>
+          )}
+        </div>
 
-        {/* Right: Actions */}
-        <div className="flex gap-2">
+        {/* Actions Group */}
+        <div className="flex items-center gap-2">
           {isDownloaded && (
             <Button
-              variant="secondary"
-              size="xs"
+              variant="default"
+              size="sm"
               onClick={() => onPlay(torrent.id)}
-              className="h-8 gap-1 border border-emerald-500/20 bg-emerald-500/10 px-2 py-0 font-medium text-emerald-600 dark:text-emerald-400"
+              className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs font-medium"
               title="Play Video"
             >
-              <PlayIcon size={14} weight="bold" />
-              <span className="hidden p-0 sm:inline">Play</span>
+              <PlayIcon size={15} weight="fill" />
+              <span>Play</span>
             </Button>
           )}
 
-          <ButtonGroup className="gap-0 py-0">
+          <ButtonGroup className="shadow-xs bg-secondary/50 rounded-lg p-0.5 border border-border/60">
             <Button
               variant="ghost"
-              size="icon-md"
+              size="sm"
               onClick={() => onShowDetails(torrent.id)}
               title="View Files / Details"
-              className="rounded-full border-ring bg-secondary px-2"
+              className="h-8 px-2.5 text-muted-foreground hover:text-foreground hover:bg-background/80 rounded-md"
             >
-              <FolderIcon size={24} />
+              <FolderIcon size={16} />
+              <span className="text-xs hidden md:inline">Files</span>
             </Button>
 
             {isDownloaded && (
               <Button
                 variant="ghost"
-                size="icon-md"
+                size="sm"
                 onClick={() => onDownload(torrent.id)}
                 title="Download File"
-                className="rounded-full border-ring bg-secondary px-2"
+                className="h-8 px-2.5 text-muted-foreground hover:text-foreground hover:bg-background/80 rounded-md"
               >
-                <DownloadSimpleIcon size={24} />
+                <DownloadSimpleIcon size={16} />
               </Button>
             )}
 
             {isDownloaded && (
               <Button
                 variant="ghost"
-                size="icon-md"
+                size="sm"
                 onClick={handleCopy}
                 title="Copy Download Link"
-                className="rounded-full border-ring bg-secondary px-2"
+                className="h-8 px-2.5 text-muted-foreground hover:text-foreground hover:bg-background/80 rounded-md"
               >
                 {copied ? (
-                  <CheckIcon size={24} className="text-emerald-500" />
+                  <CheckIcon size={16} className="text-emerald-500" />
                 ) : (
-                  <CopyIcon size={24} />
+                  <CopyIcon size={16} />
                 )}
               </Button>
             )}
 
             <Button
               variant="ghost"
-              size="icon-md"
+              size="sm"
               onClick={() => onDelete(torrent.id)}
-              className="rounded-full border-ring bg-secondary px-2 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+              className="h-8 px-2.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded-md"
               title="Delete Torrent"
             >
-              <TrashIcon size={24} />
+              <TrashIcon size={16} />
             </Button>
           </ButtonGroup>
         </div>

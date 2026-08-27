@@ -119,6 +119,39 @@ export class MainAPI {
         assertHttpUrl(url);
         return true;
     }
+
+    // Get server-configured API token
+    public getApiToken(): string | null {
+        return process.env[API_TOKEN_ENV_VAR] || null;
+    }
+
+    // Save server API token to .env and memory
+    public setApiToken(token: string): { success: boolean } {
+        const cleanToken = token ? token.trim() : "";
+        const envPath = path.resolve(process.cwd(), ".env");
+        let content = "";
+        if (fs.existsSync(envPath)) {
+            content = fs.readFileSync(envPath, "utf-8");
+        }
+        if (content.includes(`${API_TOKEN_ENV_VAR}=`)) {
+            content = content.replace(
+                new RegExp(`${API_TOKEN_ENV_VAR}=.*`),
+                `${API_TOKEN_ENV_VAR}=${cleanToken}`,
+            );
+        } else {
+            content += `\n${API_TOKEN_ENV_VAR}=${cleanToken}\n`;
+        }
+        fs.writeFileSync(envPath, content.trim() + "\n");
+        process.env[API_TOKEN_ENV_VAR] = cleanToken;
+
+        if (cleanToken) {
+            this.client = new RealDebridClient(cleanToken);
+        } else {
+            this.client = null;
+        }
+
+        return { success: true };
+    }
 }
 
 export const mainAPI = new MainAPI();

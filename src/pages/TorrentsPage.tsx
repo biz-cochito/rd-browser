@@ -33,7 +33,23 @@ export function TorrentsPage() {
     const [playbackTitle, setPlaybackTitle] = useState<string>("");
     const [notification, setNotification] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
-    const hasApiToken = Boolean(preloadAPI.getApiToken());
+    const [token, setToken] = useState<string | null>(() => preloadAPI.getApiToken());
+
+    useEffect(() => {
+        if (!token) {
+            fetch("/api/getApiToken", { method: "POST" })
+                .then((r) => r.json())
+                .then((data) => {
+                    if (data.result) {
+                        preloadAPI.setApiToken(data.result);
+                        setToken(data.result);
+                    }
+                })
+                .catch(() => {});
+        }
+    }, [token]);
+
+    const hasApiToken = Boolean(token);
 
     const showToast = (message: string, type: "success" | "error" = "success") => {
         setNotification({ type, message });

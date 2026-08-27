@@ -13,6 +13,29 @@ export interface RDResponse<T> {
     headers: Headers;
 }
 
+const DEFAULT_CLIENT_ID = "X245A4XAIBGVM";
+
+export interface DeviceCodeResponse {
+    device_code: string;
+    user_code: string;
+    interval: number;
+    expires_in: number;
+    verification_url: string;
+    direct_verification_url?: string;
+}
+
+export interface DeviceCredentialsResponse {
+    client_id: string;
+    client_secret: string;
+}
+
+export interface TokenResponse {
+    access_token: string;
+    expires_in: number;
+    refresh_token: string;
+    token_type: string;
+}
+
 export class RealDebridClient {
     private apiToken: string;
 
@@ -33,7 +56,8 @@ export class RealDebridClient {
         path: string,
         options: RequestInit = {},
     ): Promise<RDResponse<T>> {
-        const url = `${BASE_URL}${path}`;
+        const delimiter = path.includes("?") ? "&" : "?";
+        const url = `${BASE_URL}${path}${delimiter}auth_token=${encodeURIComponent(this.apiToken)}`;
         const headers = {
             Authorization: `Bearer ${this.apiToken}`,
             ...options.headers,
@@ -210,5 +234,55 @@ export class RealDebridClient {
     async getUserInfo(): Promise<{ id: number; username: string; email: string; points: number; type: string; expiration: string }> {
         const res = await this.request<{ id: number; username: string; email: string; points: number; type: string; expiration: string }>("GET", "/user");
         return res.data;
+    }
+
+    static async getDeviceCode(clientId = DEFAULT_CLIENT_ID): Promise<DeviceCodeResponse> {
+        const url = `${BASE_URL}/oauth/v2/device/code?client_id=${clientId}&new_credentials=yes`;
+        const res = await fetch(url);
+        if (!res.ok) {
+            throw new Error(`Failed to get device code: ${res.statusText}`);
+        }
+        return (await res.json()) as DeviceCodeResponse;
+    }
+
+    static async pollDeviceCredentials(
+        deviceCode: string,
+        clientId = DEFAULT_CLIENT_ID,
+    ): Promise<DeviceCredentialsResponse | null> {
+        const url = `${BASE_URL}/oauth/v2/device/credentials?client_id=${clientId}&code=${deviceCode}`;
+        const res = await fetch(url);
+        if (res.status === 404 || res.status === 400) {
+            return null;
+        }
+        if (!res.ok) {
+            throw new Error(`Error polling device credentials: ${res.statusText}`);
+        }
+        return (await res.json()) as DeviceCredentialsResponse;
+    }
+
+    static async getTokenFromCredentials(
+        clientId: string,
+        clientSecret: string,
+        deviceCode: string,
+    ): Promise<TokenResponse> {
+        const params = new URLSearchParams();
+        params.append("client_id", clientId);
+        params.append("client_secret", clientSecret);
+        params.append("code", deviceCode);
+        params.append("grant_type", "http://oauth.net/grant_type/device/1.0");
+
+        const res = await fetch(`${BASE_URL}/oauth/v2/token`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: params,
+        });
+
+        if (!res.ok) {
+            throw new Error(`Failed to exchange token: ${res.statusText}`);
+        }
+
+        return (await res.json()) as TokenResponse;
     }
 }

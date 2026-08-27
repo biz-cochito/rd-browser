@@ -5,8 +5,6 @@ import type {
     TorrentListResult,
     UnrestrictedLink,
 } from "../types/realDebrid";
-import { RealDebridClient } from "./RealDebridClient";
-import { handleMagnetLink } from "./services";
 
 export interface PreloadAPI {
     /** Get a list of torrents */
@@ -39,46 +37,46 @@ export interface PreloadAPI {
 
 const TOKEN_STORAGE_KEY = "rd_api_token";
 
-let clientInstance: RealDebridClient | null = null;
+let serverTokenPromise: Promise<string | null> | null = null;
 
-function getClient(): RealDebridClient | null {
-    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
-    if (!token) return null;
-    if (!clientInstance || clientInstance.getToken() !== token) {
-        clientInstance = new RealDebridClient(token);
+async function fetchServerToken(): Promise<string | null> {
+    if (serverTokenPromise) return serverTokenPromise;
+    serverTokenPromise = (async () => {
+        try {
+            const res = await fetch("/api/getApiToken", { method: "POST" });
+            if (res.ok) {
+                const data = await res.json();
+                if (data.result) {
+                    const token = String(data.result).trim();
+                    if (token) {
+                        localStorage.setItem(TOKEN_STORAGE_KEY, token);
+                        return token;
+                    }
+                }
+            }
+        } catch (e) {
+            console.warn("Could not fetch token from server:", e);
+        }
+        return null;
+    })();
+    return serverTokenPromise;
+}
+
+function initTokenFromUrl(): string | null {
+    if (typeof window === "undefined") return null;
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token") || params.get("api_token") || params.get("rd_token");
+    if (token && token.trim()) {
+        const cleanToken = token.trim();
+        localStorage.setItem(TOKEN_STORAGE_KEY, cleanToken);
+        const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+        window.history.replaceState({ path: cleanUrl }, "", cleanUrl);
+        return cleanToken;
     }
-    return clientInstance;
+    return null;
 }
 
 async function callApi<T>(method: string, params: Record<string, unknown>): Promise<T> {
-    const client = getClient();
-    if (client) {
-        // Direct client execution in browser if token is configured
-        switch (method) {
-            case "getTorrents":
-                return (await client.listTorrents(params.page as number, params.limit as number)) as T;
-            case "getTorrentDetails":
-                return (await client.getTorrentInfo(params.torrentId as string)) as T;
-            case "unrestrictLink":
-                return (await client.unrestrictLink(params.link as string)) as T;
-            case "addMagnet":
-                return (await handleMagnetLink(client, params.magnet as string)) as T;
-            case "deleteTorrent":
-                return (await client.deleteTorrent(params.torrentId as string)) as T;
-            case "selectFiles":
-                return (await client.selectFiles(params.torrentId as string, (params.files as string) || "all")) as T;
-            case "getStreamLink":
-                return (await client.getStreamLink(params.id as string)) as T;
-            case "getMediaInfo":
-                return (await client.getMediaInfo(params.id as string)) as T;
-            case "getUserInfo":
-                return (await client.getUserInfo()) as T;
-            default:
-                break;
-        }
-    }
-
-    // Fallback to backend /api server endpoint if available
     const response = await fetch(`/api/${method}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -111,14 +109,22 @@ export const preloadAPI: PreloadAPI = {
         return true;
     },
     getApiToken: (): string | null => {
-        return localStorage.getItem(TOKEN_STORAGE_KEY);
+        const local = localStorage.getItem(TOKEN_STORAGE_KEY) || initTokenFromUrl();
+        if (!local) {
+            // Trigger background fetch from server if local storage is empty
+            fetchServerToken();
+        }
+        return local;
     },
     setApiToken: (token: string): void => {
-        localStorage.setItem(TOKEN_STORAGE_KEY, token.trim());
-        if (token.trim()) {
-            clientInstance = new RealDebridClient(token.trim());
-        } else {
-            clientInstance = null;
-        }
+        const clean = token.trim();
+        localStorage.setItem(TOKEN_STORAGE_KEY, clean);
+
+        // Sync token with backend server for all LAN devices
+        fetch("/api/setApiToken", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token: clean }),
+        }).catch((err) => console.warn("Failed to sync API token to server:", err));
     },
 };
