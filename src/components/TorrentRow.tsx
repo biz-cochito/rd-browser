@@ -9,7 +9,8 @@ import {
   XCircleIcon,
   CircleNotchIcon,
   ListChecksIcon,
-  CheckIcon
+  CheckIcon,
+  BookmarkIcon
 } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import type { Torrent } from "@/types/torrent"
@@ -17,6 +18,8 @@ import { ButtonGroup } from "./ui/button-group"
 
 interface TorrentRowProps {
   torrent: Torrent
+  isBookmarked?: boolean
+  onToggleBookmark?: (torrent: Torrent) => void
   onPlay: (torrentId: string) => void
   onShowDetails: (torrentId: string) => void
   onDownload: (torrentId: string) => void
@@ -34,6 +37,8 @@ function formatBytes(bytes?: number): string {
 
 export function TorrentRow({
   torrent,
+  isBookmarked = false,
+  onToggleBookmark,
   onPlay,
   onShowDetails,
   onDownload,
@@ -160,6 +165,22 @@ export function TorrentRow({
           )}
 
           <ButtonGroup className="shadow-xs bg-secondary/50 rounded-lg p-0.5 border border-border/60">
+            {onToggleBookmark && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onToggleBookmark(torrent)}
+                title={isBookmarked ? "Remove Bookmark" : "Bookmark Torrent"}
+                className={`h-8 px-2.5 rounded-md transition-colors ${
+                  isBookmarked
+                    ? "text-amber-500 hover:text-amber-600 bg-amber-500/10"
+                    : "text-muted-foreground hover:text-foreground hover:bg-background/80"
+                }`}
+              >
+                <BookmarkIcon size={16} weight={isBookmarked ? "fill" : "regular"} />
+              </Button>
+            )}
+
             <Button
               variant="ghost"
               size="sm"

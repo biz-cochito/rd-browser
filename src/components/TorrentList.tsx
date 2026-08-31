@@ -7,24 +7,30 @@ interface TorrentListProps {
     torrents: Torrent[];
     loading: boolean;
     searchQuery: string;
+    bookmarkedIds?: Set<string>;
+    onToggleBookmark?: (torrent: Torrent) => void;
     onPlay: (torrentId: string) => void;
     onShowDetails: (torrentId: string) => void;
     onDownload: (torrentId: string) => void;
     onDelete: (torrentId: string) => void;
     onCopyLink: (torrentId: string) => void;
     onOpenAddModal: () => void;
+    emptyMessage?: string;
 }
 
 export function TorrentList({
     torrents,
     loading,
     searchQuery,
+    bookmarkedIds,
+    onToggleBookmark,
     onPlay,
     onShowDetails,
     onDownload,
     onDelete,
     onCopyLink,
     onOpenAddModal,
+    emptyMessage,
 }: TorrentListProps) {
     if (loading && torrents.length === 0) {
         return (
@@ -52,12 +58,12 @@ export function TorrentList({
                     <p className="text-xs text-muted-foreground max-w-sm">
                         {searchQuery
                             ? `No torrents match "${searchQuery}". Try a different keyword.`
-                            : "Your Real-Debrid torrents list is empty. Add a magnet link to get started!"}
+                            : emptyMessage || "Your Real-Debrid torrents list is empty. Add a magnet link to get started!"}
                     </p>
                 </div>
                 {!searchQuery && (
                     <Button onClick={onOpenAddModal} size="sm" className="mt-2">
-                        <PlusIcon size={16} className="mr-1.5" weight="bold" />
+                        <PlusIcon size={24} className="mr-1.5" weight="bold" />
                         Add Magnet Links
                     </Button>
                 )}
@@ -78,6 +84,8 @@ export function TorrentList({
                     <TorrentRow
                         key={torrent.id}
                         torrent={torrent}
+                        isBookmarked={bookmarkedIds?.has(torrent.id)}
+                        onToggleBookmark={onToggleBookmark}
                         onPlay={onPlay}
                         onShowDetails={onShowDetails}
                         onDownload={onDownload}

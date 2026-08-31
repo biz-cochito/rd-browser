@@ -164,7 +164,7 @@ export function TorrentDetailsModal({
                                                 className="flex items-center justify-between gap-3 p-3 hover:bg-muted/30 transition-colors"
                                             >
                                                 <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                                                    <FileVideoIcon size={18} className="text-muted-foreground shrink-0" />
+                                                    <FileVideoIcon size={24} className="text-muted-foreground shrink-0" />
                                                     <div className="min-w-0 flex-1">
                                                         <p className="font-medium truncate">{name}</p>
                                                         {size && (
@@ -181,7 +181,7 @@ export function TorrentDetailsModal({
                                                         disabled={isUnrestricting}
                                                         title="Stream Video"
                                                     >
-                                                        <PlayIcon size={14} className="mr-1" /> Stream
+                                                        <PlayIcon size={24} className="mr-1" /> Stream
                                                     </Button>
                                                     <Button
                                                         variant="ghost"
@@ -190,7 +190,7 @@ export function TorrentDetailsModal({
                                                         disabled={isUnrestricting}
                                                         title="Download File"
                                                     >
-                                                        <DownloadSimpleIcon size={14} />
+                                                        <DownloadSimpleIcon size={24} />
                                                     </Button>
                                                     <Button
                                                         variant="ghost"
@@ -200,9 +200,9 @@ export function TorrentDetailsModal({
                                                         title="Copy Link"
                                                     >
                                                         {copiedIndex === idx ? (
-                                                            <CheckIcon size={14} className="text-emerald-500" />
+                                                            <CheckIcon size={24} className="text-emerald-500" />
                                                         ) : (
-                                                            <CopyIcon size={14} />
+                                                            <CopyIcon size={24} />
                                                         )}
                                                     </Button>
                                                 </div>

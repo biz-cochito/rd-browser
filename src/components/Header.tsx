@@ -6,6 +6,8 @@ import {
     MagnifyingGlassIcon,
     SunIcon,
     MoonIcon,
+    BookmarkIcon,
+    ListDashesIcon,
 } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -14,6 +16,9 @@ import { useTheme } from "@/components/theme-provider";
 interface HeaderProps {
     loading: boolean;
     searchQuery: string;
+    activeTab?: "torrents" | "bookmarks";
+    bookmarkCount?: number;
+    onTabChange?: (tab: "torrents" | "bookmarks") => void;
     onSearchChange: (query: string) => void;
     onRefresh: () => void;
     onOpenAddModal: () => void;
@@ -24,6 +29,9 @@ interface HeaderProps {
 export function Header({
     loading,
     searchQuery,
+    activeTab = "torrents",
+    bookmarkCount = 0,
+    onTabChange,
     onSearchChange,
     onRefresh,
     onOpenAddModal,
@@ -40,13 +48,50 @@ export function Header({
         <header className="sticky top-0 z-30 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4">
                 {/* Brand Logo & Name */}
-                <div className="flex items-center gap-2.5 font-semibold text-lg tracking-tight">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-                        <HardDrivesIcon size={32} weight="bold" />
+                <div className="flex items-center gap-3 font-semibold text-lg tracking-tight">
+                    <div className="flex items-center gap-2.5">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+                            <HardDrivesIcon size={32} weight="bold" />
+                        </div>
+                        <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent font-bold hidden xs:inline">
+                            RD Browser
+                        </span>
                     </div>
-                    <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent font-bold">
-                        RD Browser
-                    </span>
+
+                    {/* Navigation Tabs */}
+                    {onTabChange && (
+                        <nav className="flex items-center gap-1 bg-muted/60 p-1 rounded-xl border border-border/50 ml-2">
+                            <button
+                                type="button"
+                                onClick={() => onTabChange("torrents")}
+                                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
+                                    activeTab === "torrents"
+                                        ? "bg-background text-foreground shadow-xs"
+                                        : "text-muted-foreground hover:text-foreground"
+                                }`}
+                            >
+                                <ListDashesIcon size={16} />
+                                <span>Torrents</span>
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => onTabChange("bookmarks")}
+                                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all relative ${
+                                    activeTab === "bookmarks"
+                                        ? "bg-background text-foreground shadow-xs"
+                                        : "text-muted-foreground hover:text-foreground"
+                                }`}
+                            >
+                                <BookmarkIcon size={16} weight={bookmarkCount > 0 ? "fill" : "regular"} className={bookmarkCount > 0 ? "text-amber-500" : ""} />
+                                <span>Bookmarks</span>
+                                {bookmarkCount > 0 && (
+                                    <span className="ml-0.5 px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 text-[10px] font-bold">
+                                        {bookmarkCount}
+                                    </span>
+                                )}
+                            </button>
+                        </nav>
+                    )}
                 </div>
 
                 {/* Search Bar */}
