@@ -66,9 +66,12 @@ export function TorrentRow({
     <div className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-border/80 bg-card p-4 transition-all duration-200 hover:border-zinc-700 hover:shadow-2xs">
       {/* Left: Status Icon & Metadata */}
       <div className="flex min-w-0 flex-1 items-start gap-3.5">
-        <div
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
           onClick={() => onShowDetails(torrent.id)}
-          className={`mt-0.5 shrink-0 cursor-pointer rounded-xl p-1 transition-all shadow-2xs ${
+          className={`mt-0.5 shrink-0 rounded-xl p-1 transition-all shadow-2xs ${
             isDownloaded
               ? "bg-emerald-950/40 text-emerald-300 border border-emerald-800/40 hover:bg-emerald-900/40"
               : isDownloading
@@ -102,16 +105,19 @@ export function TorrentRow({
           ) : (
             <FolderIcon size={32} />
           )}
-        </div>
+        </Button>
 
         <div className="min-w-0 flex-1 space-y-1">
-          <h3
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
             onClick={() => onShowDetails(torrent.id)}
-            className="cursor-pointer line-clamp-2 text-sm font-medium text-foreground transition-colors hover:text-zinc-300 leading-snug break-words"
+            className="h-auto w-full justify-start px-0 text-left text-sm font-medium text-foreground whitespace-normal transition-colors hover:text-zinc-300 leading-snug break-words"
             title={torrent.filename || torrent.id}
           >
             {torrent.filename || "Untitled Torrent"}
-          </h3>
+          </Button>
 
           <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
             {torrent.bytes ? <span className="font-medium text-foreground/80">{formatBytes(torrent.bytes)}</span> : null}
@@ -151,11 +157,11 @@ export function TorrentRow({
             variant="secondary"
             size="sm"
             onClick={() => onShowDetails(torrent.id)}
-            className="gap-2 font-medium bg-zinc-800/80 hover:bg-zinc-700/80 text-zinc-200 border border-zinc-700/80 hover:border-zinc-600 transition-colors rounded-lg"
+            className="gap-2 px-2.5 h-8 font-medium bg-zinc-900/60 hover:bg-zinc-700/80 text-zinc-200 border border-zinc-700/80 hover:border-zinc-600 transition-colors rounded-lg"
             title="View Files & Details"
           >
             <FolderIcon size={16} className="text-zinc-400" />
-            <span>View Files</span>
+            <span>Files</span>
           </Button>
 
           {/* Auxiliary Actions Group */}

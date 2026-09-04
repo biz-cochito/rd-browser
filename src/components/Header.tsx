@@ -9,6 +9,7 @@ import {
     ListDashesIcon,
 } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { useTheme } from "@/components/theme-provider";
 import { AppIcon } from "@/components/AppIcon";
@@ -59,9 +60,11 @@ export function Header({
                     {/* Navigation Tabs */}
                     {onTabChange && (
                         <nav className="flex items-center gap-1 bg-muted/60 p-1 rounded-xl border border-border/60 ml-2">
-                            <button
-                                type="button"
+                            <Button
+                                variant="ghost"
+                                size="sm"
                                 onClick={() => onTabChange("torrents")}
+                                aria-current={activeTab === "torrents" ? "page" : undefined}
                                 className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all ${
                                     activeTab === "torrents"
                                         ? "bg-card text-foreground border border-border shadow-2xs"
@@ -70,10 +73,12 @@ export function Header({
                             >
                                 <ListDashesIcon size={16} />
                                 <span>Torrents</span>
-                            </button>
-                            <button
-                                type="button"
+                            </Button>
+                            <Button
+                                variant="ghost"
+                                size="sm"
                                 onClick={() => onTabChange("bookmarks")}
+                                aria-current={activeTab === "bookmarks" ? "page" : undefined}
                                 className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all relative ${
                                     activeTab === "bookmarks"
                                         ? "bg-card text-foreground border border-border shadow-2xs"
@@ -87,7 +92,7 @@ export function Header({
                                         {bookmarkCount}
                                     </span>
                                 )}
-                            </button>
+                            </Button>
                         </nav>
                     )}
                 </div>
@@ -98,7 +103,7 @@ export function Header({
                         size={18}
                         className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                     />
-                    <input
+                    <Input
                         type="text"
                         placeholder="Search torrents..."
                         value={searchQuery}
@@ -166,7 +171,7 @@ export function Header({
                         size={18}
                         className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                     />
-                    <input
+                    <Input
                         type="text"
                         placeholder="Search torrents..."
                         value={searchQuery}

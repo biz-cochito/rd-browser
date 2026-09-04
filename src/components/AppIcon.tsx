@@ -7,7 +7,7 @@ export function AppIcon({ className = "", size = 36 }: AppIconProps) {
     return (
         <div
             style={{ width: size, height: size }}
-            className={`flex items-center justify-center rounded-xl bg-zinc-900 border border-zinc-700/80 text-zinc-100 font-mono font-bold tracking-tight shadow-2xs select-none shrink-0 ${className}`}
+            className={`flex items-center justify-center rounded-xl bg-transparent text-zinc-100 font-mono font-bold tracking-tight shadow-2xs select-none shrink-0 ${className}`}
         >
             <div className="flex items-baseline font-black tracking-tighter text-xs">
                 <span>rdb</span>

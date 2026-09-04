@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { GearIcon, CheckCircleIcon, XCircleIcon, CircleNotchIcon, KeyIcon, ArrowSquareOutIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
     Dialog,
     DialogContent,
@@ -131,7 +132,7 @@ export function SettingsDialog({
                         </label>
                         <div className="relative flex items-center">
                             <KeyIcon size={16} className="absolute left-3 text-muted-foreground" />
-                            <input
+                            <Input
                                 type="password"
                                 value={apiToken}
                                 onChange={(e) => {
@@ -140,7 +141,7 @@ export function SettingsDialog({
                                     setSuccessMessage(null);
                                 }}
                                 placeholder="Paste your Real-Debrid API token here"
-                                className="w-full h-10 pl-9 pr-24 rounded-lg border border-input bg-background font-mono text-xs focus:outline-none focus:ring-2 focus:ring-ring"
+                                className="w-full h-10 pl-9 pr-24 rounded-lg border-input bg-background font-mono text-xs"
                             />
                             <Button
                                 type="button"

@@ -122,6 +122,7 @@ export const TorrentsPage = forwardRef<TorrentsPageRef, TorrentsPageProps>(({
                 currentPage={currentPage}
                 totalPages={totalPages}
                 loading={loading}
+                onPageChange={setCurrentPage}
                 onPrevious={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 onNext={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             />
@@ -144,6 +145,7 @@ export const TorrentsPage = forwardRef<TorrentsPageRef, TorrentsPageProps>(({
                 currentPage={currentPage}
                 totalPages={totalPages}
                 loading={loading}
+                onPageChange={setCurrentPage}
                 onPrevious={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 onNext={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             />
