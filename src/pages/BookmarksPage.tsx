@@ -37,7 +37,7 @@ export function BookmarksPage({
         <div className="space-y-4">
             <div className="flex items-center justify-between pb-2 border-b border-border/60">
                 <div className="flex items-center gap-2 font-semibold text-lg">
-                    <BookmarkIcon size={22} weight="fill" className="text-amber-500" />
+                    <BookmarkIcon size={22} weight="fill" className="text-violet-300" />
                     <h2>Bookmarked Torrents</h2>
                 </div>
                 <span className="text-xs text-muted-foreground">

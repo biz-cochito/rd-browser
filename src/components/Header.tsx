@@ -2,7 +2,6 @@ import {
     PlusIcon,
     GearIcon,
     ArrowsClockwiseIcon,
-    HardDrivesIcon,
     MagnifyingGlassIcon,
     SunIcon,
     MoonIcon,
@@ -12,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { useTheme } from "@/components/theme-provider";
+import { AppIcon } from "@/components/AppIcon";
 
 interface HeaderProps {
     loading: boolean;
@@ -50,24 +50,22 @@ export function Header({
                 {/* Brand Logo & Name */}
                 <div className="flex items-center gap-3 font-semibold text-lg tracking-tight">
                     <div className="flex items-center gap-2.5">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-                            <HardDrivesIcon size={32} weight="bold" />
-                        </div>
-                        <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent font-bold hidden xs:inline">
+                        <AppIcon size={34} />
+                        <span className="font-bold text-foreground tracking-tight hidden xs:inline">
                             RD Browser
                         </span>
                     </div>
 
                     {/* Navigation Tabs */}
                     {onTabChange && (
-                        <nav className="flex items-center gap-1 bg-muted/60 p-1 rounded-xl border border-border/50 ml-2">
+                        <nav className="flex items-center gap-1 bg-muted/60 p-1 rounded-xl border border-border/60 ml-2">
                             <button
                                 type="button"
                                 onClick={() => onTabChange("torrents")}
-                                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
+                                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all ${
                                     activeTab === "torrents"
-                                        ? "bg-background text-foreground shadow-xs"
-                                        : "text-muted-foreground hover:text-foreground"
+                                        ? "bg-card text-foreground border border-border shadow-2xs"
+                                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                                 }`}
                             >
                                 <ListDashesIcon size={16} />
@@ -76,16 +74,16 @@ export function Header({
                             <button
                                 type="button"
                                 onClick={() => onTabChange("bookmarks")}
-                                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all relative ${
+                                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all relative ${
                                     activeTab === "bookmarks"
-                                        ? "bg-background text-foreground shadow-xs"
-                                        : "text-muted-foreground hover:text-foreground"
+                                        ? "bg-card text-foreground border border-border shadow-2xs"
+                                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                                 }`}
                             >
-                                <BookmarkIcon size={16} weight={bookmarkCount > 0 ? "fill" : "regular"} className={bookmarkCount > 0 ? "text-amber-500" : ""} />
+                                <BookmarkIcon size={16} weight={bookmarkCount > 0 ? "fill" : "regular"} className={bookmarkCount > 0 ? "text-violet-300" : ""} />
                                 <span>Bookmarks</span>
                                 {bookmarkCount > 0 && (
-                                    <span className="ml-0.5 px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 text-[10px] font-bold">
+                                    <span className="ml-0.5 px-1.5 py-0.2 rounded-full bg-violet-500/15 text-violet-300 border border-violet-500/20 text-[10px] font-semibold">
                                         {bookmarkCount}
                                     </span>
                                 )}

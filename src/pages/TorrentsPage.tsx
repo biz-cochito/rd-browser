@@ -93,12 +93,12 @@ export const TorrentsPage = forwardRef<TorrentsPageRef, TorrentsPageProps>(({
             {/* API Key Missing Card / Device Auth */}
             {!hasApiToken && (
                 <div className="mb-8 space-y-4">
-                    <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                    <div className="p-4 rounded-2xl bg-zinc-900 border border-zinc-800 text-zinc-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                         <div className="flex items-start gap-2.5">
-                            <KeyIcon size={20} className="shrink-0 mt-0.5" />
+                            <KeyIcon size={20} className="shrink-0 mt-0.5 text-zinc-400" />
                             <div>
-                                <h4 className="font-semibold text-sm">Real-Debrid Login Required</h4>
-                                <p className="opacity-90 mt-0.5">
+                                <h4 className="font-semibold text-sm text-zinc-100">Real-Debrid Login Required</h4>
+                                <p className="opacity-90 mt-0.5 text-zinc-400">
                                     Scan the QR code below on your phone or enter the 8-character code to authorize access.
                                 </p>
                             </div>
@@ -107,7 +107,7 @@ export const TorrentsPage = forwardRef<TorrentsPageRef, TorrentsPageProps>(({
                             size="sm"
                             variant="outline"
                             onClick={onOpenSettingsModal}
-                            className="shrink-0 border-amber-500/30 hover:bg-amber-500/10 font-medium text-xs flex items-center gap-1.5"
+                            className="shrink-0 border-zinc-700 hover:bg-zinc-800 font-medium text-xs text-zinc-200 flex items-center gap-1.5"
                         >
                             <QrCodeIcon size={14} />
                             Open Settings

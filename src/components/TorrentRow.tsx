@@ -1,6 +1,5 @@
 import { useState } from "react"
 import {
-  PlayIcon,
   DownloadSimpleIcon,
   CopyIcon,
   TrashIcon,
@@ -20,7 +19,7 @@ interface TorrentRowProps {
   torrent: Torrent
   isBookmarked?: boolean
   onToggleBookmark?: (torrent: Torrent) => void
-  onPlay: (torrentId: string) => void
+  onPlay?: (torrentId: string) => void
   onShowDetails: (torrentId: string) => void
   onDownload: (torrentId: string) => void
   onDelete: (torrentId: string) => void
@@ -39,7 +38,6 @@ export function TorrentRow({
   torrent,
   isBookmarked = false,
   onToggleBookmark,
-  onPlay,
   onShowDetails,
   onDownload,
   onDelete,
@@ -65,53 +63,51 @@ export function TorrentRow({
   const progress = torrent.progress ?? (isDownloaded ? 100 : 0)
 
   return (
-    <div className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-border/70 bg-card p-4 transition-all hover:border-primary/40 hover:shadow-md">
+    <div className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-border/80 bg-card p-4 transition-all duration-200 hover:border-zinc-700 hover:shadow-2xs">
       {/* Left: Status Icon & Metadata */}
       <div className="flex min-w-0 flex-1 items-start gap-3.5">
         <div
-          onClick={() => isDownloaded ? onPlay(torrent.id) : onShowDetails(torrent.id)}
-          className={`mt-0.5 shrink-0 cursor-pointer rounded-xl p-2 transition-all shadow-xs ${
+          onClick={() => onShowDetails(torrent.id)}
+          className={`mt-0.5 shrink-0 cursor-pointer rounded-xl p-1 transition-all shadow-2xs ${
             isDownloaded
-              ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20"
+              ? "bg-emerald-950/40 text-emerald-300 border border-emerald-800/40 hover:bg-emerald-900/40"
               : isDownloading
-              ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20"
+              ? "bg-zinc-800/80 text-zinc-200 border border-zinc-700/80 hover:bg-zinc-700/80"
               : isWaiting
-              ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20"
+              ? "bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700/80"
               : isError
-              ? "bg-destructive/10 text-destructive hover:bg-destructive/20"
-              : "bg-muted/60 text-muted-foreground hover:bg-primary/10 hover:text-primary"
+              ? "bg-rose-950/40 text-rose-300 border border-rose-800/40 hover:bg-rose-900/40"
+              : "bg-zinc-900 text-zinc-400 border border-zinc-800 hover:bg-zinc-800 hover:text-zinc-200"
           }`}
           title={
             isDownloaded
-              ? "Ready (Click to Play)"
+              ? "Ready (Click to View Files)"
               : isDownloading
               ? `Downloading (${progress}%)`
               : isWaiting
               ? "Select Files"
               : isError
               ? torrent.status || "Error"
-              : "View torrent details"
+              : "View torrent files"
           }
         >
           {isDownloaded ? (
-            <CheckCircleIcon size={28} weight="fill" />
+            <CheckCircleIcon size={32} weight="fill" />
           ) : isDownloading ? (
-            <CircleNotchIcon size={28} className="animate-spin" />
+            <CircleNotchIcon size={32} className="animate-spin" />
           ) : isWaiting ? (
-            <ListChecksIcon size={28} />
+            <ListChecksIcon size={32} />
           ) : isError ? (
-            <XCircleIcon size={28} weight="fill" />
+            <XCircleIcon size={32} weight="fill" />
           ) : (
-            <FolderIcon size={28} />
+            <FolderIcon size={32} />
           )}
         </div>
 
-        <div className="min-w-0 flex-1 space-y-1.5">
+        <div className="min-w-0 flex-1 space-y-1">
           <h3
-            onClick={() =>
-              isDownloaded ? onPlay(torrent.id) : onShowDetails(torrent.id)
-            }
-            className="cursor-pointer line-clamp-3 text-sm font-medium text-foreground transition-colors hover:text-primary leading-relaxed break-words"
+            onClick={() => onShowDetails(torrent.id)}
+            className="cursor-pointer line-clamp-2 text-sm font-medium text-foreground transition-colors hover:text-zinc-300 leading-snug break-words"
             title={torrent.filename || torrent.id}
           >
             {torrent.filename || "Untitled Torrent"}
@@ -119,14 +115,14 @@ export function TorrentRow({
 
           <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
             {torrent.bytes ? <span className="font-medium text-foreground/80">{formatBytes(torrent.bytes)}</span> : null}
-            {torrent.bytes && torrent.added ? <span className="text-muted-foreground/60">•</span> : null}
+            {torrent.bytes && torrent.added ? <span className="text-muted-foreground/40">•</span> : null}
             {torrent.added ? (
               <span>{new Date(torrent.added).toLocaleDateString()}</span>
             ) : null}
             {torrent.speed ? (
               <>
-                <span className="text-muted-foreground/60">•</span>
-                <span className="font-mono font-medium text-blue-500">
+                <span className="text-muted-foreground/40">•</span>
+                <span className="font-mono font-medium text-zinc-300">
                   {formatBytes(torrent.speed)}/s
                 </span>
               </>
@@ -136,9 +132,9 @@ export function TorrentRow({
           {/* Download Progress Bar */}
           {isDownloading && (
             <div className="w-full max-w-xs space-y-1 pt-1">
-              <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
                 <div
-                  className="h-full rounded-full bg-blue-500 transition-all duration-300"
+                  className="h-full rounded-full bg-zinc-400 transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -149,48 +145,36 @@ export function TorrentRow({
 
       {/* Right: Actions */}
       <div className="flex flex-wrap sm:flex-nowrap shrink-0 items-center justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-border/40">
-        {/* Actions Group */}
         <div className="flex items-center gap-2">
-          {isDownloaded && (
-            <Button
-              variant="default"
-              size="sm"
-              onClick={() => onPlay(torrent.id)}
-              className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs font-medium"
-              title="Play Video"
-            >
-              <PlayIcon size={15} weight="fill" />
-              <span>Play</span>
-            </Button>
-          )}
+          {/* Main Action: View Files */}
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => onShowDetails(torrent.id)}
+            className="gap-2 font-medium bg-zinc-800/80 hover:bg-zinc-700/80 text-zinc-200 border border-zinc-700/80 hover:border-zinc-600 transition-colors rounded-lg"
+            title="View Files & Details"
+          >
+            <FolderIcon size={16} className="text-zinc-400" />
+            <span>View Files</span>
+          </Button>
 
-          <ButtonGroup className="shadow-xs bg-secondary/50 rounded-lg p-0.5 border border-border/60">
+          {/* Auxiliary Actions Group */}
+          <ButtonGroup className="bg-zinc-900/60 rounded-lg p-0.5 border border-zinc-800">
             {onToggleBookmark && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => onToggleBookmark(torrent)}
                 title={isBookmarked ? "Remove Bookmark" : "Bookmark Torrent"}
-                className={`h-8 px-2.5 rounded-md transition-colors ${
+                className={`h-8 px-2.5 rounded-md transition-all ${
                   isBookmarked
-                    ? "text-amber-500 hover:text-amber-600 bg-amber-500/10"
-                    : "text-muted-foreground hover:text-foreground hover:bg-background/80"
+                    ? "text-violet-300 bg-violet-500/10 border border-violet-500/20"
+                    : "text-muted-foreground hover:text-foreground hover:bg-zinc-800/60"
                 }`}
               >
                 <BookmarkIcon size={16} weight={isBookmarked ? "fill" : "regular"} />
               </Button>
             )}
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onShowDetails(torrent.id)}
-              title="View Files / Details"
-              className="h-8 px-2.5 text-muted-foreground hover:text-foreground hover:bg-background/80 rounded-md"
-            >
-              <FolderIcon size={16} />
-              <span className="text-xs hidden md:inline">Files</span>
-            </Button>
 
             {isDownloaded && (
               <Button
@@ -198,7 +182,7 @@ export function TorrentRow({
                 size="sm"
                 onClick={() => onDownload(torrent.id)}
                 title="Download File"
-                className="h-8 px-2.5 text-muted-foreground hover:text-foreground hover:bg-background/80 rounded-md"
+                className="h-8 px-2.5 text-muted-foreground hover:text-foreground hover:bg-zinc-800/60 rounded-md"
               >
                 <DownloadSimpleIcon size={16} />
               </Button>
@@ -210,10 +194,10 @@ export function TorrentRow({
                 size="sm"
                 onClick={handleCopy}
                 title="Copy Download Link"
-                className="h-8 px-2.5 text-muted-foreground hover:text-foreground hover:bg-background/80 rounded-md"
+                className="h-8 px-2.5 text-muted-foreground hover:text-foreground hover:bg-zinc-800/60 rounded-md"
               >
                 {copied ? (
-                  <CheckIcon size={16} className="text-emerald-500" />
+                  <CheckIcon size={16} className="text-emerald-400" />
                 ) : (
                   <CopyIcon size={16} />
                 )}
@@ -224,7 +208,7 @@ export function TorrentRow({
               variant="ghost"
               size="sm"
               onClick={() => onDelete(torrent.id)}
-              className="h-8 px-2.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded-md"
+              className="h-8 px-2.5 text-muted-foreground hover:bg-rose-950/40 hover:text-rose-300 rounded-md"
               title="Delete Torrent"
             >
               <TrashIcon size={16} />
