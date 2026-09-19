@@ -17,10 +17,12 @@ import { AppIcon } from "@/components/AppIcon";
 interface HeaderProps {
     loading: boolean;
     searchQuery: string;
+    hideFailed: boolean;
     activeTab?: "torrents" | "bookmarks";
     bookmarkCount?: number;
     onTabChange?: (tab: "torrents" | "bookmarks") => void;
     onSearchChange: (query: string) => void;
+    onHideFailedChange: (hide: boolean) => void;
     onRefresh: () => void;
     onOpenAddModal: () => void;
     onOpenSettingsModal: () => void;
@@ -30,10 +32,12 @@ interface HeaderProps {
 export function Header({
     loading,
     searchQuery,
+    hideFailed,
     activeTab = "torrents",
     bookmarkCount = 0,
     onTabChange,
     onSearchChange,
+    onHideFailedChange,
     onRefresh,
     onOpenAddModal,
     onOpenSettingsModal,
@@ -97,19 +101,30 @@ export function Header({
                     )}
                 </div>
 
-                {/* Search Bar */}
-                <div className="relative flex-1 max-w-md hidden sm:block">
-                    <MagnifyingGlassIcon
-                        size={18}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                    />
-                    <Input
-                        type="text"
-                        placeholder="Search torrents..."
-                        value={searchQuery}
-                        onChange={(e) => onSearchChange(e.target.value)}
-                        className="w-full h-9 pl-9 pr-4 rounded-full border border-input bg-muted/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:bg-background transition-all"
-                    />
+                {/* Search Bar & Filters */}
+                <div className="flex-1 max-w-md hidden sm:flex items-center gap-3">
+                    <div className="relative flex-1">
+                        <MagnifyingGlassIcon
+                            size={18}
+                            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                        />
+                        <Input
+                            type="text"
+                            placeholder="Search torrents..."
+                            value={searchQuery}
+                            onChange={(e) => onSearchChange(e.target.value)}
+                            className="w-full h-9 pl-9 pr-4 rounded-full border border-input bg-muted/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:bg-background transition-all"
+                        />
+                    </div>
+                    <label className="flex shrink-0 items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
+                        <input
+                            type="checkbox"
+                            checked={hideFailed}
+                            onChange={(e) => onHideFailedChange(e.target.checked)}
+                            className="rounded border-input bg-muted accent-primary cursor-pointer w-3.5 h-3.5"
+                        />
+                        Hide failed
+                    </label>
                 </div>
 
                 {/* Actions */}
@@ -164,8 +179,8 @@ export function Header({
                 </div>
             </div>
 
-            {/* Mobile Search Bar */}
-            <div className="px-4 pb-3 sm:hidden">
+            {/* Mobile Search Bar & Filters */}
+            <div className="px-4 pb-3 sm:hidden space-y-2">
                 <div className="relative w-full">
                     <MagnifyingGlassIcon
                         size={18}
@@ -178,6 +193,17 @@ export function Header({
                         onChange={(e) => onSearchChange(e.target.value)}
                         className="w-full h-9 pl-9 pr-4 rounded-full border border-input bg-muted/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:bg-background transition-all"
                     />
+                </div>
+                <div className="flex justify-end px-1">
+                    <label className="flex shrink-0 items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
+                        <input
+                            type="checkbox"
+                            checked={hideFailed}
+                            onChange={(e) => onHideFailedChange(e.target.checked)}
+                            className="rounded border-input bg-muted accent-primary cursor-pointer w-3.5 h-3.5"
+                        />
+                        Hide failed
+                    </label>
                 </div>
             </div>
         </header>

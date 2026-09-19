@@ -3,7 +3,7 @@ import type { PreloadAPI } from "./preloadAPI";
 type TorrentLinkAPI = Pick<PreloadAPI, "getTorrentDetails" | "unrestrictLink">;
 type AddMagnetAPI = Pick<PreloadAPI, "addMagnet">;
 
-export async function getFirstDownloadUrl(
+export async function getDownloadUrls(
     api: TorrentLinkAPI,
     torrentId: string,
 ) {
@@ -12,14 +12,14 @@ export async function getFirstDownloadUrl(
     if (!details.links?.length) {
         throw new Error("This torrent has no downloadable links.");
     }
+    const unrestrictedLinks = await Promise.all(details.links.map((link) => api.unrestrictLink(link)));
+    const unrestricted = unrestrictedLinks.find((link) => link.download);
 
-    const unrestricted = await api.unrestrictLink(details.links[0]);
-
-    if (!unrestricted.download) {
+    if (!unrestricted) {
         throw new Error("Failed to get a direct download link from Real-Debrid.");
     }
 
-    return unrestricted.download;
+    return unrestricted;
 }
 
 export async function addMagnetLinks(api: AddMagnetAPI, text: string) {

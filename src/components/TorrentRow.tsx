@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from "react";
 import {
   DownloadSimpleIcon,
   CopyIcon,
@@ -9,29 +9,29 @@ import {
   CircleNotchIcon,
   ListChecksIcon,
   CheckIcon,
-  BookmarkIcon
-} from "@phosphor-icons/react"
-import { Button } from "@/components/ui/button"
-import type { Torrent } from "@/types/torrent"
-import { ButtonGroup } from "./ui/button-group"
+  BookmarkIcon,
+} from "@phosphor-icons/react";
+import { Button } from "@/components/ui/button";
+import type { Torrent } from "@/types/torrent";
+import { ButtonGroup } from "./ui/button-group";
 
 interface TorrentRowProps {
-  torrent: Torrent
-  isBookmarked?: boolean
-  onToggleBookmark?: (torrent: Torrent) => void
-  onPlay?: (torrentId: string) => void
-  onShowDetails: (torrentId: string) => void
-  onDownload: (torrentId: string) => void
-  onDelete: (torrentId: string) => void
-  onCopyLink: (torrentId: string) => void
+  torrent: Torrent;
+  isBookmarked?: boolean;
+  onToggleBookmark?: (torrent: Torrent) => void;
+  onPlay?: (torrentId: string) => void;
+  onShowDetails: (torrentId: string) => void;
+  onDownload: (torrentId: string) => void;
+  onDelete: (torrentId: string) => void;
+  onCopyLink: (torrentId: string) => void;
 }
 
 function formatBytes(bytes?: number): string {
-  if (!bytes || bytes === 0) return "0 B"
-  const k = 1024
-  const sizes = ["B", "KB", "MB", "GB", "TB"]
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i]
+  if (!bytes || bytes === 0) return "0 B";
+  const k = 1024;
+  const sizes = ["B", "KB", "MB", "GB", "TB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
 }
 
 export function TorrentRow({
@@ -43,24 +43,24 @@ export function TorrentRow({
   onDelete,
   onCopyLink,
 }: TorrentRowProps) {
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    onCopyLink(torrent.id)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+    onCopyLink(torrent.id);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
-  const isDownloaded = torrent.status === "downloaded"
+  const isDownloaded = torrent.status === "downloaded";
   const isDownloading =
-    torrent.status === "downloading" || torrent.status === "compressing"
-  const isWaiting = torrent.status === "waiting_files_selection"
+    torrent.status === "downloading" || torrent.status === "compressing";
+  const isWaiting = torrent.status === "waiting_files_selection";
   const isError =
     torrent.status?.includes("error") ||
     torrent.status === "virus" ||
-    torrent.status === "dead"
+    torrent.status === "dead";
 
-  const progress = torrent.progress ?? (isDownloaded ? 100 : 0)
+  const progress = torrent.progress ?? (isDownloaded ? 100 : 0);
 
   return (
     <div className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-border/80 bg-card p-4 transition-all duration-200 hover:border-zinc-700 hover:shadow-2xs">
@@ -75,23 +75,23 @@ export function TorrentRow({
             isDownloaded
               ? "bg-emerald-950/40 text-emerald-300 border border-emerald-800/40 hover:bg-emerald-900/40"
               : isDownloading
-              ? "bg-zinc-800/80 text-zinc-200 border border-zinc-700/80 hover:bg-zinc-700/80"
-              : isWaiting
-              ? "bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700/80"
-              : isError
-              ? "bg-rose-950/40 text-rose-300 border border-rose-800/40 hover:bg-rose-900/40"
-              : "bg-zinc-900 text-zinc-400 border border-zinc-800 hover:bg-zinc-800 hover:text-zinc-200"
+                ? "bg-zinc-800/80 text-zinc-200 border border-zinc-700/80 hover:bg-zinc-700/80"
+                : isWaiting
+                  ? "bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700/80"
+                  : isError
+                    ? "bg-rose-950/40 text-rose-300 border border-rose-800/40 hover:bg-rose-900/40"
+                    : "bg-zinc-900 text-zinc-400 border border-zinc-800 hover:bg-zinc-800 hover:text-zinc-200"
           }`}
           title={
             isDownloaded
               ? "Ready (Click to View Files)"
               : isDownloading
-              ? `Downloading (${progress}%)`
-              : isWaiting
-              ? "Select Files"
-              : isError
-              ? torrent.status || "Error"
-              : "View torrent files"
+                ? `Downloading (${progress}%)`
+                : isWaiting
+                  ? "Select Files"
+                  : isError
+                    ? torrent.status || "Error"
+                    : "View torrent files"
           }
         >
           {isDownloaded ? (
@@ -113,15 +113,21 @@ export function TorrentRow({
             variant="ghost"
             size="sm"
             onClick={() => onShowDetails(torrent.id)}
-            className="h-auto w-full justify-start px-0 text-left text-sm font-medium text-foreground whitespace-normal transition-colors hover:text-zinc-300 leading-snug break-words"
+            className="h-auto w-full justify-start px-0 text-left text-sm font-medium text-foreground whitespace-normal transition-colors hover:text-zinc-300 leading-snug break-all"
             title={torrent.filename || torrent.id}
           >
             {torrent.filename || "Untitled Torrent"}
           </Button>
 
           <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-            {torrent.bytes ? <span className="font-medium text-foreground/80">{formatBytes(torrent.bytes)}</span> : null}
-            {torrent.bytes && torrent.added ? <span className="text-muted-foreground/40">•</span> : null}
+            {torrent.bytes ? (
+              <span className="font-medium text-foreground/80">
+                {formatBytes(torrent.bytes)}
+              </span>
+            ) : null}
+            {torrent.bytes && torrent.added ? (
+              <span className="text-muted-foreground/40">•</span>
+            ) : null}
             {torrent.added ? (
               <span>{new Date(torrent.added).toLocaleDateString()}</span>
             ) : null}
@@ -178,7 +184,10 @@ export function TorrentRow({
                     : "text-muted-foreground hover:text-foreground hover:bg-zinc-800/60"
                 }`}
               >
-                <BookmarkIcon size={16} weight={isBookmarked ? "fill" : "regular"} />
+                <BookmarkIcon
+                  size={16}
+                  weight={isBookmarked ? "fill" : "regular"}
+                />
               </Button>
             )}
 
@@ -223,5 +232,5 @@ export function TorrentRow({
         </div>
       </div>
     </div>
-  )
+  );
 }

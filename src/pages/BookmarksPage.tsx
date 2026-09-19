@@ -6,6 +6,7 @@ import { BookmarkIcon } from "@phosphor-icons/react";
 
 interface BookmarksPageProps {
     searchQuery: string;
+    hideFailed: boolean;
     onPlay: (torrentId: string) => void;
     onShowDetails: (torrentId: string) => void;
     onDownload: (torrentId: string) => void;
@@ -16,6 +17,7 @@ interface BookmarksPageProps {
 
 export function BookmarksPage({
     searchQuery,
+    hideFailed,
     onPlay,
     onShowDetails,
     onDownload,
@@ -26,12 +28,23 @@ export function BookmarksPage({
     const { bookmarks, bookmarkedIds, toggle } = useBookmarks();
 
     const filteredBookmarks = useMemo(() => {
-        if (!searchQuery.trim()) return bookmarks;
-        const q = searchQuery.toLowerCase();
-        return bookmarks.filter(
-            (t) => t.filename?.toLowerCase().includes(q) || t.id.toLowerCase().includes(q)
-        );
-    }, [bookmarks, searchQuery]);
+        let result = bookmarks;
+
+        if (hideFailed) {
+            result = result.filter(
+                (t) => !(t.status?.includes("error") || t.status === "virus" || t.status === "dead")
+            );
+        }
+
+        if (searchQuery.trim()) {
+            const q = searchQuery.toLowerCase();
+            result = result.filter(
+                (t) => t.filename?.toLowerCase().includes(q) || t.id.toLowerCase().includes(q)
+            );
+        }
+
+        return result;
+    }, [bookmarks, searchQuery, hideFailed]);
 
     return (
         <div className="space-y-4">
