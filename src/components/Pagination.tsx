@@ -49,26 +49,26 @@ export function Pagination({
                             if (event.key === "Enter") event.currentTarget.blur();
                         }}
                         aria-label="Current page"
-                        className="w-10 h-7 px-1 text-center text-foreground rounded-r-none border-border bg-background"
+                        className="w-10 h-7 px-1 text-center text-foreground"
                     />
                     <div className="flex flex-col">
                         <Button
                             variant="outline"
-                            size="icon-xs"
+                            size="icon-sm"
                             onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
                             disabled={currentPage >= totalPages || loading}
                             aria-label="Next page"
-                            className="h-3.5 min-h-0 w-5 rounded-l-none rounded-b-none border-l-0 border-b-0"
+                            className="h-3.5 min-h-0 w-5"
                         >
                             <CaretUpIcon size={10} />
                         </Button>
                         <Button
                             variant="outline"
-                            size="icon-xs"
+                            size="icon-sm"
                             onClick={() => onPageChange(Math.max(1, currentPage - 1))}
                             disabled={currentPage <= 1 || loading}
                             aria-label="Previous page"
-                            className="h-3.5 min-h-0 w-5 rounded-l-none rounded-t-none border-l-0"
+                            className="h-3.5 min-h-0 w-5"
                         >
                             <CaretDownIcon size={10} />
                         </Button>

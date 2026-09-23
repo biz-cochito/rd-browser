@@ -125,7 +125,7 @@ export function TorrentDetailsModal({
                 ) : details ? (
                     <div className="flex-1 overflow-y-auto space-y-4 pr-1">
                         {/* Meta summary */}
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-3 bg-muted/40 rounded-xl text-xs">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-3 bg-muted/40 rounded-xl text-sm">
                             <div>
                                 <span className="text-muted-foreground block">Status</span>
                                 <span className="font-semibold uppercase">{details.status}</span>
@@ -146,12 +146,12 @@ export function TorrentDetailsModal({
 
                         {/* File Links List */}
                         <div className="space-y-2">
-                            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                            <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                                 File Links ({details.links?.length || 0})
                             </h4>
 
                             {details.links && details.links.length > 0 ? (
-                                <div className="divide-y divide-border border rounded-xl overflow-hidden bg-card text-xs">
+                                <div className="divide-y divide-border border rounded-xl overflow-hidden bg-card text-sm">
                                     {details.links.map((link, idx) => {
                                         const fileObj = details.files?.[idx];
                                         const name = fileObj ? fileObj.path : `File ${idx + 1}`;
@@ -176,7 +176,7 @@ export function TorrentDetailsModal({
                                                 <div className="flex items-center gap-1 shrink-0">
                                                     <Button
                                                         variant="ghost"
-                                                        size="xs"
+                                                        size="sm"
                                                         onClick={() => handlePlayLink(link, name, idx)}
                                                         disabled={isUnrestricting}
                                                         title="Stream Video"
@@ -185,7 +185,7 @@ export function TorrentDetailsModal({
                                                     </Button>
                                                     <Button
                                                         variant="ghost"
-                                                        size="xs"
+                                                        size="sm"
                                                         onClick={() => handleDownloadLink(link, idx)}
                                                         disabled={isUnrestricting}
                                                         title="Download File"
@@ -194,7 +194,7 @@ export function TorrentDetailsModal({
                                                     </Button>
                                                     <Button
                                                         variant="ghost"
-                                                        size="xs"
+                                                        size="sm"
                                                         onClick={() => handleCopyLink(link, idx)}
                                                         disabled={isUnrestricting}
                                                         title="Copy Link"
@@ -211,7 +211,7 @@ export function TorrentDetailsModal({
                                     })}
                                 </div>
                             ) : (
-                                <div className="p-4 text-center text-xs text-muted-foreground">
+                                <div className="p-4 text-center text-sm text-muted-foreground">
                                     No direct links available for this torrent yet.
                                 </div>
                             )}
