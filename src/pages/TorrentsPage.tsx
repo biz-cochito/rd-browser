@@ -14,7 +14,7 @@ export interface TorrentsPageRef {
 
 interface TorrentsPageProps {
     searchQuery: string;
-    hideFailed: boolean;
+    showCompletedOnly: boolean;
     hasApiToken: boolean;
     onLoadingChange: (loading: boolean) => void;
     showToast: (message: string, type?: "success" | "error") => void;
@@ -29,7 +29,7 @@ interface TorrentsPageProps {
 
 export const TorrentsPage = forwardRef<TorrentsPageRef, TorrentsPageProps>(({
     searchQuery,
-    hideFailed,
+    showCompletedOnly,
     hasApiToken,
     onLoadingChange,
     showToast,
@@ -55,10 +55,8 @@ export const TorrentsPage = forwardRef<TorrentsPageRef, TorrentsPageProps>(({
 
     const getFilteredCount = useCallback((torrents: Torrent[]) => {
         let result = torrents;
-        if (hideFailed) {
-            result = result.filter(
-                (t) => !(t.status?.includes("error") || t.status === "virus" || t.status === "dead")
-            );
+        if (showCompletedOnly) {
+            result = result.filter((t) => t.status === "downloaded");
         }
         if (searchQuery.trim()) {
             const q = searchQuery.toLowerCase();
@@ -67,7 +65,7 @@ export const TorrentsPage = forwardRef<TorrentsPageRef, TorrentsPageProps>(({
             );
         }
         return result.length;
-    }, [hideFailed, searchQuery]);
+    }, [showCompletedOnly, searchQuery]);
 
     const loadUntilPage = useCallback(async (targetUiPage: number, forceRefresh = false) => {
         setLoading(true);
@@ -129,7 +127,7 @@ export const TorrentsPage = forwardRef<TorrentsPageRef, TorrentsPageProps>(({
         if (currentFilteredCount < targetCount && hasMoreRd && !loading) {
             loadUntilPage(currentPage, false);
         }
-    }, [currentPage, allTorrents, hasMoreRd, hideFailed, searchQuery, hasApiToken, getFilteredCount, loadUntilPage, loading]);
+    }, [currentPage, allTorrents, hasMoreRd, showCompletedOnly, searchQuery, hasApiToken, getFilteredCount, loadUntilPage, loading]);
 
     const handleDeleteTorrent = async (torrentId: string) => {
         await onDelete(torrentId);
@@ -140,10 +138,8 @@ export const TorrentsPage = forwardRef<TorrentsPageRef, TorrentsPageProps>(({
     const filteredTorrents = useMemo(() => {
         let result = allTorrents;
 
-        if (hideFailed) {
-            result = result.filter(
-                (t) => !(t.status?.includes("error") || t.status === "virus" || t.status === "dead")
-            );
+        if (showCompletedOnly) {
+            result = result.filter((t) => t.status === "downloaded");
         }
 
         if (searchQuery.trim()) {
@@ -154,7 +150,7 @@ export const TorrentsPage = forwardRef<TorrentsPageRef, TorrentsPageProps>(({
         }
 
         return result;
-    }, [allTorrents, searchQuery, hideFailed]);
+    }, [allTorrents, searchQuery, showCompletedOnly]);
 
     const displayTorrents = useMemo(() => {
         const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;

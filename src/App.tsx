@@ -16,7 +16,7 @@ export default function App() {
     "torrents",
   );
   const [searchQuery, setSearchQuery] = useState("");
-  const [hideFailed, setHideFailed] = useState(false);
+  const [showCompletedOnly, setShowCompletedOnly] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const { bookmarks } = useBookmarks();
@@ -146,12 +146,12 @@ export default function App() {
       <Header
         loading={loading}
         searchQuery={searchQuery}
-        hideFailed={hideFailed}
+        showCompletedOnly={showCompletedOnly}
         activeTab={activeTab}
         bookmarkCount={bookmarks.length}
         onTabChange={setActiveTab}
         onSearchChange={setSearchQuery}
-        onHideFailedChange={setHideFailed}
+        onShowCompletedOnlyChange={setShowCompletedOnly}
         onRefresh={() => torrentsPageRef.current?.refresh()}
         onOpenAddModal={() => setIsAddModalOpen(true)}
         onOpenSettingsModal={() => setIsSettingsModalOpen(true)}
@@ -190,7 +190,7 @@ export default function App() {
           <TorrentsPage
             ref={torrentsPageRef}
             searchQuery={searchQuery}
-            hideFailed={hideFailed}
+            showCompletedOnly={showCompletedOnly}
             hasApiToken={hasApiToken}
             onLoadingChange={setLoading}
             showToast={showToast}
@@ -205,7 +205,7 @@ export default function App() {
         ) : (
           <BookmarksPage
             searchQuery={searchQuery}
-            hideFailed={hideFailed}
+            showCompletedOnly={showCompletedOnly}
             onPlay={handlePlay}
             onShowDetails={handleShowDetails}
             onDownload={handleDownload}

@@ -17,12 +17,12 @@ import { AppIcon } from "@/components/AppIcon";
 interface HeaderProps {
     loading: boolean;
     searchQuery: string;
-    hideFailed: boolean;
+    showCompletedOnly: boolean;
     activeTab?: "torrents" | "bookmarks";
     bookmarkCount?: number;
     onTabChange?: (tab: "torrents" | "bookmarks") => void;
     onSearchChange: (query: string) => void;
-    onHideFailedChange: (hide: boolean) => void;
+    onShowCompletedOnlyChange: (show: boolean) => void;
     onRefresh: () => void;
     onOpenAddModal: () => void;
     onOpenSettingsModal: () => void;
@@ -32,12 +32,12 @@ interface HeaderProps {
 export function Header({
     loading,
     searchQuery,
-    hideFailed,
+    showCompletedOnly,
     activeTab = "torrents",
     bookmarkCount = 0,
     onTabChange,
     onSearchChange,
-    onHideFailedChange,
+    onShowCompletedOnlyChange,
     onRefresh,
     onOpenAddModal,
     onOpenSettingsModal,
@@ -119,11 +119,11 @@ export function Header({
                     <label className="flex shrink-0 items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
                         <input
                             type="checkbox"
-                            checked={hideFailed}
-                            onChange={(e) => onHideFailedChange(e.target.checked)}
+                            checked={showCompletedOnly}
+                            onChange={(e) => onShowCompletedOnlyChange(e.target.checked)}
                             className="rounded border-input bg-muted accent-primary cursor-pointer w-3.5 h-3.5"
                         />
-                        Hide failed
+                        Show only completed
                     </label>
                 </div>
 
@@ -198,11 +198,11 @@ export function Header({
                     <label className="flex shrink-0 items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
                         <input
                             type="checkbox"
-                            checked={hideFailed}
-                            onChange={(e) => onHideFailedChange(e.target.checked)}
+                            checked={showCompletedOnly}
+                            onChange={(e) => onShowCompletedOnlyChange(e.target.checked)}
                             className="rounded border-input bg-muted accent-primary cursor-pointer w-3.5 h-3.5"
                         />
-                        Hide failed
+                        Show only completed
                     </label>
                 </div>
             </div>
