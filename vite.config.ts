@@ -92,11 +92,11 @@ function apiServerPlugin(): Plugin {
 export default defineConfig({
   plugins: [react(), tailwindcss(), apiServerPlugin()],
   server: {
-    host: "0.0.0.0",
+    host: "192.168.86.32",
     port: 5173,
   },
   preview: {
-    host: "0.0.0.0",
+    host: "192.168.86.32",
     port: 5173,
   },
   resolve: {
