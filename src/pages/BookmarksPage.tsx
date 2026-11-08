@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 import { TorrentList } from "@/components/TorrentList";
-import { useBookmarks } from "@/services/bookmarks";
+import { useBookmarks, exportBookmarks } from "@/services/bookmarks";
 import type { Torrent } from "@/types/torrent";
 import { BookmarkIcon } from "@phosphor-icons/react";
+import { Button } from "@/components/ui/button";
 
 interface BookmarksPageProps {
     searchQuery: string;
@@ -51,6 +52,13 @@ export function BookmarksPage({
                     <BookmarkIcon size={22} weight="fill" className="text-violet-300" />
                     <h2>Bookmarked Torrents</h2>
                 </div>
+                <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => exportBookmarks()}
+                >
+                    Export Bookmarks
+                </Button>
                 <span className="text-xs text-muted-foreground">
                     {bookmarks.length} saved item{bookmarks.length === 1 ? "" : "s"}
                 </span>

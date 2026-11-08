@@ -63,3 +63,14 @@ export function useBookmarks() {
         isBookmarked: (id: string) => bookmarkedIds.has(id),
     };
 }
+
+export function exportBookmarks() {
+    const bookmarks = getBookmarks();
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(bookmarks, null, 2));
+    const downloadAnchorNode = document.createElement("a");
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "bookmarks.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
