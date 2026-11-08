@@ -9,7 +9,7 @@ import { TorrentDetailsModal } from "@/components/TorrentDetailsModal";
 import { preloadAPI } from "@/services/preloadAPI";
 import { addMagnetLinks, getDownloadUrls } from "@/services/torrentActions";
 import { useBookmarks } from "@/services/bookmarks";
-import { WarningIcon, CheckCircleIcon, XIcon } from "@phosphor-icons/react";
+import { WarningCircleIcon, CheckCircleIcon, XIcon } from "@phosphor-icons/react";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<"torrents" | "bookmarks">(
@@ -68,55 +68,58 @@ export default function App() {
   );
 
   const handlePlay = async (torrentId: string) => {
-      try {
-          const title = "Video Playback";
-          setPlaybackTitle(title);
+    try {
+      const title = "Video Playback";
+      setPlaybackTitle(title);
 
-          const downloadUrl = await getDownloadUrls(preloadAPI, torrentId);
-          if (!downloadUrl.download) {
-              throw new Error("No valid download link found.");
-          }
-          setPlaybackUrl(downloadUrl.download);
-          setIsPlayerOpen(true);
-      } catch (error) {
-          showToast("Failed to start playback: " + (error as Error).message, "error");
+      const downloadUrl = await getDownloadUrls(preloadAPI, torrentId);
+      if (!downloadUrl.download) {
+        throw new Error("No valid download link found.");
       }
+      setPlaybackUrl(downloadUrl.download);
+      setIsPlayerOpen(true);
+    } catch (error) {
+      showToast(
+        "Failed to start playback: " + (error as Error).message,
+        "error",
+      );
+    }
   };
 
   const handlePlayUrl = (url: string, title: string) => {
-      setPlaybackUrl(url);
-      setPlaybackTitle(title);
-      setIsPlayerOpen(true);
+    setPlaybackUrl(url);
+    setPlaybackTitle(title);
+    setIsPlayerOpen(true);
   };
 
   const handleShowDetails = (torrentId: string) => {
-      setSelectedTorrentId(torrentId);
-      setIsDetailsOpen(true);
+    setSelectedTorrentId(torrentId);
+    setIsDetailsOpen(true);
   };
 
   const handleDownload = async (torrentId: string) => {
-      try {
-          const downloadUrl = await getDownloadUrls(preloadAPI, torrentId);
-          if (!downloadUrl.download) {
-              throw new Error("No valid download link found.");
-          }
-          await preloadAPI.openExternal(downloadUrl.download);
-      } catch (error) {
-          showToast("Failed to download: " + (error as Error).message, "error");
+    try {
+      const downloadUrl = await getDownloadUrls(preloadAPI, torrentId);
+      if (!downloadUrl.download) {
+        throw new Error("No valid download link found.");
       }
+      await preloadAPI.openExternal(downloadUrl.download);
+    } catch (error) {
+      showToast("Failed to download: " + (error as Error).message, "error");
+    }
   };
 
   const handleCopyLink = async (torrentId: string) => {
-      try {
-          const downloadUrl = await getDownloadUrls(preloadAPI, torrentId);
-          if (!downloadUrl.download) {
-              throw new Error("No valid download link found.");
-          }
-          await navigator.clipboard.writeText(downloadUrl.download);
-          showToast("Direct download link copied to clipboard!");
-      } catch (error) {
-          showToast("Failed to copy link: " + (error as Error).message, "error");
+    try {
+      const downloadUrl = await getDownloadUrls(preloadAPI, torrentId);
+      if (!downloadUrl.download) {
+        throw new Error("No valid download link found.");
       }
+      await navigator.clipboard.writeText(downloadUrl.download);
+      showToast("Direct download link copied to clipboard!");
+    } catch (error) {
+      showToast("Failed to copy link: " + (error as Error).message, "error");
+    }
   };
 
   const handleDelete = async (torrentId: string) => {
@@ -141,8 +144,8 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
-      {/* Fixed App Header */}
+    <div className="min-h-screen bg-canvas text-ink flex flex-col">
+      {/* Top Navigation */}
       <Header
         loading={loading}
         searchQuery={searchQuery}
@@ -158,28 +161,32 @@ export default function App() {
         hasApiToken={hasApiToken}
       />
 
-      {/* Main Content Area */}
-      <main className="container mx-auto px-4 py-6 flex-1 max-w-6xl">
-        {/* Notification Toast */}
+      {/* Main Editorial Workspace */}
+      <main className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-8 sm:px-6 sm:py-10">
+        {/* Notification Banner */}
         {notification && (
           <div
-            className={`mb-4 p-3 rounded-xl border text-xs flex items-center justify-between gap-2 shadow-sm animate-in fade-in slide-in-from-top-2 ${
+            className={`mb-6 flex items-center justify-between gap-3 rounded-[8px] border bg-surface-card px-4 py-3 text-[13px] animate-in fade-in slide-in-from-top-1 ${
               notification.type === "error"
-                ? "bg-destructive/15 border-destructive/30 text-destructive"
-                : "bg-emerald-500/15 border-emerald-500/30 text-emerald-600 dark:text-emerald-400"
+                ? "border-semantic-error/40 text-semantic-error"
+                : "border-semantic-success/40 text-semantic-success"
             }`}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               {notification.type === "error" ? (
-                <WarningIcon size={16} />
+                <WarningCircleIcon size={17} weight="fill" />
               ) : (
-                <CheckCircleIcon size={16} />
+                <CheckCircleIcon size={17} weight="fill" />
               )}
-              <span className="font-medium">{notification.message}</span>
+              <span className="font-medium text-ink">
+                {notification.message}
+              </span>
             </div>
             <button
+              type="button"
               onClick={() => setNotification(null)}
-              className="p-1 hover:opacity-70 rounded-lg text-muted-foreground hover:text-foreground"
+              className="rounded-[6px] p-1 text-muted-text transition-colors hover:bg-canvas-soft hover:text-ink cursor-pointer"
+              aria-label="Dismiss notification"
             >
               <XIcon size={14} />
             </button>
@@ -215,6 +222,31 @@ export default function App() {
           />
         )}
       </main>
+
+      {/* Editorial Footer */}
+      <footer className="border-t border-hairline bg-canvas">
+        <div className="mx-auto flex max-w-[1200px] flex-col sm:flex-row items-center justify-between gap-3 px-4 py-6 sm:px-6 typo-body-sm text-body">
+          <div className="flex items-center gap-2">
+            <span className="font-medium text-ink">RD Browser</span>
+            <span className="text-hairline-strong">·</span>
+            <span className="text-muted-text">
+              Real-Debrid Cloud Transfer Client
+            </span>
+          </div>
+          <div className="flex items-center gap-3 font-mono text-[12px] text-muted-text">
+            <span className="inline-flex items-center gap-1.5">
+              <span
+                className={`size-2 rounded-full ${
+                  hasApiToken ? "bg-semantic-success" : "bg-primary"
+                }`}
+              />
+              {hasApiToken ? "API Connected" : "Awaiting Auth"}
+            </span>
+            <span className="text-hairline-strong">·</span>
+            <span>Press D to toggle theme</span>
+          </div>
+        </div>
+      </footer>
 
       {/* Global Dialogs */}
       <InputLinksDialog

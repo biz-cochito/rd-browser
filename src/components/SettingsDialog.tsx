@@ -68,29 +68,35 @@ export function SettingsDialog({
   useEffect(() => {
     if (!open) return;
 
-    setTesting(true);
-    setError(null);
-    setSuccessMessage(null);
-    setUserInfo(null);
+    let cancelled = false;
 
-    // Fetch current token directly from server to pick up any manual .env changes
+    Promise.resolve().then(() => {
+      if (cancelled) return;
+      setTesting(true);
+      setError(null);
+      setSuccessMessage(null);
+      setUserInfo(null);
+    });
+
     fetch("/api/getApiToken", { method: "POST" })
       .then((res) => res.json())
       .then((data) => {
+        if (cancelled) return;
         const serverToken = (data.result || "").trim();
         setApiToken(serverToken);
         if (serverToken) {
           localStorage.setItem("rd_api_token", serverToken);
-          // Test the token without writing it to server config
           preloadAPI
             .testApiToken(serverToken)
             .then((info) => {
+              if (cancelled) return;
               setUserInfo(info);
               setSuccessMessage(
                 `Connected as ${info.username} (${info.type.toUpperCase()})`,
               );
             })
             .catch((err) => {
+              if (cancelled) return;
               setError(
                 err instanceof Error
                   ? err.message
@@ -98,14 +104,14 @@ export function SettingsDialog({
               );
             })
             .finally(() => {
-              setTesting(false);
+              if (!cancelled) setTesting(false);
             });
         } else {
           setTesting(false);
         }
       })
       .catch(() => {
-        // Fallback to local storage if API request fails
+        if (cancelled) return;
         const localToken = preloadAPI.getApiToken() || "";
         setApiToken(localToken);
         if (localToken) {
@@ -114,6 +120,10 @@ export function SettingsDialog({
           setTesting(false);
         }
       });
+
+    return () => {
+      cancelled = true;
+    };
   }, [open, testToken]);
 
   const handleSave = () => {
@@ -125,36 +135,46 @@ export function SettingsDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-lg">
-            <GearIcon size={20} className="text-primary" />
-            Real-Debrid Settings
+        <DialogHeader className="space-y-1.5">
+          <div className="flex items-center gap-2">
+            <span className="badge-pill">Configuration</span>
+          </div>
+          <DialogTitle className="flex items-center gap-2">
+            <GearIcon size={20} className="text-ink" />
+            <span>Real-Debrid Settings</span>
           </DialogTitle>
           <DialogDescription>
-            Configure your Real-Debrid API token to access your account
-            downloads and torrents.
+            Configure your personal Real-Debrid API token to authenticate
+            requests and unrestrict links.
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4 my-2">
+        <div className="space-y-4">
           <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-              <span>API Token</span>
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor="rd-api-token"
+                className="typo-caption-uppercase text-muted-text"
+              >
+                API Token
+              </label>
               <a
                 href="https://real-debrid.com/apitoken"
                 target="_blank"
                 rel="noreferrer"
-                className="text-primary hover:underline flex items-center gap-1 normal-case font-normal"
+                className="inline-flex items-center gap-1 font-mono text-[12px] text-ink underline underline-offset-3 hover:text-primary"
               >
-                Get API token <ArrowSquareOutIcon size={12} />
+                real-debrid.com/apitoken
+                <ArrowSquareOutIcon size={12} />
               </a>
-            </label>
+            </div>
             <div className="relative flex items-center">
               <KeyIcon
                 size={16}
-                className="absolute left-3 text-muted-foreground"
+                className="pointer-events-none absolute left-3.5 text-muted-text"
               />
               <Input
+                id="rd-api-token"
                 type="password"
                 value={apiToken}
                 onChange={(e) => {
@@ -162,8 +182,8 @@ export function SettingsDialog({
                   setError(null);
                   setSuccessMessage(null);
                 }}
-                placeholder="Paste your Real-Debrid API token here"
-                className="w-full h-10 pl-9 pr-24 rounded-lg border-input bg-background font-mono text-xs"
+                placeholder="Paste your Real-Debrid API token..."
+                className="h-11 w-full bg-canvas-soft pl-10 pr-20 font-mono text-[13px]"
               />
               <Button
                 type="button"
@@ -171,40 +191,65 @@ export function SettingsDialog({
                 size="xs"
                 onClick={() => testToken(apiToken)}
                 disabled={testing || !apiToken.trim()}
-                className="absolute right-1.5 h-7 px-2.5 text-xs"
+                className="absolute right-2"
               >
                 {testing ? (
-                  <CircleNotchIcon size={14} className="animate-spin" />
+                  <CircleNotchIcon size={13} className="animate-spin" />
                 ) : (
-                  "Test"
+                  "Verify"
                 )}
               </Button>
             </div>
           </div>
 
           {error && (
-            <div className="rounded-lg bg-destructive/15 border border-destructive/30 p-3 text-xs text-destructive flex items-center gap-2">
+            <div className="flex items-center gap-2 rounded-[8px] border border-semantic-error/30 bg-semantic-error/8 p-3 text-[13px] text-semantic-error">
               <XCircleIcon size={16} className="shrink-0" />
               <span>{error}</span>
             </div>
           )}
 
           {successMessage && userInfo && (
-            <div className="rounded-lg bg-emerald-500/10 border border-emerald-500/20 p-3 text-xs text-emerald-600 dark:text-emerald-400 space-y-1">
-              <div className="flex items-center gap-2 font-medium">
-                <CheckCircleIcon size={16} className="shrink-0" />
-                <span>{successMessage}</span>
+            <div className="rounded-[8px] border border-hairline bg-canvas-soft p-4 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-[13px] font-medium text-semantic-success">
+                  <CheckCircleIcon size={16} weight="fill" className="shrink-0" />
+                  <span>{successMessage}</span>
+                </div>
+                <span className="timeline-pill timeline-pill-grep">
+                  Verified
+                </span>
               </div>
-              <div className="text-[11px] opacity-80 pl-6">
-                Email: {userInfo.email} | Points: {userInfo.points} | Expires:{" "}
-                {new Date(userInfo.expiration).toLocaleDateString()}
+              <div className="grid grid-cols-3 gap-2 border-t border-hairline-soft pt-2.5 font-mono text-[12px]">
+                <div>
+                  <span className="block text-[10px] uppercase text-muted-text">
+                    Email
+                  </span>
+                  <span className="truncate block text-ink">
+                    {userInfo.email}
+                  </span>
+                </div>
+                <div>
+                  <span className="block text-[10px] uppercase text-muted-text">
+                    Fidelity
+                  </span>
+                  <span className="text-ink">{userInfo.points} pts</span>
+                </div>
+                <div>
+                  <span className="block text-[10px] uppercase text-muted-text">
+                    Expires
+                  </span>
+                  <span className="text-ink">
+                    {new Date(userInfo.expiration).toISOString().slice(0, 10)}
+                  </span>
+                </div>
               </div>
             </div>
           )}
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button variant="secondary" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
           <Button onClick={handleSave}>Save Token</Button>

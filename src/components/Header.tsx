@@ -1,12 +1,13 @@
 import {
-    PlusIcon,
-    GearIcon,
-    ArrowsClockwiseIcon,
-    MagnifyingGlassIcon,
-    SunIcon,
-    MoonIcon,
-    BookmarkIcon,
-    ListDashesIcon,
+  PlusIcon,
+  GearIcon,
+  ArrowsClockwiseIcon,
+  MagnifyingGlassIcon,
+  SunIcon,
+  MoonIcon,
+  BookmarkSimpleIcon,
+  HardDrivesIcon,
+  CheckIcon,
 } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,197 +16,230 @@ import { useTheme } from "@/components/theme-provider";
 import { AppIcon } from "@/components/AppIcon";
 
 interface HeaderProps {
-    loading: boolean;
-    searchQuery: string;
-    showCompletedOnly: boolean;
-    activeTab?: "torrents" | "bookmarks";
-    bookmarkCount?: number;
-    onTabChange?: (tab: "torrents" | "bookmarks") => void;
-    onSearchChange: (query: string) => void;
-    onShowCompletedOnlyChange: (show: boolean) => void;
-    onRefresh: () => void;
-    onOpenAddModal: () => void;
-    onOpenSettingsModal: () => void;
-    hasApiToken: boolean;
+  loading: boolean;
+  searchQuery: string;
+  showCompletedOnly: boolean;
+  activeTab?: "torrents" | "bookmarks";
+  bookmarkCount?: number;
+  onTabChange?: (tab: "torrents" | "bookmarks") => void;
+  onSearchChange: (query: string) => void;
+  onShowCompletedOnlyChange: (show: boolean) => void;
+  onRefresh: () => void;
+  onOpenAddModal: () => void;
+  onOpenSettingsModal: () => void;
+  hasApiToken: boolean;
 }
 
 export function Header({
-    loading,
-    searchQuery,
-    showCompletedOnly,
-    activeTab = "torrents",
-    bookmarkCount = 0,
-    onTabChange,
-    onSearchChange,
-    onShowCompletedOnlyChange,
-    onRefresh,
-    onOpenAddModal,
-    onOpenSettingsModal,
-    hasApiToken,
+  loading,
+  searchQuery,
+  showCompletedOnly,
+  activeTab = "torrents",
+  bookmarkCount = 0,
+  onTabChange,
+  onSearchChange,
+  onShowCompletedOnlyChange,
+  onRefresh,
+  onOpenAddModal,
+  onOpenSettingsModal,
+  hasApiToken,
 }: HeaderProps) {
-    const { theme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
-    const toggleTheme = () => {
-        setTheme(theme === "dark" ? "light" : "dark");
-    };
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
 
-    return (
-        <header className="sticky top-0 z-30 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4">
-                {/* Brand Logo & Name */}
-                <div className="flex items-center gap-3 font-semibold text-lg tracking-tight">
-                    <div className="flex items-center gap-2.5">
-                        <AppIcon size={34} />
-                        <span className="font-bold text-foreground tracking-tight hidden xs:inline">
-                            RD Browser
-                        </span>
-                    </div>
-
-                    {/* Navigation Tabs */}
-                    {onTabChange && (
-                        <nav className="flex items-center gap-1 bg-muted/60 p-1 rounded-xl border border-border/60 ml-2">
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => onTabChange("torrents")}
-                                aria-current={activeTab === "torrents" ? "page" : undefined}
-                                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all ${
-                                    activeTab === "torrents"
-                                        ? "bg-card text-foreground border border-border shadow-2xs"
-                                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                                }`}
-                            >
-                                <ListDashesIcon size={16} />
-                                <span>Torrents</span>
-                            </Button>
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => onTabChange("bookmarks")}
-                                aria-current={activeTab === "bookmarks" ? "page" : undefined}
-                                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all relative ${
-                                    activeTab === "bookmarks"
-                                        ? "bg-card text-foreground border border-border shadow-2xs"
-                                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                                }`}
-                            >
-                                <BookmarkIcon size={16} weight={bookmarkCount > 0 ? "fill" : "regular"} className={bookmarkCount > 0 ? "text-violet-300" : ""} />
-                                <span>Bookmarks</span>
-                                {bookmarkCount > 0 && (
-                                    <span className="ml-0.5 px-1.5 py-0.2 rounded-full bg-violet-500/15 text-violet-300 border border-violet-500/20 text-[10px] font-semibold">
-                                        {bookmarkCount}
-                                    </span>
-                                )}
-                            </Button>
-                        </nav>
-                    )}
-                </div>
-
-                {/* Search Bar & Filters */}
-                <div className="flex-1 max-w-md hidden sm:flex items-center gap-3">
-                    <div className="relative flex-1">
-                        <MagnifyingGlassIcon
-                            size={18}
-                            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                        />
-                        <Input
-                            type="text"
-                            placeholder="Search torrents..."
-                            value={searchQuery}
-                            onChange={(e) => onSearchChange(e.target.value)}
-                            className="w-full h-9 pl-9 pr-4 rounded-full border border-input bg-muted/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:bg-background transition-all"
-                        />
-                    </div>
-                    <label className="flex shrink-0 items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
-                        <input
-                            type="checkbox"
-                            checked={showCompletedOnly}
-                            onChange={(e) => onShowCompletedOnlyChange(e.target.checked)}
-                            className="rounded border-input bg-muted accent-primary cursor-pointer w-3.5 h-3.5"
-                        />
-                        Show only completed
-                    </label>
-                </div>
-
-                {/* Actions */}
-                <div className="flex items-center gap-2">
-                    <Button
-                        variant="default"
-                        size="sm"
-                        onClick={onOpenAddModal}
-                        className="gap-1.5 font-medium shadow-sm"
-                    >
-                        <PlusIcon size={18} weight="bold" />
-                        <span className="hidden xs:inline">Add Links</span>
-                    </Button>
-
-                    <ButtonGroup orientation="horizontal">
-                        <Button
-                            variant="outline"
-                            size="icon-sm"
-                            onClick={onRefresh}
-                            disabled={loading}
-                            title="Refresh list"
-                        >
-                            <ArrowsClockwiseIcon
-                                size={18}
-                                className={loading ? "animate-spin text-primary" : ""}
-                            />
-                        </Button>
-
-                        <Button
-                            variant="outline"
-                            size="icon-sm"
-                            onClick={onOpenSettingsModal}
-                            title="Settings"
-                            className={!hasApiToken ? "border-destructive text-destructive animate-pulse" : ""}
-                        >
-                            <GearIcon size={18} />
-                        </Button>
-
-                        <Button
-                            variant="outline"
-                            size="icon-sm"
-                            onClick={toggleTheme}
-                            title="Toggle theme"
-                        >
-                            {theme === "dark" ? (
-                                <SunIcon size={18} className="text-amber-400" />
-                            ) : (
-                                <MoonIcon size={18} className="text-slate-700" />
-                            )}
-                        </Button>
-                    </ButtonGroup>
-                </div>
+  return (
+    <header className="sticky top-0 z-30 w-full border-b border-hairline bg-canvas/95 backdrop-blur-xs">
+      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-4 px-4 sm:px-6">
+        {/* Left: Brand Wordmark & Primary Nav */}
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2.5">
+            <AppIcon size={30} />
+            <div className="hidden xs:flex items-baseline gap-2">
+              <span className="text-[17px] font-normal tracking-[-0.35px] text-ink">
+                RD Browser
+              </span>
+              <span className="hidden md:inline-block font-mono text-[11px] text-muted-text">
+                v2.0
+              </span>
             </div>
+          </div>
 
-            {/* Mobile Search Bar & Filters */}
-            <div className="px-4 pb-3 sm:hidden space-y-2">
-                <div className="relative w-full">
-                    <MagnifyingGlassIcon
-                        size={18}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                    />
-                    <Input
-                        type="text"
-                        placeholder="Search torrents..."
-                        value={searchQuery}
-                        onChange={(e) => onSearchChange(e.target.value)}
-                        className="w-full h-9 pl-9 pr-4 rounded-full border border-input bg-muted/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:bg-background transition-all"
-                    />
-                </div>
-                <div className="flex justify-end px-1">
-                    <label className="flex shrink-0 items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
-                        <input
-                            type="checkbox"
-                            checked={showCompletedOnly}
-                            onChange={(e) => onShowCompletedOnlyChange(e.target.checked)}
-                            className="rounded border-input bg-muted accent-primary cursor-pointer w-3.5 h-3.5"
-                        />
-                        Show only completed
-                    </label>
-                </div>
-            </div>
-        </header>
-    );
+          {onTabChange && (
+            <nav
+              aria-label="Primary navigation"
+              className="flex items-center gap-1 border-l border-hairline pl-4 sm:pl-6"
+            >
+              <button
+                type="button"
+                onClick={() => onTabChange("torrents")}
+                aria-current={activeTab === "torrents" ? "page" : undefined}
+                className={`typo-nav-link inline-flex items-center gap-1.5 rounded-[8px] px-3 py-1.5 transition-colors cursor-pointer ${
+                  activeTab === "torrents"
+                    ? "bg-surface-card text-ink border border-hairline"
+                    : "text-body hover:text-ink hover:bg-surface-strong/40 border border-transparent"
+                }`}
+              >
+                <HardDrivesIcon size={15} />
+                <span>Torrents</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onTabChange("bookmarks")}
+                aria-current={activeTab === "bookmarks" ? "page" : undefined}
+                className={`typo-nav-link inline-flex items-center gap-1.5 rounded-[8px] px-3 py-1.5 transition-colors cursor-pointer ${
+                  activeTab === "bookmarks"
+                    ? "bg-surface-card text-ink border border-hairline"
+                    : "text-body hover:text-ink hover:bg-surface-strong/40 border border-transparent"
+                }`}
+              >
+                <BookmarkSimpleIcon
+                  size={15}
+                  weight={bookmarkCount > 0 ? "fill" : "regular"}
+                />
+                <span>Bookmarks</span>
+                {bookmarkCount > 0 && (
+                  <span className="ml-0.5 rounded-full bg-surface-strong px-2 py-0.5 font-mono text-[11px] font-semibold leading-none text-ink">
+                    {bookmarkCount}
+                  </span>
+                )}
+              </button>
+            </nav>
+          )}
+        </div>
+
+        {/* Center: Search & Filter */}
+        <div className="hidden flex-1 max-w-md lg:flex items-center gap-2.5">
+          <div className="relative flex-1">
+            <MagnifyingGlassIcon
+              size={15}
+              className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-text"
+            />
+            <Input
+              type="text"
+              placeholder="Filter by filename or hash..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="h-9 w-full rounded-[8px] border-hairline bg-surface-card pl-9 pr-3 font-mono text-[13px] text-ink placeholder:font-sans placeholder:text-muted-soft focus-visible:border-hairline-strong"
+            />
+          </div>
+
+          <button
+            type="button"
+            onClick={() => onShowCompletedOnlyChange(!showCompletedOnly)}
+            aria-pressed={showCompletedOnly}
+            className={`inline-flex h-9 shrink-0 items-center gap-1.5 rounded-[8px] border px-3 text-[13px] font-medium transition-colors cursor-pointer ${
+              showCompletedOnly
+                ? "border-ink bg-ink text-canvas"
+                : "border-hairline bg-surface-card text-body hover:border-hairline-strong hover:text-ink"
+            }`}
+            title="Show only downloaded torrents"
+          >
+            <span
+              className={`flex size-3.5 items-center justify-center rounded-[4px] border ${
+                showCompletedOnly
+                  ? "border-canvas bg-canvas text-ink"
+                  : "border-hairline-strong bg-transparent"
+              }`}
+            >
+              {showCompletedOnly && <CheckIcon size={10} weight="bold" />}
+            </span>
+            <span>Ready only</span>
+          </button>
+        </div>
+
+        {/* Right: Primary CTA & Utility Controls */}
+        <div className="flex items-center gap-2">
+          <Button
+            variant="default"
+            onClick={onOpenAddModal}
+            className="h-9 px-3.5 sm:h-10 sm:px-[18px]"
+          >
+            <PlusIcon size={15} weight="bold" />
+            <span className="hidden xs:inline">Add Links</span>
+          </Button>
+
+          <ButtonGroup orientation="horizontal">
+            <Button
+              variant="outline"
+              size="icon-sm"
+              onClick={onRefresh}
+              disabled={loading}
+              title="Refresh torrents"
+              className="h-9 w-9 sm:h-10 sm:w-10"
+            >
+              <ArrowsClockwiseIcon
+                size={16}
+                className={loading ? "animate-spin text-primary" : "text-ink"}
+              />
+            </Button>
+
+            <Button
+              variant="outline"
+              size="icon-sm"
+              onClick={onOpenSettingsModal}
+              title="Real-Debrid API Settings"
+              className={`h-9 w-9 sm:h-10 sm:w-10 relative ${
+                !hasApiToken ? "border-primary text-primary" : ""
+              }`}
+            >
+              <GearIcon size={16} />
+              {!hasApiToken && (
+                <span className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-primary" />
+              )}
+            </Button>
+
+            <Button
+              variant="outline"
+              size="icon-sm"
+              onClick={toggleTheme}
+              title="Toggle appearance (D)"
+              className="h-9 w-9 sm:h-10 sm:w-10"
+            >
+              {theme === "dark" ? (
+                <SunIcon size={16} className="text-ink" />
+              ) : (
+                <MoonIcon size={16} className="text-ink" />
+              )}
+            </Button>
+          </ButtonGroup>
+        </div>
+      </div>
+
+      {/* Tablet / Mobile Search & Filter Bar */}
+      <div className="border-t border-hairline-soft bg-canvas px-4 py-2.5 lg:hidden">
+        <div className="mx-auto flex max-w-[1200px] items-center gap-2">
+          <div className="relative flex-1">
+            <MagnifyingGlassIcon
+              size={15}
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-text"
+            />
+            <Input
+              type="text"
+              placeholder="Filter by filename or hash..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="h-9 w-full rounded-[8px] border-hairline bg-surface-card pl-9 pr-3 font-mono text-[13px]"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={() => onShowCompletedOnlyChange(!showCompletedOnly)}
+            aria-pressed={showCompletedOnly}
+            className={`inline-flex h-9 shrink-0 items-center gap-1.5 rounded-[8px] border px-3 text-[12px] font-medium transition-colors cursor-pointer ${
+              showCompletedOnly
+                ? "border-ink bg-ink text-canvas"
+                : "border-hairline bg-surface-card text-body hover:text-ink"
+            }`}
+          >
+            <CheckIcon size={12} weight="bold" />
+            <span>Ready</span>
+          </button>
+        </div>
+      </div>
+    </header>
+  );
 }

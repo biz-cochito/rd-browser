@@ -3,17 +3,17 @@ import {
   DownloadSimpleIcon,
   CopyIcon,
   TrashIcon,
-  FolderIcon,
+  FolderOpenIcon,
   CheckCircleIcon,
   XCircleIcon,
   CircleNotchIcon,
   ListChecksIcon,
   CheckIcon,
-  BookmarkIcon,
+  BookmarkSimpleIcon,
+  PlayIcon,
 } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import type { Torrent } from "@/types/torrent";
-import { ButtonGroup } from "./ui/button-group";
 
 interface TorrentRowProps {
   torrent: Torrent;
@@ -34,10 +34,57 @@ function formatBytes(bytes?: number): string {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
 }
 
+function getStatusTimelinePill(status?: string, progress?: number) {
+  switch (status) {
+    case "downloaded":
+      return {
+        className: "timeline-pill timeline-pill-grep",
+        label: "Ready",
+      };
+    case "downloading":
+    case "uploading":
+      return {
+        className: "timeline-pill timeline-pill-read",
+        label: `Reading ${progress ?? 0}%`,
+      };
+    case "compressing":
+      return {
+        className: "timeline-pill timeline-pill-edit",
+        label: "Packing",
+      };
+    case "waiting_files_selection":
+      return {
+        className: "timeline-pill timeline-pill-edit",
+        label: "Select Files",
+      };
+    case "magnet_conversion":
+    case "queued":
+      return {
+        className: "timeline-pill timeline-pill-thinking",
+        label: "Thinking",
+      };
+    case "error":
+    case "magnet_error":
+    case "virus":
+    case "dead":
+      return {
+        className:
+          "timeline-pill bg-semantic-error/15 text-semantic-error border border-semantic-error/30",
+        label: status.replace("_", " "),
+      };
+    default:
+      return {
+        className: "timeline-pill timeline-pill-done",
+        label: status || "Done",
+      };
+  }
+}
+
 export function TorrentRow({
   torrent,
   isBookmarked = false,
   onToggleBookmark,
+  onPlay,
   onShowDetails,
   onDownload,
   onDelete,
@@ -53,7 +100,9 @@ export function TorrentRow({
 
   const isDownloaded = torrent.status === "downloaded";
   const isDownloading =
-    torrent.status === "downloading" || torrent.status === "compressing";
+    torrent.status === "downloading" ||
+    torrent.status === "compressing" ||
+    torrent.status === "uploading";
   const isWaiting = torrent.status === "waiting_files_selection";
   const isError =
     torrent.status?.includes("error") ||
@@ -61,92 +110,98 @@ export function TorrentRow({
     torrent.status === "dead";
 
   const progress = torrent.progress ?? (isDownloaded ? 100 : 0);
+  const pill = getStatusTimelinePill(torrent.status, progress);
 
   return (
-    <div className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-border/80 bg-card p-4 transition-all duration-200 hover:border-zinc-700 hover:shadow-2xs">
-      {/* Left: Status Icon & Metadata */}
+    <div className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-[12px] border border-hairline bg-surface-card p-4 transition-colors hover:border-hairline-strong">
+      {/* Left: Status Indicator & Editorial / Code Metadata */}
       <div className="flex min-w-0 flex-1 items-start gap-3.5">
-        <Button
+        <button
           type="button"
-          variant="ghost"
-          size="icon"
           onClick={() => onShowDetails(torrent.id)}
-          className={`mt-0.5 shrink-0 rounded-xl p-1 transition-all shadow-2xs ${
-            isDownloaded
-              ? "bg-emerald-950/40 text-emerald-300 border border-emerald-800/40 hover:bg-emerald-900/40"
-              : isDownloading
-                ? "bg-zinc-800/80 text-zinc-200 border border-zinc-700/80 hover:bg-zinc-700/80"
-                : isWaiting
-                  ? "bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700/80"
-                  : isError
-                    ? "bg-rose-950/40 text-rose-300 border border-rose-800/40 hover:bg-rose-900/40"
-                    : "bg-zinc-900 text-zinc-400 border border-zinc-800 hover:bg-zinc-800 hover:text-zinc-200"
-          }`}
-          title={
-            isDownloaded
-              ? "Ready (Click to View Files)"
-              : isDownloading
-                ? `Downloading (${progress}%)`
-                : isWaiting
-                  ? "Select Files"
-                  : isError
-                    ? torrent.status || "Error"
-                    : "View torrent files"
-          }
+          className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-[8px] border border-hairline bg-canvas-soft text-ink transition-colors hover:border-hairline-strong cursor-pointer"
+          title="Inspect torrent files"
         >
           {isDownloaded ? (
-            <CheckCircleIcon size={32} weight="fill" />
+            <CheckCircleIcon
+              size={20}
+              weight="fill"
+              className="text-semantic-success"
+            />
           ) : isDownloading ? (
-            <CircleNotchIcon size={32} className="animate-spin" />
+            <CircleNotchIcon size={20} className="animate-spin text-ink" />
           ) : isWaiting ? (
-            <ListChecksIcon size={32} />
+            <ListChecksIcon size={20} className="text-ink" />
           ) : isError ? (
-            <XCircleIcon size={32} weight="fill" />
+            <XCircleIcon
+              size={20}
+              weight="fill"
+              className="text-semantic-error"
+            />
           ) : (
-            <FolderIcon size={32} />
+            <FolderOpenIcon size={20} className="text-body" />
           )}
-        </Button>
+        </button>
 
-        <div className="min-w-0 flex-1 space-y-1">
-          <Button
+        <div className="min-w-0 flex-1 space-y-1.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className={pill.className}>{pill.label}</span>
+            <span className="rounded-[4px] border border-hairline-soft bg-canvas-soft px-1.5 py-0.5 font-mono text-[11px] text-muted-text">
+              #{torrent.id.slice(0, 8)}
+            </span>
+          </div>
+
+          <button
             type="button"
-            variant="ghost"
-            size="sm"
             onClick={() => onShowDetails(torrent.id)}
-            className="h-auto w-full justify-start px-0 text-left text-sm font-medium text-foreground whitespace-normal transition-colors hover:text-zinc-300 leading-snug break-all"
+            className="block w-full text-left text-[15px] font-medium leading-[1.4] text-ink transition-colors hover:text-primary break-all cursor-pointer"
             title={torrent.filename || torrent.id}
           >
             {torrent.filename || "Untitled Torrent"}
-          </Button>
+          </button>
 
-          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[12px] text-muted-text">
             {torrent.bytes ? (
-              <span className="font-medium text-foreground/80">
+              <span className="text-body font-medium">
                 {formatBytes(torrent.bytes)}
               </span>
             ) : null}
-            {torrent.bytes && torrent.added ? (
-              <span className="text-muted-foreground/40">•</span>
-            ) : null}
+
             {torrent.added ? (
-              <span>{new Date(torrent.added).toLocaleDateString()}</span>
+              <>
+                <span className="text-hairline-strong">·</span>
+                <span>
+                  {new Date(torrent.added).toISOString().slice(0, 10)}
+                </span>
+              </>
             ) : null}
+
+            {torrent.links && torrent.links.length > 0 ? (
+              <>
+                <span className="text-hairline-strong">·</span>
+                <span>
+                  {torrent.links.length}{" "}
+                  {torrent.links.length === 1 ? "file" : "files"}
+                </span>
+              </>
+            ) : null}
+
             {torrent.speed ? (
               <>
-                <span className="text-muted-foreground/40">•</span>
-                <span className="font-mono font-medium text-zinc-300">
+                <span className="text-hairline-strong">·</span>
+                <span className="text-ink font-medium">
                   {formatBytes(torrent.speed)}/s
                 </span>
               </>
             ) : null}
           </div>
 
-          {/* Download Progress Bar */}
+          {/* Active Download Progress Bar */}
           {isDownloading && (
-            <div className="w-full max-w-xs space-y-1 pt-1">
-              <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
+            <div className="w-full max-w-sm pt-1">
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-strong">
                 <div
-                  className="h-full rounded-full bg-zinc-400 transition-all duration-300"
+                  className="h-full rounded-full bg-ink transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -156,79 +211,88 @@ export function TorrentRow({
       </div>
 
       {/* Right: Actions */}
-      <div className="flex flex-wrap sm:flex-nowrap shrink-0 items-center justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-border/40">
-        <div className="flex items-center gap-2">
-          {/* Main Action: View Files */}
+      <div className="flex flex-wrap sm:flex-nowrap shrink-0 items-center justify-end gap-2 pt-3 sm:pt-0 border-t sm:border-t-0 border-hairline-soft">
+        {isDownloaded && onPlay && (
           <Button
-            variant="secondary"
+            variant="outline"
             size="sm"
-            onClick={() => onShowDetails(torrent.id)}
-            className="gap-2 px-2.5 h-8 font-medium bg-zinc-900/60 hover:bg-zinc-700/80 text-zinc-200 border border-zinc-700/80 hover:border-zinc-600 transition-colors rounded-lg"
-            title="View Files & Details"
+            onClick={() => onPlay(torrent.id)}
+            className="h-8 gap-1.5 px-3 text-[13px]"
+            title="Stream primary file"
           >
-            <FolderIcon size={16} className="text-zinc-400" />
-            <span>Files</span>
+            <PlayIcon size={14} weight="fill" />
+            <span>Stream</span>
           </Button>
+        )}
 
-          {/* Auxiliary Actions Group */}
-          <ButtonGroup className="bg-zinc-900/60 rounded-lg p-0.5 border border-zinc-800">
-            {onToggleBookmark && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => onToggleBookmark(torrent)}
-                title={isBookmarked ? "Remove Bookmark" : "Bookmark Torrent"}
-                className={`h-8 px-2.5 rounded-md transition-all ${
-                  isBookmarked
-                    ? "text-violet-300 bg-violet-500/10 border border-violet-500/20"
-                    : "text-muted-foreground hover:text-foreground hover:bg-zinc-800/60"
-                }`}
-              >
-                <BookmarkIcon
-                  size={16}
-                  weight={isBookmarked ? "fill" : "regular"}
-                />
-              </Button>
-            )}
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => onShowDetails(torrent.id)}
+          className="h-8 gap-1.5 px-3 text-[13px]"
+          title="View Files & Details"
+        >
+          <FolderOpenIcon size={15} className="text-body" />
+          <span>Files</span>
+        </Button>
 
-            {isDownloaded && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => onDownload(torrent.id)}
-                title="Download File"
-                className="h-8 px-2.5 text-muted-foreground hover:text-foreground hover:bg-zinc-800/60 rounded-md"
-              >
-                <DownloadSimpleIcon size={16} />
-              </Button>
-            )}
-
-            {isDownloaded && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleCopy}
-                title="Copy Download Link"
-                className="h-8 px-2.5 text-muted-foreground hover:text-foreground hover:bg-zinc-800/60 rounded-md"
-              >
-                {copied ? (
-                  <CheckIcon size={16} className="text-emerald-400" />
-                ) : (
-                  <CopyIcon size={16} />
-                )}
-              </Button>
-            )}
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onDelete(torrent.id)}
-              className="h-8 px-2.5 text-muted-foreground hover:bg-rose-950/40 hover:text-rose-300 rounded-md"
-              title="Delete Torrent"
+        <div className="inline-flex items-center rounded-[8px] border border-hairline bg-canvas-soft p-0.5">
+          {onToggleBookmark && (
+            <button
+              type="button"
+              onClick={() => onToggleBookmark(torrent)}
+              title={isBookmarked ? "Remove Bookmark" : "Bookmark Torrent"}
+              className={`inline-flex size-7 items-center justify-center rounded-[6px] transition-colors cursor-pointer ${
+                isBookmarked
+                  ? "bg-ink text-canvas"
+                  : "text-body hover:bg-surface-strong/60 hover:text-ink"
+              }`}
             >
-              <TrashIcon size={16} />
-            </Button>
-          </ButtonGroup>
+              <BookmarkSimpleIcon
+                size={15}
+                weight={isBookmarked ? "fill" : "regular"}
+              />
+            </button>
+          )}
+
+          {isDownloaded && (
+            <button
+              type="button"
+              onClick={() => onDownload(torrent.id)}
+              title="Download Direct File"
+              className="inline-flex size-7 items-center justify-center rounded-[6px] text-body transition-colors hover:bg-surface-strong/60 hover:text-ink cursor-pointer"
+            >
+              <DownloadSimpleIcon size={15} />
+            </button>
+          )}
+
+          {isDownloaded && (
+            <button
+              type="button"
+              onClick={handleCopy}
+              title="Copy Unrestrict Link"
+              className="inline-flex size-7 items-center justify-center rounded-[6px] text-body transition-colors hover:bg-surface-strong/60 hover:text-ink cursor-pointer"
+            >
+              {copied ? (
+                <CheckIcon
+                  size={15}
+                  weight="bold"
+                  className="text-semantic-success"
+                />
+              ) : (
+                <CopyIcon size={15} />
+              )}
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={() => onDelete(torrent.id)}
+            title="Delete Torrent"
+            className="inline-flex size-7 items-center justify-center rounded-[6px] text-body transition-colors hover:bg-semantic-error/12 hover:text-semantic-error cursor-pointer"
+          >
+            <TrashIcon size={15} />
+          </button>
         </div>
       </div>
     </div>

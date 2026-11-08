@@ -66,7 +66,9 @@ export function DeviceAuthCard({ onSuccess }: DeviceAuthCardProps) {
       const intervalMs = (data.interval || 5) * 1000;
       pollingRef.current = setInterval(async () => {
         try {
-          const creds = await preloadAPI.checkDeviceCredentials(data.device_code);
+          const creds = await preloadAPI.checkDeviceCredentials(
+            data.device_code,
+          );
           if (creds && creds.success && creds.token) {
             stopTimers();
             preloadAPI.setApiToken(creds.token);
@@ -114,119 +116,137 @@ export function DeviceAuthCard({ onSuccess }: DeviceAuthCardProps) {
     : "";
 
   return (
-    <div className="rounded-xl border border-border/60 bg-card p-6 shadow-xs space-y-6 max-w-md mx-auto">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 font-semibold text-base">
-          <QrCodeIcon size={22} className="text-primary" />
-          <span>VR & Quick Device Login</span>
+    <div className="mx-auto max-w-2xl overflow-hidden rounded-[12px] border border-hairline bg-surface-card">
+      {/* Top IDE-style pane bar */}
+      <div className="flex items-center justify-between border-b border-hairline bg-canvas-soft px-5 py-3.5">
+        <div className="flex items-center gap-2.5">
+          <QrCodeIcon size={18} className="text-ink" />
+          <span className="typo-title-sm text-ink">
+            Device & VR Quick Authorization
+          </span>
         </div>
         <Button
-          variant="ghost"
+          variant="outline"
           size="xs"
           onClick={startDeviceFlow}
           disabled={loading}
-          className="text-xs text-muted-foreground hover:text-foreground"
         >
           <ArrowClockwiseIcon
-            size={14}
+            size={13}
             className={loading ? "animate-spin" : ""}
           />
-          Refresh
+          <span>New Code</span>
         </Button>
       </div>
 
-      {loading && (
-        <div className="py-10 flex flex-col items-center justify-center space-y-3 text-muted-foreground">
-          <CircleNotchIcon size={32} className="animate-spin text-primary" />
-          <span className="text-sm">Requesting code from Real-Debrid...</span>
-        </div>
-      )}
-
-      {error && (
-        <div className="rounded-lg bg-destructive/15 border border-destructive/30 p-4 text-xs text-destructive space-y-2">
-          <div className="flex items-center gap-2 font-medium">
-            <XCircleIcon size={18} className="shrink-0" />
-            <span>{error}</span>
-          </div>
-          <Button
-            size="xs"
-            variant="outline"
-            onClick={startDeviceFlow}
-            className="mt-1 text-xs border-destructive/40 text-destructive hover:bg-destructive/10"
-          >
-            Try Again
-          </Button>
-        </div>
-      )}
-
-      {authorized && (
-        <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-6 text-center space-y-3">
-          <CheckCircleIcon size={40} className="mx-auto text-emerald-500" />
-          <div className="font-semibold text-emerald-600 dark:text-emerald-400 text-lg">
-            Successfully Authenticated!
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Your account has been connected. Loading your torrents...
-          </p>
-        </div>
-      )}
-
-      {!loading && !error && !authorized && deviceData && (
-        <div className="space-y-6 text-center">
-          {/* User Code */}
-          <div className="space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              1. User Code
+      <div className="p-6">
+        {loading && (
+          <div className="flex flex-col items-center justify-center space-y-3 py-12 text-body">
+            <CircleNotchIcon size={28} className="animate-spin text-ink" />
+            <span className="font-mono text-[13px]">
+              Requesting device token from Real-Debrid...
             </span>
-            <div className="font-mono text-3xl font-bold tracking-widest text-primary bg-primary/10 py-3 px-4 rounded-xl border border-primary/20 select-all">
-              {deviceData.user_code}
+          </div>
+        )}
+
+        {error && (
+          <div className="rounded-[8px] border border-semantic-error/30 bg-semantic-error/8 p-4 text-[13px] text-semantic-error space-y-3">
+            <div className="flex items-center gap-2 font-medium">
+              <XCircleIcon size={18} className="shrink-0" />
+              <span>{error}</span>
             </div>
+            <Button size="xs" variant="destructive" onClick={startDeviceFlow}>
+              Try Again
+            </Button>
           </div>
+        )}
 
-          {/* QR Code */}
-          <div className="space-y-3 flex flex-col items-center">
-            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              2. Scan QR Code on Phone
-            </span>
-            <div className="bg-white p-3 rounded-2xl shadow-inner border border-border inline-block">
-              <img
-                src={qrImageUrl}
-                alt="Real-Debrid Login QR Code"
-                className="w-48 h-48 object-contain"
-              />
-            </div>
-          </div>
-
-          {/* Instructions */}
-          <div className="text-xs text-muted-foreground space-y-2 bg-muted/40 p-3 rounded-lg text-left border border-border/40">
-            <div className="font-medium text-foreground">How to authorize:</div>
-            <ol className="list-decimal list-inside space-y-1 text-[11px] leading-relaxed">
-              <li>Scan the QR code above with your smartphone camera.</li>
-              <li>
-                Or visit{" "}
-                <a
-                  href={deviceData.verification_url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-primary underline font-mono inline-flex items-center gap-0.5"
-                >
-                  real-debrid.com/device <ArrowSquareOutIcon size={10} />
-                </a>{" "}
-                and enter code above.
-              </li>
-            </ol>
-          </div>
-
-          {/* Status Spinner */}
-          <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground pt-1">
-            <CircleNotchIcon
-              size={16}
-              className="animate-spin text-primary shrink-0"
+        {authorized && (
+          <div className="rounded-[12px] border border-semantic-success/30 bg-semantic-success/8 p-8 text-center space-y-3">
+            <CheckCircleIcon
+              size={36}
+              weight="fill"
+              className="mx-auto text-semantic-success"
             />
-            <span>Waiting for approval on phone/PC... ({timeLeft}s)</span>
+            <div className="typo-display-sm text-ink">
+              Device Authenticated
+            </div>
+            <p className="typo-body-sm text-body">
+              Your Real-Debrid account is connected. Synchronizing torrents...
+            </p>
           </div>
-        </div>
-      )}
+        )}
+
+        {!loading && !error && !authorized && deviceData && (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-center">
+            {/* Left pane: User Code & Steps */}
+            <div className="space-y-5">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="timeline-pill timeline-pill-thinking">
+                    Step 01
+                  </span>
+                  <span className="typo-caption-uppercase text-muted-text">
+                    Authorization Code
+                  </span>
+                </div>
+                <div className="rounded-[12px] border border-hairline bg-canvas-soft px-4 py-4 text-center font-mono text-[28px] font-medium tracking-[0.2em] text-ink select-all">
+                  {deviceData.user_code}
+                </div>
+              </div>
+
+              <div className="rounded-[8px] border border-hairline-soft bg-canvas-soft p-4 space-y-2.5">
+                <div className="typo-caption-uppercase text-ink">
+                  How to connect
+                </div>
+                <ol className="list-decimal list-inside space-y-1.5 text-[13px] text-body leading-relaxed">
+                  <li>Scan the QR code with your phone camera.</li>
+                  <li>
+                    Or open{" "}
+                    <a
+                      href={deviceData.verification_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-mono text-[12px] text-ink underline underline-offset-3 hover:text-primary inline-flex items-center gap-1"
+                    >
+                      real-debrid.com/device
+                      <ArrowSquareOutIcon size={11} />
+                    </a>{" "}
+                    and enter the code above.
+                  </li>
+                </ol>
+              </div>
+
+              <div className="flex items-center gap-2 font-mono text-[12px] text-muted-text">
+                <CircleNotchIcon
+                  size={14}
+                  className="animate-spin text-primary shrink-0"
+                />
+                <span>Awaiting confirmation ({timeLeft}s remaining)</span>
+              </div>
+            </div>
+
+            {/* Right pane: QR Code */}
+            <div className="flex flex-col items-center justify-center rounded-[12px] border border-hairline bg-canvas-soft p-6 space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="timeline-pill timeline-pill-read">
+                  Step 02
+                </span>
+                <span className="typo-caption-uppercase text-muted-text">
+                  Scan QR
+                </span>
+              </div>
+              <div className="rounded-[12px] border border-hairline bg-white p-3">
+                <img
+                  src={qrImageUrl}
+                  alt="Real-Debrid Login QR Code"
+                  className="size-44 object-contain"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
