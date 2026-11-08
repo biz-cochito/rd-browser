@@ -7,7 +7,6 @@ import {
   MoonIcon,
   BookmarkSimpleIcon,
   HardDrivesIcon,
-  CheckIcon,
 } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -112,7 +111,7 @@ export function Header({
         </div>
 
         {/* Center: Search & Filter */}
-        <div className="hidden flex-1 max-w-md lg:flex items-center gap-2.5">
+        <div className="hidden flex-1 max-w-md lg:flex items-center gap-3">
           <div className="relative flex-1">
             <MagnifyingGlassIcon
               size={15}
@@ -127,28 +126,15 @@ export function Header({
             />
           </div>
 
-          <button
-            type="button"
-            onClick={() => onShowCompletedOnlyChange(!showCompletedOnly)}
-            aria-pressed={showCompletedOnly}
-            className={`inline-flex h-9 shrink-0 items-center gap-1.5 rounded-[8px] border px-3 text-[13px] font-medium transition-colors cursor-pointer ${
-              showCompletedOnly
-                ? "border-ink bg-ink text-canvas"
-                : "border-hairline bg-surface-card text-body hover:border-hairline-strong hover:text-ink"
-            }`}
-            title="Show only downloaded torrents"
-          >
-            <span
-              className={`flex size-3.5 items-center justify-center rounded-[4px] border ${
-                showCompletedOnly
-                  ? "border-canvas bg-canvas text-ink"
-                  : "border-hairline-strong bg-transparent"
-              }`}
-            >
-              {showCompletedOnly && <CheckIcon size={10} weight="bold" />}
-            </span>
-            <span>Ready only</span>
-          </button>
+          <label className="flex shrink-0 items-center gap-2 text-[13px] text-body hover:text-ink cursor-pointer select-none transition-colors">
+            <input
+              type="checkbox"
+              checked={showCompletedOnly}
+              onChange={(e) => onShowCompletedOnlyChange(e.target.checked)}
+              className="size-4 rounded-[4px] border-hairline-strong bg-surface-card accent-primary cursor-pointer"
+            />
+            <span>Show only completed</span>
+          </label>
         </div>
 
         {/* Right: Primary CTA & Utility Controls */}
@@ -211,7 +197,7 @@ export function Header({
 
       {/* Tablet / Mobile Search & Filter Bar */}
       <div className="border-t border-hairline-soft bg-canvas px-4 py-2.5 lg:hidden">
-        <div className="mx-auto flex max-w-[1200px] items-center gap-2">
+        <div className="mx-auto flex max-w-[1200px] items-center gap-3">
           <div className="relative flex-1">
             <MagnifyingGlassIcon
               size={15}
@@ -225,19 +211,15 @@ export function Header({
               className="h-9 w-full rounded-[8px] border-hairline bg-surface-card pl-9 pr-3 font-mono text-[13px]"
             />
           </div>
-          <button
-            type="button"
-            onClick={() => onShowCompletedOnlyChange(!showCompletedOnly)}
-            aria-pressed={showCompletedOnly}
-            className={`inline-flex h-9 shrink-0 items-center gap-1.5 rounded-[8px] border px-3 text-[12px] font-medium transition-colors cursor-pointer ${
-              showCompletedOnly
-                ? "border-ink bg-ink text-canvas"
-                : "border-hairline bg-surface-card text-body hover:text-ink"
-            }`}
-          >
-            <CheckIcon size={12} weight="bold" />
-            <span>Ready</span>
-          </button>
+          <label className="flex shrink-0 items-center gap-1.5 text-[12px] text-body hover:text-ink cursor-pointer select-none transition-colors">
+            <input
+              type="checkbox"
+              checked={showCompletedOnly}
+              onChange={(e) => onShowCompletedOnlyChange(e.target.checked)}
+              className="size-3.5 rounded-[4px] border-hairline-strong bg-surface-card accent-primary cursor-pointer"
+            />
+            <span>Show only completed</span>
+          </label>
         </div>
       </div>
     </header>

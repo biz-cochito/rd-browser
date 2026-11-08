@@ -16,7 +16,7 @@ export default function App() {
     "torrents",
   );
   const [searchQuery, setSearchQuery] = useState("");
-  const [showCompletedOnly, setShowCompletedOnly] = useState(false);
+  const [showCompletedOnly, setShowCompletedOnly] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const { bookmarks } = useBookmarks();
