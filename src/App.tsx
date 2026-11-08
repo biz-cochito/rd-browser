@@ -162,7 +162,7 @@ export default function App() {
       />
 
       {/* Main Editorial Workspace */}
-      <main className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-8 sm:px-6 sm:py-10">
+      <main className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 sm:px-6">
         {/* Notification Banner */}
         {notification && (
           <div
@@ -174,9 +174,9 @@ export default function App() {
           >
             <div className="flex items-center gap-2.5">
               {notification.type === "error" ? (
-                <WarningCircleIcon size={17} weight="fill" />
+                <WarningCircleIcon size={24} weight="fill" />
               ) : (
-                <CheckCircleIcon size={17} weight="fill" />
+                <CheckCircleIcon size={24} weight="fill" />
               )}
               <span className="font-medium text-ink">
                 {notification.message}
@@ -188,7 +188,7 @@ export default function App() {
               className="rounded-[6px] p-1 text-muted-text transition-colors hover:bg-canvas-soft hover:text-ink cursor-pointer"
               aria-label="Dismiss notification"
             >
-              <XIcon size={14} />
+              <XIcon size={24} />
             </button>
           </div>
         )}
@@ -229,9 +229,6 @@ export default function App() {
           <div className="flex items-center gap-2">
             <span className="font-medium text-ink">RD Browser</span>
             <span className="text-hairline-strong">·</span>
-            <span className="text-muted-text">
-              Real-Debrid Cloud Transfer Client
-            </span>
           </div>
           <div className="flex items-center gap-3 font-mono text-[12px] text-muted-text">
             <span className="inline-flex items-center gap-1.5">

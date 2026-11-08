@@ -75,7 +75,7 @@
 }
 
 :root {
-  font-size: 16px;
+  font-size: 20px;
 
   /* DESIGN.md Brand & Accent */
   --primary: #f54e00;
@@ -137,14 +137,14 @@
   --primary-active: #d04200;
   --on-primary: #ffffff;
 
-  --canvas: #171612;
-  --canvas-soft: #1d1c17;
-  --surface-card: #21201b;
-  --surface-strong: #2e2c25;
+  --canvas: #121212;
+  --canvas-soft: #171717;
+  --surface-card: #212121;
+  --surface-strong: #2a2a2a;
 
-  --hairline: #2e2c25;
-  --hairline-soft: #26251f;
-  --hairline-strong: #454238;
+  --hairline: #2c2c2c;
+  --hairline-soft: #262626;
+  --hairline-strong: #454545;
 
   --ink: #f7f7f4;
   --body: #b8b5aa;
@@ -330,7 +330,7 @@
     line-height: 1.4;
     letter-spacing: 0.88px;
     text-transform: uppercase;
-    border-radius: 9999px;
+    border-radius: var(--radius-sm);
     padding: 4px 10px;
     white-space: nowrap;
     user-select: none;

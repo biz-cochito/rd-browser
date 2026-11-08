@@ -124,22 +124,22 @@ export function TorrentRow({
         >
           {isDownloaded ? (
             <CheckCircleIcon
-              size={20}
+              size={24}
               weight="fill"
               className="text-semantic-success"
             />
           ) : isDownloading ? (
-            <CircleNotchIcon size={20} className="animate-spin text-ink" />
+            <CircleNotchIcon size={28} className="animate-spin text-ink" />
           ) : isWaiting ? (
-            <ListChecksIcon size={20} className="text-ink" />
+            <ListChecksIcon size={28} className="text-ink" />
           ) : isError ? (
             <XCircleIcon
-              size={20}
+              size={28}
               weight="fill"
               className="text-semantic-error"
             />
           ) : (
-            <FolderOpenIcon size={20} className="text-body" />
+            <FolderOpenIcon size={28} className="text-body" />
           )}
         </button>
 
@@ -154,7 +154,7 @@ export function TorrentRow({
           <button
             type="button"
             onClick={() => onShowDetails(torrent.id)}
-            className="block w-full text-left text-[15px] font-medium leading-[1.4] text-ink transition-colors hover:text-primary break-all cursor-pointer"
+            className="block w-full text-left typo-title-md font-medium leading-[1.4] text-ink transition-colors hover:text-primary break-all cursor-pointer"
             title={torrent.filename || torrent.id}
           >
             {torrent.filename || "Untitled Torrent"}
@@ -217,10 +217,10 @@ export function TorrentRow({
             variant="outline"
             size="sm"
             onClick={() => onPlay(torrent.id)}
-            className="h-8 gap-1.5 px-3 text-[13px]"
+            className="h-8 px-3 typo-body-md"
             title="Stream primary file"
           >
-            <PlayIcon size={14} weight="fill" />
+            <PlayIcon size={24} weight="fill" />
             <span>Stream</span>
           </Button>
         )}
@@ -229,10 +229,10 @@ export function TorrentRow({
           variant="secondary"
           size="sm"
           onClick={() => onShowDetails(torrent.id)}
-          className="h-8 gap-1.5 px-3 text-[13px]"
+          className="h-8 gap-1.5 px-3 typo-body-md"
           title="View Files & Details"
         >
-          <FolderOpenIcon size={15} className="text-body" />
+          <FolderOpenIcon size={24} className="text-body" />
           <span>Files</span>
         </Button>
 
@@ -249,7 +249,7 @@ export function TorrentRow({
               }`}
             >
               <BookmarkSimpleIcon
-                size={15}
+                size={24}
                 weight={isBookmarked ? "fill" : "regular"}
               />
             </button>
@@ -262,7 +262,7 @@ export function TorrentRow({
               title="Download Direct File"
               className="inline-flex size-7 items-center justify-center rounded-[6px] text-body transition-colors hover:bg-surface-strong/60 hover:text-ink cursor-pointer"
             >
-              <DownloadSimpleIcon size={15} />
+              <DownloadSimpleIcon size={24} />
             </button>
           )}
 
@@ -280,7 +280,7 @@ export function TorrentRow({
                   className="text-semantic-success"
                 />
               ) : (
-                <CopyIcon size={15} />
+                <CopyIcon size={24} />
               )}
             </button>
           )}
@@ -291,7 +291,7 @@ export function TorrentRow({
             title="Delete Torrent"
             className="inline-flex size-7 items-center justify-center rounded-[6px] text-body transition-colors hover:bg-semantic-error/12 hover:text-semantic-error cursor-pointer"
           >
-            <TrashIcon size={15} />
+            <TrashIcon size={24} />
           </button>
         </div>
       </div>

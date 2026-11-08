@@ -81,7 +81,7 @@ export function Header({
                     : "text-body hover:text-ink hover:bg-surface-strong/40 border border-transparent"
                 }`}
               >
-                <HardDrivesIcon size={15} />
+                <HardDrivesIcon size={24} />
                 <span>Torrents</span>
               </button>
 
@@ -96,7 +96,7 @@ export function Header({
                 }`}
               >
                 <BookmarkSimpleIcon
-                  size={15}
+                  size={24}
                   weight={bookmarkCount > 0 ? "fill" : "regular"}
                 />
                 <span>Bookmarks</span>
@@ -114,7 +114,7 @@ export function Header({
         <div className="hidden flex-1 max-w-md lg:flex items-center gap-3">
           <div className="relative flex-1">
             <MagnifyingGlassIcon
-              size={15}
+              size={24}
               className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-text"
             />
             <Input
@@ -144,7 +144,7 @@ export function Header({
             onClick={onOpenAddModal}
             className="h-9 px-3.5 sm:h-10 sm:px-[18px]"
           >
-            <PlusIcon size={15} weight="bold" />
+            <PlusIcon size={24} weight="bold" />
             <span className="hidden xs:inline">Add Links</span>
           </Button>
 
@@ -158,7 +158,7 @@ export function Header({
               className="h-9 w-9 sm:h-10 sm:w-10"
             >
               <ArrowsClockwiseIcon
-                size={16}
+                size={24}
                 className={loading ? "animate-spin text-primary" : "text-ink"}
               />
             </Button>
@@ -172,7 +172,7 @@ export function Header({
                 !hasApiToken ? "border-primary text-primary" : ""
               }`}
             >
-              <GearIcon size={16} />
+              <GearIcon size={24} />
               {!hasApiToken && (
                 <span className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-primary" />
               )}
@@ -186,9 +186,9 @@ export function Header({
               className="h-9 w-9 sm:h-10 sm:w-10"
             >
               {theme === "dark" ? (
-                <SunIcon size={16} className="text-ink" />
+                <SunIcon size={24} className="text-ink" />
               ) : (
-                <MoonIcon size={16} className="text-ink" />
+                <MoonIcon size={24} className="text-ink" />
               )}
             </Button>
           </ButtonGroup>
@@ -200,7 +200,7 @@ export function Header({
         <div className="mx-auto flex max-w-[1200px] items-center gap-3">
           <div className="relative flex-1">
             <MagnifyingGlassIcon
-              size={15}
+              size={24}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-text"
             />
             <Input

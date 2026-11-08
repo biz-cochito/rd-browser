@@ -213,10 +213,7 @@ export const TorrentsPage = forwardRef<TorrentsPageRef, TorrentsPageProps>(
       <div className="space-y-6">
         {/* Editorial Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-hairline pb-5">
-          <div className="space-y-1">
-            <div className="typo-caption-uppercase text-muted-text">
-              Cloud Transfer Index
-            </div>
+          <div className="space-y-0">
             <h1 className="typo-display-lg text-ink">Torrents</h1>
           </div>
 
@@ -238,7 +235,7 @@ export const TorrentsPage = forwardRef<TorrentsPageRef, TorrentsPageProps>(
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-[12px] border border-hairline bg-surface-card p-5">
               <div className="flex items-start gap-3.5">
                 <div className="flex size-10 shrink-0 items-center justify-center rounded-[8px] border border-hairline bg-canvas-soft text-ink">
-                  <KeyIcon size={18} />
+                  <KeyIcon size={24} />
                 </div>
                 <div className="space-y-1">
                   <h2 className="typo-title-sm text-ink">
@@ -256,7 +253,7 @@ export const TorrentsPage = forwardRef<TorrentsPageRef, TorrentsPageProps>(
                 onClick={onOpenSettingsModal}
                 className="shrink-0"
               >
-                <GearIcon size={15} />
+                <GearIcon size={24} />
                 <span>API Token Settings</span>
               </Button>
             </div>
